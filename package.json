@@ -4,7 +4,8 @@
   "description": "Core api for community yunshe",
   "scripts": {
     "dev": "backpack",
-    "build": "backpack build"
+    "build": "backpack build",
+    "test": "jest"
   },
   "author": "Branliang",
   "license": "MIT",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",
     "backpack-core": "^0.8.3",
+    "jest": "^24.1.0",
     "typescript": "^3.3.3333"
   }
 }
