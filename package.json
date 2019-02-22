@@ -1,0 +1,10 @@
+{
+  "name": "yunshe-core-api",
+  "version": "1.0.0",
+  "description": "Core api for community yunshe",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Branliang",
+  "license": "MIT"
+}
