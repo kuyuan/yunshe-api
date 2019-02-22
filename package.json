@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Core api for community yunshe",
   "scripts": {
-    "dev": "backpack"
+    "dev": "backpack",
+    "build": "backpack build"
   },
   "author": "Branliang",
   "license": "MIT",
