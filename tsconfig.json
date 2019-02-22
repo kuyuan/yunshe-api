@@ -1,21 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "sourceMap": true,
-    "outDir": "dist",
     "lib": [
-      "esnext", "dom"
-    ],
-    "baseUrl": "src",
-    "paths": {
-      "@app/*": [ "*"],
-      "@types/*": [ "types/*" ],
-      "@models/*": [ "models/*" ],
-      "@utils/*": [ "utils/*" ],
-      "@resolvers/*": [ "resolvers/*" ],
-      "@loaders/*": ["loaders/*"]
-    }
+      "es5",
+      "es2015.promise"
+    ]
   }
 }
