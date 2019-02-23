@@ -1,6 +1,6 @@
 const rethinkdbdash = require('rethinkdbdash')
 
-var r = rethinkdbdash({
+export default rethinkdbdash({
   db: process.env.DATABASE_NAME,
   max: 500,
   buffer: 5,
@@ -9,5 +9,3 @@ var r = rethinkdbdash({
   port: process.env.DATABASE_PORT,
   password: process.env.DATABASE_PASSWORD
 })
-
-module.exports = r

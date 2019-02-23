@@ -3,6 +3,14 @@
     "lib": [
       "es5",
       "es2015.promise"
-    ]
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "types/*": [ "types/*" ],
+      "models/*": [ "models/*" ],
+      "utils/*": [ "utils/*" ],
+      "resolvers/*": [ "resolvers/*" ],
+      "loaders/*": ["loaders/*"]
+    }
   }
 }
