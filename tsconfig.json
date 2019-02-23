@@ -4,6 +4,7 @@
       "es5",
       "es2015.promise"
     ],
+    "esModuleInterop": true,
     "baseUrl": "src",
     "paths": {
       "types/*": [ "types/*" ],
