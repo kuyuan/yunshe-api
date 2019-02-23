@@ -1,6 +1,6 @@
 const rethinkdbdash = require('rethinkdbdash')
 
-const db = rethinkdbdash({
+module.exports = rethinkdbdash({
   db: 'testing',
   max: 500,
   buffer: 5,
@@ -8,5 +8,3 @@ const db = rethinkdbdash({
   host: 'localhost',
   port: 28015
 })
-
-jest.mock('../db', () => db)
