@@ -7,6 +7,7 @@
     "build": "backpack build",
     "start": "node ./build/main",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "fix": "yarn lint --fix",
     "test": "jest",
     "migrate": "rethinkdb-migrate up -f ./src/migrations/config.js"
   },

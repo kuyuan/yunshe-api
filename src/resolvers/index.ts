@@ -1,7 +1,7 @@
-import * as path from 'path'
-import { fileLoader, mergeResolvers } from 'merge-graphql-schemas'
+import { fileLoader, mergeResolvers } from "merge-graphql-schemas";
+import * as path from "path";
 
-const resolvers = fileLoader(path.join(__dirname, './**/*.res.*'))
-const resolversMerged = mergeResolvers(resolvers)
+const resolvers = fileLoader(path.join(__dirname, "./**/*.res.*"));
+const resolversMerged = mergeResolvers(resolvers);
 
-export default resolversMerged
+export default resolversMerged;
