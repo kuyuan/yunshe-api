@@ -1,4 +1,4 @@
-export interface DBUser {
+export interface IUser {
   id: string;
   createdAt: string;
   username: string;
