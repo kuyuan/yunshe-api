@@ -13,6 +13,10 @@ lint_task:
   test_script: yarn lint
 
 test_task:
+  env:
+    DATABASE_NAME: testing
+    DATABASE_HOST: localhost
+    DATABASE_PORT: 28015
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat yarn.lock

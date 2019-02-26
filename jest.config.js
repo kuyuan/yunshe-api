@@ -7,11 +7,6 @@ module.exports = {
   // A path to a module which exports an async function that is triggered once after all test suites
   globalTeardown: path.resolve(__dirname, './support/test/teardown'),
 
-  // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: [
-    path.resolve(__dirname, './support/test/mockdb')
-  ],
-
   // The test environment that will be used for testing
   testEnvironment: "node",
 
