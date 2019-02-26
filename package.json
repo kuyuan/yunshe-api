@@ -6,8 +6,10 @@
     "dev": "backpack",
     "build": "backpack build",
     "start": "node ./build/main",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "fix": "yarn lint --fix",
     "test": "jest",
-    "migrate": "rethinkdb-migrate up -f ./src/migrations/config.js"
+    "migrate": "rethinkdb-migrate up -f ./support/migrations/config.js"
   },
   "author": "Branliang",
   "license": "MIT",
@@ -24,6 +26,7 @@
     "jest": "^24.1.0",
     "rethinkdb-migrate": "^1.4.0",
     "ts-jest": "^24.0.0",
+    "tslint": "^5.13.0",
     "typescript": "^3.3.3333"
   }
 }

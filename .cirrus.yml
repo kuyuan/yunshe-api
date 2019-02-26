@@ -5,9 +5,20 @@ container:
       image: rethinkdb:2.3.6
       port: 21085
 
-test_task:
+lint_task:
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat yarn.lock
     populate_script: yarn install
-  script: yarn test
+  test_script: yarn lint
+
+test_task:
+  env:
+    DATABASE_NAME: testing
+    DATABASE_HOST: localhost
+    DATABASE_PORT: 28015
+  node_modules_cache:
+    folder: node_modules
+    fingerprint_script: cat yarn.lock
+    populate_script: yarn install
+  test_script: yarn test

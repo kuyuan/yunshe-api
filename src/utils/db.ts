@@ -1,11 +1,11 @@
-const rethinkdbdash = require('rethinkdbdash')
+import rethinkdbdash from "rethinkdbdash";
 
 export default rethinkdbdash({
-  db: process.env.DATABASE_NAME,
-  max: 500,
   buffer: 5,
-  timeoutGb: 60 * 1000,
+  db: process.env.DATABASE_NAME,
   host: process.env.DATABASE_HOST,
+  max: 500,
+  password: process.env.DATABASE_PASSWORD,
   port: process.env.DATABASE_PORT,
-  password: process.env.DATABASE_PASSWORD
-})
+  timeoutGb: 60 * 1000,
+});

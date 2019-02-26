@@ -1,6 +1,6 @@
-import db from 'utils/db';
-import { DBUser } from 'utils/interfaces';
+import db from "utils/db";
+import { IUser } from "utils/interfaces";
 
-export const getUserById = (userId: string): Promise<DBUser> => {
-  return db.table('users').get(userId)
-}
+export const getUserById = (userId: string): Promise<IUser> => {
+  return db.table("users").get(userId);
+};
