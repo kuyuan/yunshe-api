@@ -2,14 +2,14 @@ const path = require('path');
 
 module.exports = {
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: path.resolve(__dirname, './src/utils/test/setup'),
+  globalSetup: path.resolve(__dirname, './support/test/setup'),
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: path.resolve(__dirname, './src/utils/test/teardown'),
+  globalTeardown: path.resolve(__dirname, './support/test/teardown'),
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-    path.resolve(__dirname, './src/utils/test/mockdb')
+    path.resolve(__dirname, './support/test/mockdb')
   ],
 
   // The test environment that will be used for testing
