@@ -1,11 +1,11 @@
-const rethinkdbdash = require('rethinkdbdash');
+const { r } = require('rethinkdb-ts');
 
 module.exports = async () => {
-  const db = rethinkdbdash({
+  await r.connectPool({
     db: 'testing'
   })
   await Promise.all([
-    db.table('users').delete().run()
+    r.table('users').delete().run()
   ])
-  await db.getPoolMaster().drain();
+  await r.getPoolMaster().drain();
 }

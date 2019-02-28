@@ -5,13 +5,14 @@
       "es2015.promise"
     ],
     "esModuleInterop": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      "types/*": [ "types/*" ],
-      "models/*": [ "models/*" ],
-      "utils/*": [ "utils/*" ],
-      "resolvers/*": [ "resolvers/*" ],
-      "loaders/*": ["loaders/*"]
+      "@types/*": [ "src/types/*" ],
+      "@models/*": [ "src/models/*" ],
+      "@utils/*": [ "src/utils/*" ],
+      "@resolvers/*": [ "src/resolvers/*" ],
+      "@loaders/*": ["src/loaders/*"],
+      "@support/*": ["support/*"]
     }
   }
 }

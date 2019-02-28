@@ -5518,6 +5518,11 @@ rethinkdb-migrate@^1.4.0:
     rethinkdbdash "^2.3.31"
     yargs "^11.0.0"
 
+rethinkdb-ts@^2.4.0-rc.12:
+  version "2.4.0-rc.12"
+  resolved "https://registry.yarnpkg.com/rethinkdb-ts/-/rethinkdb-ts-2.4.0-rc.12.tgz#08d74b2cced5b4d6121f05eb001e9baa5790d127"
+  integrity sha512-gb7NCGuHfDHn3rKfLsczBHIwsHg4wPAHva2IhEiPJ8Rc8ARACltZiHcpiTfYxQz/6rIHrTztAJDyaKNyfMQ2Tw==
+
 rethinkdb@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/rethinkdb/-/rethinkdb-2.3.3.tgz#3dc6586e22fa1dabee0d254e64bd0e379fad2f72"
