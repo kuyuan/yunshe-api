@@ -1,12 +1,12 @@
 import {
   WUQIAN_ID,
 } from "@support/seed/constants";
+import { r } from "rethinkdb-ts";
 import { getUserById } from "./user";
-import { r } from 'rethinkdb-ts';
 
 afterAll(async () => {
-  await r.getPoolMaster().drain()
-})
+  await r.getPoolMaster().drain();
+});
 
 describe("getUserById", () => {
   test("it get user data", async () => {
