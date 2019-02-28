@@ -1,11 +1,14 @@
 const { r } = require('rethinkdb-ts');
+const users = require('./users');
 
-module.exports = async () => {
+const seed = async () => {
   await r.connectPool({
     db: 'testing'
   })
   await Promise.all([
-    r.table('users').delete().run()
+    r.table('users').insert(users).run()
   ])
   await r.getPoolMaster().drain();
 }
+
+module.exports = seed
