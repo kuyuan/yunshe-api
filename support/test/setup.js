@@ -1,6 +1,9 @@
-require('dotenv').config({path: '.env.test'})
+/**
+ * Setup the database and seed testing data
+ */
 const path = require('path');
 const { migrate } = require('rethinkdb-migrate/lib');
+const seed = require('../seed');
 
 module.exports = async () => {
   await migrate({
@@ -9,6 +12,7 @@ module.exports = async () => {
     port: 28015,
     migrationsDirectory: path.resolve(__dirname, '../migrations'),
     db: 'testing',
-    op: 'up',
+    op: 'up'
   })
+  await seed()
 }
