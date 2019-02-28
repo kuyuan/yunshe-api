@@ -17,8 +17,7 @@
     "dotenv": "^6.2.0",
     "graphql-yoga": "^1.17.4",
     "merge-graphql-schemas": "^1.5.8",
-    "rethinkdb-ts": "^2.4.0-rc.12",
-    "rethinkdbdash": "^2.3.31"
+    "rethinkdb-ts": "^2.4.0-rc.12"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
