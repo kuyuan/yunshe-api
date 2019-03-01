@@ -1,18 +1,26 @@
 const path = require('path');
-const { migrate } = require('rethinkdb-migrate/lib');
-const seed = require('../seed');
-const dotenv = require('dotenv');
+const fs = require('fs');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+
+const globalConfigPath = path.join(__dirname, 'globalConfig.json');
+
+const mongod = new MongoMemoryServer({
+  autoStart: false,
+});
 
 module.exports = async () => {
-  dotenv.config({path: '.env.test'});
+  if (!mongod.isRunning) {
+    await mongod.start();
+  }
 
-  await migrate({
-    driver: 'rethinkdbdash',
-    host: 'localhost',
-    port: 28015,
-    migrationsDirectory: path.resolve(__dirname, '../migrations'),
-    db: 'testing',
-    op: 'up'
-  })
-  await seed()
-}
+  const mongoConfig = {
+    mongoDBName: 'jest',
+    mongoUri: await mongod.getConnectionString(),
+  };
+
+  // Write global config to disk because all tests run in different contexts.
+  fs.writeFileSync(globalConfigPath, JSON.stringify(mongoConfig));
+
+  // Set reference to mongod in order to close the server during teardown.
+  global.__MONGOD__ = mongod;
+};
