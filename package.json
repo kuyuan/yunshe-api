@@ -8,8 +8,7 @@
     "start": "node ./build/main",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "fix": "yarn lint --fix",
-    "test": "jest",
-    "migrate": "rethinkdb-migrate up -f ./support/migrations/config.js"
+    "test": "jest"
   },
   "author": "Branliang",
   "license": "MIT",
@@ -17,14 +16,14 @@
     "dotenv": "^6.2.0",
     "graphql-yoga": "^1.17.4",
     "merge-graphql-schemas": "^1.5.8",
-    "rethinkdb-ts": "^2.4.0-rc.12"
+    "mongodb": "^3.1.13"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
+    "@types/mongodb": "^3.1.19",
     "awesome-typescript-loader": "^5.2.1",
     "backpack-core": "^0.8.3",
     "jest": "^24.1.0",
-    "rethinkdb-migrate": "^1.4.0",
     "ts-jest": "^24.0.0",
     "tslint": "^5.13.0",
     "typescript": "^3.3.3333"
