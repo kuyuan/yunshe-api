@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   globalSetup: path.resolve(__dirname, './support/test/setup'),
   globalTeardown: path.resolve(__dirname, './support/test/teardown'),
-  testEnvironment: path.resolve(__dirname, './support/test/environment'),
+  testEnvironment: "node",
   testMatch: [
     "**/__tests__/**/*.[jt]s?(x)",
     "**/?(*.)+(spec|test).[tj]s?(x)"

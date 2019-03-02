@@ -1,3 +1,5 @@
+const clear = require('../seed').clear;
+
 module.exports = async function() {
-  await global.__MONGOD__.stop();
+  await clear()
 };
