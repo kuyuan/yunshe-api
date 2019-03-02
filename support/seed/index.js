@@ -1,13 +1,8 @@
 const users = require('./users');
-const MongoClient = require('mongodb').MongoClient;
-
-const url = 'mongodb://127.0.0.1:27017/yunsheTest'
-const clientOptions = {
-  useNewUrlParser: true
-}
+const createClient = require('../test/mongo');
 
 const seed = async () => {
-  const client = new MongoClient(url, clientOptions);
+  const client = createClient();
   await client.connect();
   const db = client.db();
   try {
@@ -22,7 +17,7 @@ const seed = async () => {
 }
 
 const clear = async () => {
-  const client = new MongoClient(url, clientOptions);
+  const client = createClient();
   await client.connect();
   const db = client.db();
 
