@@ -2,21 +2,21 @@ const ObjectId = require('mongodb').ObjectID
 const DATE = new Date('2019-01-01');
 
 // users
-const WUQIAN_ID = ObjectId();
-const CAOYAN_ID = ObjectId();
-const BRAN_ID = ObjectId();
+const WUQIAN_ID = ObjectId("5c7aa60cb372d6355eeedae0");
+const CAOYAN_ID = ObjectId("5c7aa60cb372d6355eeedae1");
+const BRAN_ID = ObjectId("5c7aa60cb372d6355eeedae2");
 // this user is blocked in yunshe community
-const BLOCKED_USER_ID = ObjectId();
+const BLOCKED_USER_ID = ObjectId("5c7aa60cb372d6355eeedae4");
 // this user is has never joined communities or channels
-const QUIET_USER_ID = ObjectId();
+const QUIET_USER_ID = ObjectId("5c7aa60cb372d6355eeedae3");
 // this user was a previous member of yunshe community
-const PREVIOUS_MEMBER_USER_ID = ObjectId();
+const PREVIOUS_MEMBER_USER_ID = ObjectId("5c7aa60cb372d6355eeedae5");
 // this user is pending in all private channels
-const PENDING_USER_ID = ObjectId();
+const PENDING_USER_ID = ObjectId("5c7aa60cb372d6355eeedae7");
 // this user is moderator in all channels, member in all communities
-const CHANNEL_MODERATOR_USER_ID = ObjectId();
+const CHANNEL_MODERATOR_USER_ID = ObjectId("5c7aa60cb372d6355eeedae8");
 // this user is moderator in all communities
-const COMMUNITY_MODERATOR_USER_ID = ObjectId();
+const COMMUNITY_MODERATOR_USER_ID = ObjectId("5c7aa60cb372d6355eeedae9");
 
 // communities
 const YUNSHE_COMMUNITY_ID = ObjectId();
