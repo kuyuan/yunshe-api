@@ -1,9 +1,9 @@
 container:
   image: node:10.15.1
   additional_containers:
-    - name: rethinkdb
-      image: rethinkdb:2.3.6
-      port: 21085
+    - name: mongo
+      image: mongo:4.0.6
+      port: 27017
 
 lint_task:
   node_modules_cache:
@@ -13,10 +13,6 @@ lint_task:
   test_script: yarn lint
 
 test_task:
-  env:
-    DATABASE_NAME: testing
-    DATABASE_HOST: localhost
-    DATABASE_PORT: 28015
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat yarn.lock

@@ -1,14 +1,38 @@
-const { r } = require('rethinkdb-ts');
 const users = require('./users');
+const createClient = require('../test/mongo');
 
 const seed = async () => {
-  await r.connectPool({
-    db: 'testing'
-  })
-  await Promise.all([
-    r.table('users').insert(users).run()
-  ])
-  await r.getPoolMaster().drain();
+  const client = createClient();
+  await client.connect();
+  const db = client.db();
+  try {
+    await db.collection('users').insertMany(users)
+  }
+  catch (error) {
+    console.log(error)
+  }
+  finally {
+    await client.close()
+  }
 }
 
-module.exports = seed
+const clear = async () => {
+  const client = createClient();
+  await client.connect();
+  const db = client.db();
+
+  try {
+    await db.dropDatabase()
+  }
+  catch (error) {
+    console.log(error)
+  }
+  finally {
+    await client.close()
+  }
+}
+
+module.exports = {
+  seed,
+  clear
+}

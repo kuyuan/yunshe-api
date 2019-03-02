@@ -1,11 +1,5 @@
-const { r } = require('rethinkdb-ts');
+const clear = require('../seed').clear;
 
-module.exports = async () => {
-  await r.connectPool({
-    db: 'testing'
-  })
-  await Promise.all([
-    r.table('users').delete().run()
-  ])
-  await r.getPoolMaster().drain();
-}
+module.exports = async function() {
+  await clear()
+};

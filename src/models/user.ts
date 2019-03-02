@@ -1,9 +1,20 @@
-import { dbConfig } from "@utils/db";
 import { IUser } from "@utils/interfaces";
-import { r } from "rethinkdb-ts";
+import { createClient } from "@utils/mongo";
+import { ObjectId } from "mongodb";
 
-export const getUserById = async (userId: string): Promise<IUser> => {
-  await r.connectPool(dbConfig);
-  const user = await r.table("users").get(userId).run();
-  return user;
+export const getUserById = async (userId: ObjectId): Promise<IUser> => {
+  const client = createClient();
+  try {
+    await client.connect();
+    const db = client.db();
+    const user = await db.collection("users").findOne({
+      _id: userId,
+    });
+    return user;
+  } catch (error) {
+    console.log(error);
+    return null;
+  } finally {
+    client.close();
+  }
 };
