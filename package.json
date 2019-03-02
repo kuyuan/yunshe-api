@@ -24,7 +24,6 @@
     "awesome-typescript-loader": "^5.2.1",
     "backpack-core": "^0.8.3",
     "jest": "^24.1.0",
-    "jest-environment-node": "^24.0.0",
     "ts-jest": "^24.0.0",
     "tslint": "^5.13.0",
     "typescript": "^3.3.3333"
