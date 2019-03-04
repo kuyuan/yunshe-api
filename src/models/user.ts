@@ -1,4 +1,4 @@
-import { IUser } from "@utils/interfaces";
+import { IUser } from "utils/interfaces";
 import { Db, ObjectId } from "mongodb";
 
 export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {

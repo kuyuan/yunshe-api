@@ -1,6 +1,6 @@
-import { getUserById } from "@models/user";
-import { WUQIAN_ID } from "@support/seed/constants";
-import { createClient } from "@utils/mongo";
+import { getUserById } from "models/user";
+import { WUQIAN_ID } from "support/seed/constants";
+import { createClient } from "utils/mongo";
 import { Db } from "mongodb";
 
 let db: Db;

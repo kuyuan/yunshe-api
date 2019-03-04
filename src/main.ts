@@ -1,18 +1,18 @@
+import { createClient } from "utils/mongo";
 import { GraphQLServer } from "graphql-yoga";
-// ... or using `require()`
-// const { GraphQLServer } = require('graphql-yoga')
+import resolvers from "./resolvers";
+import typeDefs from "./types";
 
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
+(async () => {
+  const client = createClient();
+  await client.connect();
+  const db = client.db();
 
-const resolvers = {
-  Query: {
-    hello: (_, { name }) => `Hello ${name || "World"}`,
-  },
-};
+  const server = new GraphQLServer({
+    context: () => ({ db }),
+    resolvers,
+    typeDefs,
+  });
 
-const server = new GraphQLServer({ typeDefs, resolvers });
-server.start();
+  server.start();
+})();

@@ -14,11 +14,11 @@ module.exports = {
   testURL: "http://localhost",
   preset: "ts-jest",
   moduleNameMapper: {
-    "^@types/(.*)$": "<rootDir>/src/types/$1",
-    "^@models/(.*)$": "<rootDir>/src/models/$1",
-    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
-    "^@resolvers/(.*)$": "<rootDir>/src/resolvers/$1",
-    "^@loaders/(.*)$": "<rootDir>/src/loaders/$1",
-    "^@support/(.*)$": "<rootDir>/support/$1"
+    "^types/(.*)$": "<rootDir>/src/types/$1",
+    "^models/(.*)$": "<rootDir>/src/models/$1",
+    "^utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^resolvers/(.*)$": "<rootDir>/src/resolvers/$1",
+    "^loaders/(.*)$": "<rootDir>/src/loaders/$1",
+    "^support/(.*)$": "<rootDir>/support/$1"
   },
 };
