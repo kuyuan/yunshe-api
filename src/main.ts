@@ -1,18 +1,6 @@
-import { GraphQLServer } from "graphql-yoga";
-// ... or using `require()`
-// const { GraphQLServer } = require('graphql-yoga')
+import { createServer } from "./utils/server";
 
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: (_, { name }) => `Hello ${name || "World"}`,
-  },
-};
-
-const server = new GraphQLServer({ typeDefs, resolvers });
-server.start();
+(async () => {
+  const server = await createServer();
+  server.start();
+})();

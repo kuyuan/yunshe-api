@@ -1,7 +1,8 @@
-import { fileLoader, mergeTypes } from "merge-graphql-schemas";
-import * as path from "path";
+import { mergeTypes } from "merge-graphql-schemas";
+import userTypes from "./users";
 
-const typeArray = fileLoader(path.join(__dirname, "./**/*.gql"));
-const typesMerged = mergeTypes(typeArray, { all: true });
+const typesMerged = mergeTypes([
+  userTypes,
+]);
 
 export default typesMerged;

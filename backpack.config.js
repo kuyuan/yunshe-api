@@ -9,12 +9,12 @@ module.exports = {
     config.resolve = {
       extensions: [".ts", ".js", ".json"],
       alias: {
-        @types: path.resolve(__dirname, 'src/types'),
-        @loaders: path.resolve(__dirname, 'src/loaders'),
-        @models: path.resolve(__dirname, 'src/models'),
-        @utils: path.resolve(__dirname, 'src/utils'),
-        @resolvers: path.resolve(__dirname, 'src/resolvers'),
-        @support: path.resolve(__dirname, 'support')
+        '@schemaTypes': path.resolve(__dirname, 'src/types'),
+        '@loaders': path.resolve(__dirname, 'src/loaders'),
+        '@models': path.resolve(__dirname, 'src/models'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
+        '@resolvers': path.resolve(__dirname, 'src/resolvers'),
+        '@support': path.resolve(__dirname, 'support')
       }
     };
 
@@ -22,6 +22,11 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'awesome-typescript-loader'
+      },
+      {
+        exclude: /node_modules/,
+        test: /\.gql$/,
+        use: [{ loader: 'graphql-import-loader' }]
       }
     );
 

@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@types/*": [ "src/types/*" ],
+      "@schemaTypes/*": [ "src/types/*" ],
       "@models/*": [ "src/models/*" ],
       "@utils/*": [ "src/utils/*" ],
       "@resolvers/*": [ "src/resolvers/*" ],

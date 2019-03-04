@@ -1,12 +1,8 @@
 import { IUser } from "@utils/interfaces";
-import { createClient } from "@utils/mongo";
-import { ObjectId } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 
-export const getUserById = async (userId: ObjectId): Promise<IUser> => {
-  const client = createClient();
+export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
   try {
-    await client.connect();
-    const db = client.db();
     const user = await db.collection("users").findOne({
       _id: userId,
     });
@@ -14,7 +10,5 @@ export const getUserById = async (userId: ObjectId): Promise<IUser> => {
   } catch (error) {
     console.log(error);
     return null;
-  } finally {
-    client.close();
   }
 };
