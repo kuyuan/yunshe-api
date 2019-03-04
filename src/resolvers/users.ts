@@ -1,4 +1,4 @@
-import { getUserById } from "models/user";
+import { getUserById } from "@models/user";
 
 export default {
   Query: {

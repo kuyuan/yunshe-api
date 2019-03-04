@@ -7,12 +7,12 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "types/*": [ "src/types/*" ],
-      "models/*": [ "src/models/*" ],
-      "utils/*": [ "src/utils/*" ],
-      "resolvers/*": [ "src/resolvers/*" ],
-      "loaders/*": ["src/loaders/*"],
-      "support/*": ["support/*"]
+      "@schemaTypes/*": [ "src/types/*" ],
+      "@models/*": [ "src/models/*" ],
+      "@utils/*": [ "src/utils/*" ],
+      "@resolvers/*": [ "src/resolvers/*" ],
+      "@loaders/*": ["src/loaders/*"],
+      "@support/*": ["support/*"]
     }
   }
 }
