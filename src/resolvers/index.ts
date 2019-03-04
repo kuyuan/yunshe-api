@@ -1,8 +1,8 @@
 import { mergeResolvers } from "merge-graphql-schemas";
-import userResolvers from './users';
+import userResolvers from "./users";
 
 const resolversMerged = mergeResolvers([
-  userResolvers
+  userResolvers,
 ]);
 
 export default resolversMerged;

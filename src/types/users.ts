@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export default `
   type User {
@@ -9,4 +9,4 @@ export default `
   type Query {
     user(id: ID!): User!
   }
-`
+`;

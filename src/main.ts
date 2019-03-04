@@ -1,5 +1,5 @@
-import { createClient } from "utils/mongo";
 import { GraphQLServer } from "graphql-yoga";
+import { createClient } from "utils/mongo";
 import resolvers from "./resolvers";
 import typeDefs from "./types";
 
