@@ -20,7 +20,8 @@
     "graphql-yoga": "^1.17.4",
     "merge-graphql-schemas": "^1.5.8",
     "mongodb": "^3.1.13",
-    "qiniu": "^7.2.1"
+    "sanitize-filename": "^1.6.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
