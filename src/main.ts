@@ -1,3 +1,4 @@
+import "./utils/env";
 import { createClient } from "./utils/mongo";
 import { createServer } from "./utils/server";
 
