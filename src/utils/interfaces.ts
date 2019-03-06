@@ -4,8 +4,8 @@
 export interface IFile {
   stream: any;
   filename: string;
-  mimetype: string;
-  encoding: string;
+  mimetype?: string;
+  encoding?: string;
 }
 
 export interface ILooseObject {
