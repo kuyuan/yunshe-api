@@ -1,9 +1,9 @@
-import { Cursor } from "mongodb";
+import { Cursor, ObjectID } from "mongodb";
 
-export const normalizeArray = (keys: any[], indexField: string, collection: Cursor<any> | any[]) => {
+export const normalizeByIds = async (keys: ObjectID[], collection: Cursor<any>) => {
   const map = new Map();
-  collection.forEach((item) => {
-    map.set(item[indexField], item);
+  await collection.forEach((item) => {
+    map.set(item._id.toString(), item);
   });
-  return keys.map((key) => map.get(key));
+  return keys.map((key) => map.get(key.toString()));
 };

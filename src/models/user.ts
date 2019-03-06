@@ -1,5 +1,5 @@
 import { IUser } from "@utils/interfaces";
-import { normalizeArray } from "@utils/normalize";
+import { normalizeByIds } from "@utils/normalize";
 import { Cursor, Db, ObjectId } from "mongodb";
 
 export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
@@ -19,7 +19,7 @@ export const getUsersByIds = async (userIds: ObjectId[], db: Db): Promise<IUser[
     const users = await db.collection("users").find({
       _id: { $in: userIds },
     });
-    const normalized = normalizeArray(userIds, "_id", users);
+    const normalized = await normalizeByIds(userIds, users);
     return normalized;
   } catch (error) {
     console.log(error);
