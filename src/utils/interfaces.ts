@@ -39,7 +39,7 @@ export interface ICommunity {
   createdAt: Date;
   name: string;
   description: string;
-  tags?: Array<string>;
+  tags?: string[];
   coverPhoto: string;
   profilePhoto: string;
   website?: string;
