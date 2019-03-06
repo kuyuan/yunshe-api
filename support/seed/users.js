@@ -1,4 +1,3 @@
-const ObjectId = require('mongodb').ObjectID
 const constants = require('./constants');
 const {
   WUQIAN_ID,
@@ -14,7 +13,7 @@ const {
 
 module.exports = [
   {
-    _id: ObjectId(WUQIAN_ID),
+    _id: WUQIAN_ID,
     name: '吴倩',
     description: '我是一个会计，我不会写代码',
     username: 'wuqian',
