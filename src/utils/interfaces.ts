@@ -21,15 +21,29 @@ export type ResourceTypes = "User" | "ThreadMessage" | "DirectMessage" | Connect
  */
 export interface IUser {
   _id: string;
-  createdAt: string;
+  createdAt: Date;
   username: string;
   name: string;
   coverPhoto: string;
   profilePhoto: string;
   wechatProviderId?: string;
   isOnline?: boolean;
-  lastSeen?: string;
+  lastSeen?: Date;
   description?: string;
   website?: string;
-  modifiedAt?: string;
+  modifiedAt?: Date;
+}
+
+export interface ICommunity {
+  _id: string;
+  createdAt: Date;
+  name: string;
+  description: string;
+  tags?: Array<string>;
+  coverPhoto: string;
+  profilePhoto: string;
+  website?: string;
+  deletedAt?: Date;
+  isPrivate: boolean;
+  memberCount?: number;
 }
