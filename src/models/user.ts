@@ -1,6 +1,7 @@
 import { IUser } from "@utils/interfaces";
 import { normalizeByIds } from "@utils/normalize";
-import { Cursor, Db, ObjectId } from "mongodb";
+import { Db, ObjectId } from "mongodb";
+import Sentry from "@utils/sentry";
 
 export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
   try {
@@ -9,7 +10,7 @@ export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
     });
     return user;
   } catch (error) {
-    console.log(error);
+    Sentry.captureException(error);
     return null;
   }
 };
@@ -22,7 +23,7 @@ export const getUsersByIds = async (userIds: ObjectId[], db: Db): Promise<IUser[
     const normalized = await normalizeByIds(userIds, users);
     return normalized;
   } catch (error) {
-    console.log(error);
-    return null;
+    Sentry.captureException(error);
+    return [];
   }
 };
