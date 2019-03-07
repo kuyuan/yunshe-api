@@ -1,7 +1,7 @@
 import { IUser } from "@utils/interfaces";
 import { normalizeByIds } from "@utils/normalize";
-import { Db, ObjectId } from "mongodb";
 import Sentry from "@utils/sentry";
+import { Db, ObjectId } from "mongodb";
 
 export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
   try {
