@@ -1,5 +1,5 @@
+import { db, port, url } from "@support/test/config";
 import { MongoClient } from "mongodb";
-import { url, port, db } from "@support/test/config";
 
 const mongoUrl = `mongodb://${url}:${port}/${db}`;
 
