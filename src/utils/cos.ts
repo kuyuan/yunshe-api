@@ -1,4 +1,4 @@
-import { IFile, ResourceTypes } from "@utils/interfaces";
+import { IFile, IUploadResponse, ResourceTypes } from "@utils/interfaces";
 import COS from "cos-nodejs-sdk-v5";
 import sanitize from "sanitize-filename";
 import uuidv4 from "uuid/v4";
@@ -15,7 +15,7 @@ export const uploadImage = async (
   file: IFile,
   entity: ResourceTypes,
   id: string,
-) => {
+): Promise<IUploadResponse> => {
   const { filename, stream } = await file;
   const sanitized = sanitize(filename);
   const encoded = encodeURIComponent(sanitized);

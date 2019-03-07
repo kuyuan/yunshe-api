@@ -12,6 +12,13 @@ export interface ILooseObject {
   [key: string]: any;
 }
 
+export interface IUploadResponse {
+  ETag: string;
+  Location: string;
+  headers: object;
+  statusCode: number;
+}
+
 export type ConnectionTypes = "Community" | "Channel" | "Thread" | "DirectMessageThread";
 
 export type ResourceTypes = "User" | "ThreadMessage" | "DirectMessage" | ConnectionTypes;
