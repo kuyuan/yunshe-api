@@ -11,9 +11,9 @@ test("COS mock", async () => {
 });
 
 test("Mongodb mock", async () => {
-  const client = createClient()
-  await client.connect()
-  const db = client.db()
-  expect(db.databaseName).toBe("yunsheTest")
-  await client.close()
-})
+  const client = createClient();
+  await client.connect();
+  const db = client.db();
+  expect(db.databaseName).toBe("yunsheTest");
+  await client.close();
+});
