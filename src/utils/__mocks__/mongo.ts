@@ -1,9 +1,10 @@
 import { MongoClient } from "mongodb";
+import { url, port, db } from "@support/test/config";
 
-const url = "mongodb://localhost:27017/yunsheTest";
+const mongoUrl = `mongodb://${url}:${port}/${db}`;
 
 export const createClient = () => {
-  return new MongoClient(url, {
+  return new MongoClient(mongoUrl, {
     useNewUrlParser: true,
   });
 };
