@@ -1,7 +1,7 @@
 import { ICommunity } from "@utils/interfaces";
-import { ObjectID, Db } from "mongodb";
-import Raven from "@utils/raven";
 import { normalizeByIds } from "@utils/normalize";
+import Raven from "@utils/raven";
+import { Db, ObjectID } from "mongodb";
 
 export const getCommunityById = async (communityId: ObjectID, db: Db): Promise<ICommunity> => {
   try {
@@ -13,9 +13,9 @@ export const getCommunityById = async (communityId: ObjectID, db: Db): Promise<I
     Raven.captureException(error);
     return null;
   }
-}
+};
 
-export const getCommunitiesByIds = async (communityIds: ObjectID[], db: Db): Promise<Array<ICommunity>> => {
+export const getCommunitiesByIds = async (communityIds: ObjectID[], db: Db): Promise<ICommunity[]> => {
   try {
     const communities = await db.collection("communities").find({
       _id: { $in: communityIds },
@@ -26,4 +26,4 @@ export const getCommunitiesByIds = async (communityIds: ObjectID[], db: Db): Pro
     Raven.captureException(error);
     return [];
   }
-}
+};
