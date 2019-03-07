@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const url = process.env.MONGO_URL;
+const url = "mongodb://localhost:27017/yunsheTest";
 
 export const createClient = () => {
   return new MongoClient(url, {

@@ -1,6 +1,6 @@
 import { IUser } from "@utils/interfaces";
 import { normalizeByIds } from "@utils/normalize";
-import Sentry from "@utils/sentry";
+import Raven from "@utils/raven";
 import { Db, ObjectId } from "mongodb";
 
 export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
@@ -10,7 +10,7 @@ export const getUserById = async (userId: ObjectId, db: Db): Promise<IUser> => {
     });
     return user;
   } catch (error) {
-    Sentry.captureException(error);
+    Raven.captureException(error);
     return null;
   }
 };
@@ -23,7 +23,7 @@ export const getUsersByIds = async (userIds: ObjectId[], db: Db): Promise<IUser[
     const normalized = await normalizeByIds(userIds, users);
     return normalized;
   } catch (error) {
-    Sentry.captureException(error);
+    Raven.captureException(error);
     return [];
   }
 };
