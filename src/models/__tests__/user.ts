@@ -23,7 +23,7 @@ describe("getUserById", () => {
 });
 
 describe("getUsersByIds", () => {
-  test("the order is maintained", async () => {
+  test("return sorted users", async () => {
     const users = await getUsersByIds([BRAN_ID, WUQIAN_ID, CAOYAN_ID], db);
     expect(users.length).toBe(3);
     expect(users[0].name).toBe("酷猿创始人");
