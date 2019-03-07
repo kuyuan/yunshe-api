@@ -15,6 +15,7 @@
   "dependencies": {
     "@sentry/node": "4.6.4",
     "cos-nodejs-sdk-v5": "^2.5.6",
+    "dataloader": "^1.4.0",
     "dotenv": "^6.2.0",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
