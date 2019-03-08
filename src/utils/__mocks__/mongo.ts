@@ -4,7 +4,7 @@ import { MongoClient } from "mongodb";
 const mongoUrl = `mongodb://${url}:${port}/${db}`;
 
 export const createClient = () => {
-  return new MongoClient(mongoUrl, {
+  return MongoClient.connect(mongoUrl, {
     useNewUrlParser: true,
   });
 };

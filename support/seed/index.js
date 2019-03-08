@@ -3,8 +3,7 @@ const communities = require('./communities');
 const createClient = require('../test/mongo');
 
 const seed = async () => {
-  const client = createClient();
-  await client.connect();
+  const client = await createClient();
   const db = client.db();
   try {
     await db.collection('users').insertMany(users)
@@ -19,8 +18,7 @@ const seed = async () => {
 }
 
 const clear = async () => {
-  const client = createClient();
-  await client.connect();
+  const client = await createClient();
   const db = client.db();
 
   try {

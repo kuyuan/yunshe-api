@@ -2,15 +2,15 @@ import { WUQIAN_ID } from "@support/seed/constants";
 import { createClient } from "@utils/mongo";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
-import { Db } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 
 let db: Db;
 const rootValue = {};
 let context;
-const client = createClient();
+let client: MongoClient;
 
 beforeAll(async () => {
-  await client.connect();
+  client = await createClient();
   db = client.db();
   context = { db };
 });
