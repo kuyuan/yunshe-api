@@ -1,13 +1,13 @@
 import { getUserById, getUsersByIds } from "@models/user";
 import { BRAN_ID, CAOYAN_ID, WUQIAN_ID } from "@support/seed/constants";
 import { createClient } from "@utils/mongo";
-import { Db } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 
 let db: Db;
-const client = createClient();
+let client: MongoClient;
 
 beforeAll(async () => {
-  await client.connect();
+  client = await createClient();
   db = client.db();
 });
 

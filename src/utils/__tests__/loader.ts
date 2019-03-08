@@ -4,14 +4,14 @@ import {
 } from "@support/seed/constants";
 import createLoader from "@utils/loader";
 import { createClient } from "@utils/mongo";
-import { Db } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 
 let db: Db;
 let loader = createLoader(db);
-const client = createClient();
+let client: MongoClient;
 
 beforeAll(async () => {
-  await client.connect();
+  client = await createClient();
   db = client.db();
   loader = createLoader(db);
 });

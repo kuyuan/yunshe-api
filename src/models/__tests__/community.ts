@@ -1,13 +1,13 @@
 import { getCommunitiesByIds, getCommunityById } from "@models/community";
 import { DELETED_COMMUNITY_ID, PRIVATE_COMMUNITY_ID, YUNSHE_COMMUNITY_ID } from "@support/seed/constants";
 import { createClient } from "@utils/mongo";
-import { Db } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 
 let db: Db;
-const client = createClient();
+let client: MongoClient;
 
 beforeAll(async () => {
-  await client.connect();
+  client = await createClient();
   db = client.db();
 });
 
