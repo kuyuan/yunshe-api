@@ -9,12 +9,15 @@ export const schema = makeExecutableSchema({
   resolvers,
 });
 
-export const createServer = async (client: MongoClient) => {
-  await client.connect();
-  const db = client.db();
-
+export const createServer = (client: MongoClient) => {
   const server = new GraphQLServer({
-    context: () => ({ db }),
+    context: async () => {
+      await client.connect();
+      const db = client.db();
+      return {
+        db,
+      };
+    },
     schema,
   });
 
