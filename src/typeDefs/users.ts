@@ -7,6 +7,6 @@ export default gql`
   }
 
   type Query {
-    user(id: ID!): User!
+    user(id: ID!): User
   }
 `;
