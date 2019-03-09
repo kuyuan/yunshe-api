@@ -17,7 +17,7 @@ COPY . .
 # Build the app
 RUN yarn build
 
-EXPOSE 3000
+EXPOSE 4000
 
 # Start the server
 CMD [ "yarn", "start" ]
