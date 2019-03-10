@@ -1,3 +1,4 @@
+import { getChannelsByIds } from "@models/channel";
 import { getCommunitiesByIds } from "@models/community";
 import { getUsersByIds } from "@models/user";
 import DataLoader from "dataloader";
@@ -7,6 +8,7 @@ const createLoader = (db: Db) => {
   return {
     user: new DataLoader((userIds: ObjectID[]) => getUsersByIds(userIds, db)),
     community: new DataLoader((communityIds: ObjectID[]) => getCommunitiesByIds(communityIds, db)),
+    channel: new DataLoader((channelIds: ObjectID[]) => getChannelsByIds(channelIds, db)),
   };
 };
 
