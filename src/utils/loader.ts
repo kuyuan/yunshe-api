@@ -12,4 +12,6 @@ const createLoader = (db: Db) => {
   };
 };
 
+export type ILoader = ReturnType<typeof createLoader>;
+
 export default createLoader;

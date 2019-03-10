@@ -1,4 +1,4 @@
-import { WUQIAN_ID } from "@support/seed/constants";
+import { YUNSHE_GENERAL_CHANNEL_ID } from "@support/seed/constants";
 import createLoader from "@utils/loader";
 import { createClient } from "@utils/mongo";
 import { schema } from "@utils/server";
@@ -20,17 +20,17 @@ afterAll(() => {
   client.close();
 });
 
-describe("Query user", () => {
-  test("get user info", async () => {
+describe("Query channel", () => {
+  test("get channel info", async () => {
     const query = `
       query {
-        user(id: "${WUQIAN_ID}") {
+        channel(id: "${YUNSHE_GENERAL_CHANNEL_ID}") {
           _id
           name
         }
       }
     `;
     const { data } = await graphql(schema, query, rootValue, context);
-    expect(data.user.name).toBe("吴倩");
+    expect(data.channel.name).toBe("默认频道");
   });
 });
