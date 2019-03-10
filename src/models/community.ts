@@ -7,6 +7,7 @@ export const getCommunityById = async (communityId: ObjectID, db: Db): Promise<I
   try {
     const community = await db.collection("communities").findOne({
       _id: communityId,
+      deletedAt: { $exists: false },
     });
     return community;
   } catch (error) {
@@ -19,6 +20,7 @@ export const getCommunitiesByIds = async (communityIds: ObjectID[], db: Db): Pro
   try {
     const communities = await db.collection("communities").find({
       _id: { $in: communityIds },
+      deletedAt: { $exists: false },
     });
     const normalized = await normalizeByIds(communityIds, communities);
     return normalized;

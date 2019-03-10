@@ -5,5 +5,5 @@ export const normalizeByIds = async (keys: ObjectID[], collection: Cursor<any>) 
   await collection.forEach((item) => {
     map.set(item._id.toString(), item);
   });
-  return keys.map((key) => map.get(key.toString()));
+  return keys.map((key) => map.get(key.toString()) || null);
 };

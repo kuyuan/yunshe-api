@@ -54,3 +54,15 @@ export interface ICommunity {
   isPrivate: boolean;
   memberCount?: number;
 }
+
+export interface IChannel {
+  _id: string;
+  createdAt: Date;
+  name: string;
+  description: string;
+  isPrivate: boolean;
+  isDefault: boolean;
+  memberCount: number;
+  deletedAt?: Date;
+  archivedAt?: Date;
+}
