@@ -1,10 +1,9 @@
-import { getUserById } from "@models/user";
 import { ObjectID } from "mongodb";
 
 export default {
   Query: {
-    user: async (_, { id }, { db }) => {
-      const user = await getUserById(new ObjectID(id), db);
+    user: async (_, { id }, { loader }) => {
+      const user = await loader.user.load(new ObjectID(id));
       return user;
     },
   },

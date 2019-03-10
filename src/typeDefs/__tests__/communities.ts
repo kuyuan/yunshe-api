@@ -1,4 +1,4 @@
-import { WUQIAN_ID } from "@support/seed/constants";
+import { YUNSHE_COMMUNITY_ID } from "@support/seed/constants";
 import createLoader from "@utils/loader";
 import { createClient } from "@utils/mongo";
 import { schema } from "@utils/server";
@@ -20,17 +20,17 @@ afterAll(() => {
   client.close();
 });
 
-describe("Query user", () => {
-  test("get user info", async () => {
+describe("Query community", () => {
+  test("get community info", async () => {
     const query = `
       query {
-        user(id: "${WUQIAN_ID}") {
+        community(id: "${YUNSHE_COMMUNITY_ID}") {
           _id
           name
         }
       }
     `;
     const { data } = await graphql(schema, query, rootValue, context);
-    expect(data.user.name).toBe("吴倩");
+    expect(data.community.name).toBe("云社官方社区");
   });
 });

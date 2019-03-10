@@ -1,18 +1,19 @@
 import gql from "graphql-tag";
 
 export default gql`
-  type User {
+  type Community {
     _id: ID
     name: String
     description: String
-    username: String
+    createdAt: Date
+    isPrivate: Boolean
+    website: String
     profilePhoto: String
     coverPhoto: String
-    createdAt: Date
-    lastSeen: Date
+    memberCount: Int
   }
 
   type Query {
-    user(id: ID!): User
+    community(id: ID!): Community
   }
 `;
