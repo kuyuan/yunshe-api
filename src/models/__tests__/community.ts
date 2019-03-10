@@ -30,7 +30,7 @@ describe("getCommunitiesByIds", () => {
       PRIVATE_COMMUNITY_ID,
     ], db);
     expect(communities.length).toBe(3);
-    expect(communities[0].name).toBe("已删除社区");
+    expect(communities[0]).toBe(null);
     expect(communities[1].name).toBe("云社官方社区");
     expect(communities[2].name).toBe("私人社区");
   });

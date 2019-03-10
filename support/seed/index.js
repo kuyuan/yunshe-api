@@ -1,5 +1,6 @@
 const users = require('./users');
 const communities = require('./communities');
+const channels = require('./channels');
 const createClient = require('../test/mongo');
 
 const seed = async () => {
@@ -8,6 +9,7 @@ const seed = async () => {
   try {
     await db.collection('users').insertMany(users)
     await db.collection('communities').insertMany(communities)
+    await db.collection('channels').insertMany(channels)
   }
   catch (error) {
     console.log(error)
