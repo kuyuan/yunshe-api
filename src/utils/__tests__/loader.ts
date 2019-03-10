@@ -1,7 +1,7 @@
 import {
   BRAN_ID,
   YUNSHE_COMMUNITY_ID,
-  YUNSHE_GENERAL_CHANNEL_ID
+  YUNSHE_GENERAL_CHANNEL_ID,
 } from "@support/seed/constants";
 import createLoader from "@utils/loader";
 import { createClient } from "@utils/mongo";
@@ -34,4 +34,4 @@ test("community loader", async () => {
 test("channel loader", async () => {
   const channel = await loader.channel.load(YUNSHE_GENERAL_CHANNEL_ID);
   expect(channel.name).toBe("默认频道");
-})
+});

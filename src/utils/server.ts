@@ -13,7 +13,7 @@ export const createServer = ({ db }) => {
   const server = new GraphQLServer({
     context: {
       db,
-      loader: createLoader(db)
+      loader: createLoader(db),
     },
     schema,
   });
