@@ -595,13 +595,6 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.2.0":
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
-  integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
-  dependencies:
-    regenerator-runtime "^0.12.0"
-
 "@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.1.2", "@babel/template@^7.2.2":
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.2.2.tgz#005b3fdf0ed96e88041330379e0da9a708eb2907"
@@ -731,7 +724,7 @@
     "@types/node" "*"
     "@types/range-parser" "*"
 
-"@types/express@*", "@types/express@^4.11.1":
+"@types/express@*", "@types/express@^4.11.1", "@types/express@^4.16.1":
   version "4.16.1"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.16.1.tgz#d756bd1a85c34d87eaf44c888bad27ba8a4b7cf0"
   integrity sha512-V0clmJow23WeyblmACoxbHBu2JKlE5TiIme6Lem14FnPW9gsttyHtk6wq7njcdIWH1njAaFgR8gW09lgY98gQg==
@@ -761,6 +754,13 @@
   integrity sha512-NE7FBG/F4cMDKdCBqgyd+Sa6JZ5GiMOyA5QwJdeS4Ii/Z9a18WgGbFrHbcr48/7I9HdnkaAYP+S2MmQ27qoqJA==
   dependencies:
     "@types/jest-diff" "*"
+
+"@types/jsonwebtoken@^8.3.2":
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.2.tgz#e3d5245197152346fae7ee87d5541aa5a92d0362"
+  integrity sha512-Mkjljd9DTpkPlrmGfTJvcP4aBU7yO2QmW7wNVhV4/6AEUxYoacqU7FJU/N0yFEHTsIrE4da3rUrjrR5ejicFmA==
+  dependencies:
+    "@types/node" "*"
 
 "@types/mime@*":
   version "2.0.1"
@@ -3102,7 +3102,7 @@ get-caller-file@^1.0.1:
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
   integrity sha512-3t6rVToeoZfYSGd8YoLFR2DJkiQrIiUrGcjvFX2mDw3bn6k2OtwHN0TNCLbBO+w8qTvimhDkv+LSscbJY1vE6w==
 
-get-port@^4.1.0:
+get-port@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/get-port/-/get-port-4.2.0.tgz#e37368b1e863b7629c43c5a323625f95cf24b119"
   integrity sha512-/b3jarXkH8KJoOMQc3uVGHASwGLPq3gSFJ7tgJm2diza+bydJPTGOibin2steecKeOylE8oY2JERlVWkAJO6yw==
@@ -4869,17 +4869,16 @@ mongodb-core@3.1.11:
   optionalDependencies:
     saslprep "^1.0.0"
 
-mongodb-memory-server@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-3.1.2.tgz#5de1742770dc5aa4938b611bc64684ab5b68f9d4"
-  integrity sha512-3I3VwsbKALZsNj4GSvtF68LJZK3zHUfKqPbKU53AmiU745o0muJFJBI8v4AIsqeKPN5k9/5QVnXQWwt3NbfyJA==
+mongodb-memory-server@^4.0.1:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-4.0.2.tgz#3db564226e90a8786a2c17f2314394704537ba1c"
+  integrity sha512-y1bnlzcO2R4/e7Kd0iIBYlyzlFUx140NmfEdCO5pPrP/d9CGQJOQm1sYvPrDhTOC999gmrfUFCYHGEgP9anToA==
   dependencies:
-    "@babel/runtime" "^7.2.0"
     debug "^4.1.1"
     decompress "^4.2.0"
     dedent "^0.7.0"
     find-cache-dir "^2.0.0"
-    get-port "^4.1.0"
+    get-port "^4.2.0"
     getos "^3.1.1"
     https-proxy-agent "^2.2.1"
     lockfile "^1.0.4"
