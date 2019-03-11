@@ -9,8 +9,8 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
   const server = createServer({ db });
   server.start({
     port: 4000,
-    endpoint: '/graphql',
-    playground: '/playground',
-    subscriptions: '/websocket',
+    endpoint: "/graphql",
+    playground: "/playground",
+    subscriptions: "/websocket",
   });
 });
