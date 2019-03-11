@@ -7,5 +7,10 @@ const url = process.env.MONGO_URL || "mongodb://localhost:27017/yunsheDev";
 MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
   const db = client.db();
   const server = createServer({ db });
-  server.start();
+  server.start({
+    port: 4000,
+    endpoint: '/graphql',
+    playground: '/playground',
+    subscriptions: '/websocket',
+  });
 });
