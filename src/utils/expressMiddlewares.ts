@@ -1,7 +1,7 @@
 import session from "cookie-session";
 import express from "express";
-import jwt from "jsonwebtoken";
 import Keygrip from "keygrip";
+import jwt from "jsonwebtoken";
 
 export const keygrip = new Keygrip([process.env.SESSION_COOKIE_SECRET]);
 
@@ -10,12 +10,6 @@ export const sessionMiddleware = session({
   name: "session",
   maxAge: 30 * 24 * 60 * 60 * 1000, // One month
 });
-
-const signCookie = (cookie: string) => {
-  return jwt.sign({ cookie }, process.env.API_TOKEN_SECRET, {
-    expiresIn: "25y",
-  });
-};
 
 interface IDecodedCookie extends Object {
   cookie: string;
