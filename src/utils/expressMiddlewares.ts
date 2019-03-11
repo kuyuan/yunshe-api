@@ -1,7 +1,7 @@
 import session from "cookie-session";
 import express from "express";
-import Keygrip from "keygrip";
 import jwt from "jsonwebtoken";
+import Keygrip from "keygrip";
 
 export const keygrip = new Keygrip([process.env.SESSION_COOKIE_SECRET]);
 

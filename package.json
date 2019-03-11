@@ -28,6 +28,7 @@
     "merge-graphql-schemas": "^1.5.8",
     "mongodb": "^3.1.13",
     "passport": "^0.4.0",
+    "passport-weixin": "^0.2.0",
     "sanitize-filename": "^1.6.1",
     "uuid": "^3.3.2"
   },

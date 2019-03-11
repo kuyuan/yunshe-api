@@ -8,6 +8,7 @@ import {
   sessionMiddleware,
 } from "./expressMiddlewares";
 import createLoader from "./loader";
+import initPassport from "./passport";
 
 export const schema = makeExecutableSchema({
   typeDefs,
@@ -22,6 +23,8 @@ export const createServer = ({ db }) => {
     },
     schema,
   });
+
+  initPassport();
 
   server.express.use(authHeaderMiddleware);
   server.express.use(sessionMiddleware);
