@@ -2,10 +2,23 @@ import { createClient } from "@utils/mongo";
 import { createServer } from "@utils/server";
 import { Server } from "http";
 import { Db, MongoClient } from "mongodb";
+import got from "got";
 
 let db: Db;
 let client: MongoClient;
 let activeServer: Server;
+const api = got.extend({
+  baseUrl: "http://localhost:7878",
+  responseType: "json",
+  headers: {
+    'Content-Type': 'application/graphql'
+  }
+})
+const query = `
+  query {
+    dummy
+  }
+`
 
 beforeAll(async () => {
   client = await createClient();
@@ -23,8 +36,13 @@ afterAll(async () => {
   await client.close();
 });
 
-describe("Middlewares", () => {
-  test("cookie", () => {
-    expect(1 + 2).toBe(3);
+describe("basic", () => {
+  test("dummy", async () => {
+    const response = await api.post("graphql", { body: query })
+    expect(JSON.parse(response.body)).toEqual({
+      data: {
+        dummy: "hello world"
+      }
+    })
   });
 });

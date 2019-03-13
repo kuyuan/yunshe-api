@@ -18,6 +18,7 @@ export const schema = makeExecutableSchema({
 export const createServer = ({ db }) => {
   const server = new GraphQLServer({
     context: ({ request }) => ({
+      req: request,
       db,
       loader: createLoader(db),
       currentUser: request.user || null,
