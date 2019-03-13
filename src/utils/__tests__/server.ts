@@ -1,8 +1,8 @@
 import { createClient } from "@utils/mongo";
 import { createServer } from "@utils/server";
+import got from "got";
 import { Server } from "http";
 import { Db, MongoClient } from "mongodb";
-import got from "got";
 
 let db: Db;
 let client: MongoClient;
@@ -11,14 +11,14 @@ const api = got.extend({
   baseUrl: "http://localhost:7878",
   responseType: "json",
   headers: {
-    'Content-Type': 'application/graphql'
-  }
-})
+    "Content-Type": "application/graphql",
+  },
+});
 const query = `
   query {
     dummy
   }
-`
+`;
 
 beforeAll(async () => {
   client = await createClient();
@@ -38,11 +38,11 @@ afterAll(async () => {
 
 describe("basic", () => {
   test("dummy", async () => {
-    const response = await api.post("graphql", { body: query })
+    const response = await api.post("graphql", { body: query });
     expect(JSON.parse(response.body)).toEqual({
       data: {
-        dummy: "hello world"
-      }
-    })
+        dummy: "hello world",
+      },
+    });
   });
 });
