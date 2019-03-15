@@ -1,5 +1,5 @@
-import { ObjectID } from "mongodb";
 import { IContext, IUser } from "@utils/interfaces";
+import { ObjectID } from "mongodb";
 
 export default {
   Query: {
@@ -9,13 +9,13 @@ export default {
     },
     currentUser: async (_, __, { currentUser, loader }: IContext) => {
       if (!currentUser || !currentUser._id) {
-        return null
+        return null;
       }
-      const user: IUser = await loader.user.load(new ObjectID(currentUser._id))
+      const user: IUser = await loader.user.load(new ObjectID(currentUser._id));
       if (!user || user.bannedAt) {
-        return null
+        return null;
       }
-      return user
-    }
+      return user;
+    },
   },
 };

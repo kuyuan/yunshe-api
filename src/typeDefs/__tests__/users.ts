@@ -11,8 +11,8 @@ let client: MongoClient;
 const rootValue = {};
 const currentUser = {
   _id: "5c7aa60cb372d6355eeedae2", // Bran
-  name: '酷猿创始人',
-}
+  name: "酷猿创始人",
+};
 
 beforeAll(async () => {
   client = await createClient();
@@ -46,8 +46,8 @@ describe("Query user", () => {
           name
         }
       }
-    `
+    `;
     const { data } = await graphql(schema, query, rootValue, context);
     expect(data.currentUser.name).toBe("酷猿创始人");
-  })
+  });
 });
