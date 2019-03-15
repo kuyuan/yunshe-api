@@ -1,6 +1,15 @@
+import { ILoader } from "@utils/loader";
+import { Db } from "mongodb";
+
 /**
  * GENERAL
  */
+export interface IContext {
+  loader?: ILoader;
+  currentUser?: IUser;
+  db?: Db;
+}
+
 export interface IFile {
   stream: any;
   filename: string;
@@ -36,6 +45,7 @@ export interface IUser {
   wechatProviderId?: string;
   isOnline?: boolean;
   lastSeen?: Date;
+  bannedAt?: Date;
   description?: string;
   website?: string;
   modifiedAt?: Date;
