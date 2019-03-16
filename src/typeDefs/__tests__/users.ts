@@ -94,20 +94,20 @@ describe("Mutation User", () => {
     const params = {
       input: {
         name: "TEST USER - updated",
-        description: "Who am I? - updated"
-      }
-    }
+        description: "Who am I? - updated",
+      },
+    };
     context.currentUser = {
       _id: testUserId,
       name: "TEST USER",
-    }
+    };
     const { data } = await graphql(schema, query, rootValue, context, params);
     expect(data).toEqual({
       editUser: {
         _id: testUserId.toString(),
         name: "TEST USER - updated",
-        description: "Who am I? - updated"
+        description: "Who am I? - updated",
       },
     });
-  })
-})
+  });
+});
