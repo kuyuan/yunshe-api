@@ -29,12 +29,27 @@ export const getUsersByIds = async (userIds: ObjectId[], db: Db): Promise<IUser[
 };
 
 export interface IEditUserInput {
-  profileFile: IFile;
-  coverFile: IFile;
-  name: String;
-  description: String;
+  profileFile?: IFile;
+  coverFile?: IFile;
+  name?: String;
+  description?: String;
 }
 
-export const editUser = (userId: ObjectId, input: IEditUserInput) => {
-
+export const editUser = async (userId: ObjectId, input: IEditUserInput, db: Db): Promise<IUser> => {
+  try {
+    const response = await db.collection("users").findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          name: input.name,
+          description: input.description
+        }
+      },
+      { returnOriginal: false }
+    )
+    return response.value
+  } catch (error) {
+    Raven.captureException(error);
+    return null
+  }
 }
