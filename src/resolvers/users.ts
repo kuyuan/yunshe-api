@@ -1,5 +1,6 @@
 import { IContext, IUser } from "@utils/interfaces";
 import { ObjectID } from "mongodb";
+import { editUser } from "@models/user";
 
 export default {
   Query: {
@@ -11,11 +12,19 @@ export default {
       if (!currentUser || !currentUser._id) {
         return null;
       }
-      const user: IUser = await loader.user.load(new ObjectID(currentUser._id));
+      const user: IUser = await loader.user.load(currentUser._id);
       if (!user || user.bannedAt) {
         return null;
       }
       return user;
     },
   },
+  Mutation: {
+    editUser: async (_, { input }, { currentUser }: IContext) => {
+      if (!currentUser || !currentUser._id) {
+        throw new Error('error')
+      }
+      const user = await editUser(currentUser._id, input)
+    }
+  }
 };

@@ -1,4 +1,4 @@
-import { WUQIAN_ID } from "@support/seed/constants";
+import { WUQIAN_ID, BRAN_ID } from "@support/seed/constants";
 import createLoader from "@utils/loader";
 import { createClient } from "@utils/mongo";
 import { schema } from "@utils/server";
@@ -10,7 +10,7 @@ let context;
 let client: MongoClient;
 const rootValue = {};
 const currentUser = {
-  _id: "5c7aa60cb372d6355eeedae2", // Bran
+  _id: BRAN_ID,
   name: "酷猿创始人",
 };
 
@@ -35,7 +35,12 @@ describe("Query user", () => {
       }
     `;
     const { data } = await graphql(schema, query, rootValue, context);
-    expect(data.user.name).toBe("吴倩");
+    expect(data).toEqual({
+      user: {
+        _id: WUQIAN_ID.toString(),
+        name: "吴倩"
+      }
+    })
   });
 
   test("query currentUser", async () => {
@@ -48,6 +53,11 @@ describe("Query user", () => {
       }
     `;
     const { data } = await graphql(schema, query, rootValue, context);
-    expect(data.currentUser.name).toBe("酷猿创始人");
+    expect(data).toEqual({
+      currentUser: {
+        _id: BRAN_ID.toString(),
+        name: "酷猿创始人"
+      }
+    })
   });
 });

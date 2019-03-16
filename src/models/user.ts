@@ -1,4 +1,4 @@
-import { IUser } from "@utils/interfaces";
+import { IUser, IFile } from "@utils/interfaces";
 import { normalizeByIds } from "@utils/normalize";
 import Raven from "@utils/raven";
 import { Db, ObjectId } from "mongodb";
@@ -27,3 +27,14 @@ export const getUsersByIds = async (userIds: ObjectId[], db: Db): Promise<IUser[
     return [];
   }
 };
+
+export interface IEditUserInput {
+  profileFile: IFile;
+  coverFile: IFile;
+  name: String;
+  description: String;
+}
+
+export const editUser = (userId: ObjectId, input: IEditUserInput) => {
+
+}

@@ -9,6 +9,8 @@ describe("Query dummy", () => {
       }
     `;
     const { data } = await graphql(schema, query);
-    expect(data.dummy).toBe("hello world");
+    expect(data).toEqual({
+      dummy: "hello world"
+    })
   });
 });

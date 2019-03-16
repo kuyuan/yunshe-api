@@ -1,5 +1,5 @@
 import { ILoader } from "@utils/loader";
-import { Db } from "mongodb";
+import { Db, ObjectID } from "mongodb";
 
 /**
  * GENERAL
@@ -36,7 +36,7 @@ export type ResourceTypes = "User" | "ThreadMessage" | "DirectMessage" | Connect
  * MODELS
  */
 export interface IUser {
-  _id: string;
+  _id: ObjectID;
   createdAt: Date;
   username: string;
   name: string;
@@ -52,7 +52,7 @@ export interface IUser {
 }
 
 export interface ICommunity {
-  _id: string;
+  _id: ObjectID;
   createdAt: Date;
   name: string;
   description: string;
@@ -66,7 +66,7 @@ export interface ICommunity {
 }
 
 export interface IChannel {
-  _id: string;
+  _id: ObjectID;
   createdAt: Date;
   name: string;
   description: string;
