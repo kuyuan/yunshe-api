@@ -34,8 +34,8 @@ describe("Query channel", () => {
     expect(data).toEqual({
       channel: {
         _id: YUNSHE_GENERAL_CHANNEL_ID.toString(),
-        name: "默认频道"
-      }
-    })
+        name: "默认频道",
+      },
+    });
   });
 });

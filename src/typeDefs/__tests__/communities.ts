@@ -34,8 +34,8 @@ describe("Query community", () => {
     expect(data).toEqual({
       community: {
         _id: YUNSHE_COMMUNITY_ID.toString(),
-        name: "云社官方社区"
-      }
-    })
+        name: "云社官方社区",
+      },
+    });
   });
 });

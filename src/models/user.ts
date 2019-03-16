@@ -1,4 +1,4 @@
-import { IUser, IFile } from "@utils/interfaces";
+import { IFile, IUser } from "@utils/interfaces";
 import { normalizeByIds } from "@utils/normalize";
 import Raven from "@utils/raven";
 import { Db, ObjectId } from "mongodb";
@@ -31,8 +31,8 @@ export const getUsersByIds = async (userIds: ObjectId[], db: Db): Promise<IUser[
 export interface IEditUserInput {
   profileFile?: IFile;
   coverFile?: IFile;
-  name?: String;
-  description?: String;
+  name?: string;
+  description?: string;
 }
 
 export const editUser = async (userId: ObjectId, input: IEditUserInput, db: Db): Promise<IUser> => {
@@ -42,14 +42,14 @@ export const editUser = async (userId: ObjectId, input: IEditUserInput, db: Db):
       {
         $set: {
           name: input.name,
-          description: input.description
-        }
+          description: input.description,
+        },
       },
-      { returnOriginal: false }
-    )
-    return response.value
+      { returnOriginal: false },
+    );
+    return response.value;
   } catch (error) {
     Raven.captureException(error);
-    return null
+    return null;
   }
-}
+};

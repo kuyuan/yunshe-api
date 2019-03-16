@@ -1,4 +1,4 @@
-import { WUQIAN_ID, BRAN_ID } from "@support/seed/constants";
+import { BRAN_ID, WUQIAN_ID } from "@support/seed/constants";
 import createLoader from "@utils/loader";
 import { createClient } from "@utils/mongo";
 import { schema } from "@utils/server";
@@ -38,9 +38,9 @@ describe("Query user", () => {
     expect(data).toEqual({
       user: {
         _id: WUQIAN_ID.toString(),
-        name: "吴倩"
-      }
-    })
+        name: "吴倩",
+      },
+    });
   });
 
   test("query currentUser", async () => {
@@ -56,8 +56,8 @@ describe("Query user", () => {
     expect(data).toEqual({
       currentUser: {
         _id: BRAN_ID.toString(),
-        name: "酷猿创始人"
-      }
-    })
+        name: "酷猿创始人",
+      },
+    });
   });
 });

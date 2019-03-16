@@ -1,6 +1,6 @@
+import { editUser } from "@models/user";
 import { IContext, IUser } from "@utils/interfaces";
 import { ObjectID } from "mongodb";
-import { editUser } from "@models/user";
 
 export default {
   Query: {
@@ -22,10 +22,10 @@ export default {
   Mutation: {
     editUser: async (_, { input }, { currentUser, db }: IContext) => {
       if (!currentUser || !currentUser._id) {
-        throw new Error('error tests')
+        throw new Error("error tests");
       }
-      const user = await editUser(currentUser._id, input, db)
-      return user
-    }
-  }
+      const user = await editUser(currentUser._id, input, db);
+      return user;
+    },
+  },
 };
