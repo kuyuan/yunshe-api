@@ -1,6 +1,15 @@
+import { ILoader } from "@utils/loader";
+import { Db, ObjectID } from "mongodb";
+
 /**
  * GENERAL
  */
+export interface IContext {
+  loader?: ILoader;
+  currentUser?: IUser;
+  db?: Db;
+}
+
 export interface IFile {
   stream: any;
   filename: string;
@@ -27,7 +36,7 @@ export type ResourceTypes = "User" | "ThreadMessage" | "DirectMessage" | Connect
  * MODELS
  */
 export interface IUser {
-  _id: string;
+  _id: ObjectID;
   createdAt: Date;
   username: string;
   name: string;
@@ -36,13 +45,14 @@ export interface IUser {
   wechatProviderId?: string;
   isOnline?: boolean;
   lastSeen?: Date;
+  bannedAt?: Date;
   description?: string;
   website?: string;
   modifiedAt?: Date;
 }
 
 export interface ICommunity {
-  _id: string;
+  _id: ObjectID;
   createdAt: Date;
   name: string;
   description: string;
@@ -56,7 +66,7 @@ export interface ICommunity {
 }
 
 export interface IChannel {
-  _id: string;
+  _id: ObjectID;
   createdAt: Date;
   name: string;
   description: string;

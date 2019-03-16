@@ -31,6 +31,11 @@ describe("Query community", () => {
       }
     `;
     const { data } = await graphql(schema, query, rootValue, context);
-    expect(data.community.name).toBe("云社官方社区");
+    expect(data).toEqual({
+      community: {
+        _id: YUNSHE_COMMUNITY_ID.toString(),
+        name: "云社官方社区",
+      },
+    });
   });
 });

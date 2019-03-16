@@ -31,6 +31,11 @@ describe("Query channel", () => {
       }
     `;
     const { data } = await graphql(schema, query, rootValue, context);
-    expect(data.channel.name).toBe("默认频道");
+    expect(data).toEqual({
+      channel: {
+        _id: YUNSHE_GENERAL_CHANNEL_ID.toString(),
+        name: "默认频道",
+      },
+    });
   });
 });
