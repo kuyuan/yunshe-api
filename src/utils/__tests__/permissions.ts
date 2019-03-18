@@ -41,18 +41,18 @@ describe("isValidUser", () => {
           description
         }
       }
-    `
+    `;
     const variables = {
       input: {
         name: "TEST USER - updated",
-        description: "Sample description - updated"
-      }
-    }
+        description: "Sample description - updated",
+      },
+    };
     const response = await api.post("graphql", { body: JSON.stringify({ query, variables }) });
-    const body = JSON.parse(response.body)
+    const body = JSON.parse(response.body);
     expect(body.data).toEqual({
-      editUser: null
-    })
-    expect(body.errors[0].message).toBe("Not Authorised!")
+      editUser: null,
+    });
+    expect(body.errors[0].message).toBe("Not Authorised!");
   });
 });
