@@ -46,6 +46,7 @@ export interface IUser {
   isOnline?: boolean;
   lastSeen?: Date;
   bannedAt?: Date;
+  deletedAt?: Date;
   description?: string;
   website?: string;
   modifiedAt?: Date;

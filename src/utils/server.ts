@@ -9,6 +9,7 @@ import {
 } from "./expressMiddlewares";
 import createLoader from "./loader";
 import initPassport from "./passport";
+import permissions from "./permissions";
 
 export const schema = makeExecutableSchema({
   typeDefs,
@@ -24,6 +25,7 @@ export const createServer = ({ db }) => {
       currentUser: request.user || null,
     }),
     schema,
+    middlewares: [permissions],
   });
 
   initPassport();
