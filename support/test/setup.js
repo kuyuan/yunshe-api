@@ -1,3 +1,5 @@
+const path = require("path");
+require('dotenv').config({ path: path.resolve(".env.test") })
 const seed = require('../seed').seed;
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const { port } = require("./config");
