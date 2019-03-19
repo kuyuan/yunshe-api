@@ -1,19 +1,27 @@
+import { BRAN_ID } from "@support/seed/constants";
 import { createClient } from "@utils/mongo";
 import { createServer } from "@utils/server";
 import got from "got";
-import { Server } from "http";
 import { Db, MongoClient } from "mongodb";
 
 let db: Db;
 let client: MongoClient;
-let activeServer: Server;
+let activeServer;
 const api = got.extend({
   baseUrl: "http://localhost:7878",
   responseType: "json",
   headers: {
     "Content-Type": "application/graphql",
+    "Cookie": `session=eyJwYXNzcG9ydCI6eyJ1c2VyIjoie1w\
+iX2lkXCI6XCI1YzdhYTYwY2IzNzJkNjM1NWVlZWRhZTJcIixcIm5hb\
+WVcIjpcIumFt+eMv+WIm+Wni+S6ulwifSJ9fQ==; \
+session.sig=EBd4B_3uPCUKomg6NLnWg1Qwk18`,
   },
 });
+const currentUser = {
+  _id: BRAN_ID.toString(),
+  name: "酷猿创始人",
+};
 const query = `
   query {
     currentUser {
@@ -28,14 +36,9 @@ beforeAll(async () => {
   db = client.db();
   const server = createServer({ db });
   server.express.use((req, res, next) => {
-    // @ts-ignore
-    req.session.user = {
-      _id: "5c8fb05679cc01608b04003d",
-      name: "I AM ROBOT",
-    };
+    console.log(req.headers);
     next();
   });
-  // @ts-ignore
   activeServer = await server.start({
     port: 7878,
     endpoint: "/graphql",
@@ -49,12 +52,13 @@ afterAll(async () => {
 
 describe("basic", () => {
   test("dummy", async () => {
-    console.log(process.env.SESSION_COOKIE_SECRET);
     const response = await api.post("graphql", { body: query });
-    console.log(response.headers);
     expect(JSON.parse(response.body)).toEqual({
       data: {
-        currentUser: null,
+        currentUser: {
+          _id: BRAN_ID.toString(),
+          name: "酷猿创始人",
+        },
       },
     });
   });
