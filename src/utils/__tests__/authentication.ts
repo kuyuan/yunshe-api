@@ -31,10 +31,10 @@ beforeAll(async () => {
     // @ts-ignore
     req.session.user = {
       _id: "5c8fb05679cc01608b04003d",
-      name: "I AM ROBOT"
-    }
-    next()
-  })
+      name: "I AM ROBOT",
+    };
+    next();
+  });
   // @ts-ignore
   activeServer = await server.start({
     port: 7878,
@@ -49,9 +49,9 @@ afterAll(async () => {
 
 describe("basic", () => {
   test("dummy", async () => {
-    console.log(process.env.SESSION_COOKIE_SECRET)
+    console.log(process.env.SESSION_COOKIE_SECRET);
     const response = await api.post("graphql", { body: query });
-    console.log(response.headers)
+    console.log(response.headers);
     expect(JSON.parse(response.body)).toEqual({
       data: {
         currentUser: null,
