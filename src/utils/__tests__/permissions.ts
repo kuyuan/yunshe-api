@@ -1,27 +1,21 @@
 import { createClient } from "@utils/mongo";
 import { createServer } from "@utils/server";
+import getPort from "get-port";
 import got from "got";
-import { Server } from "http";
 import { Db, MongoClient } from "mongodb";
 
 let db: Db;
 let client: MongoClient;
-let activeServer: Server;
-const api = got.extend({
-  baseUrl: "http://localhost:7879",
-  responseType: "json",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+let activeServer;
+let port: number;
 
 beforeAll(async () => {
   client = await createClient();
   db = client.db();
   const server = createServer({ db });
-  // @ts-ignore
+  port = await getPort();
   activeServer = await server.start({
-    port: 7879,
+    port,
     endpoint: "/graphql",
   });
 });
@@ -33,6 +27,13 @@ afterAll(async () => {
 
 describe("isValidUser", () => {
   test("editUser", async () => {
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const query = `
       mutation($input: EditUserInput!) {
         editUser(input: $input) {

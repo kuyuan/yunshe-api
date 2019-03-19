@@ -1,32 +1,21 @@
 import { createClient } from "@utils/mongo";
 import { createServer } from "@utils/server";
+import getPort from "get-port";
 import got from "got";
-import { Server } from "http";
 import { Db, MongoClient } from "mongodb";
 
 let db: Db;
 let client: MongoClient;
-let activeServer: Server;
-const api = got.extend({
-  baseUrl: "http://localhost:7878",
-  responseType: "json",
-  headers: {
-    "Content-Type": "application/graphql",
-  },
-});
-const query = `
-  query {
-    dummy
-  }
-`;
+let activeServer;
+let port: number;
 
 beforeAll(async () => {
   client = await createClient();
   db = client.db();
   const server = createServer({ db });
-  // @ts-ignore
+  port = await getPort();
   activeServer = await server.start({
-    port: 7878,
+    port,
     endpoint: "/graphql",
   });
 });
@@ -37,7 +26,19 @@ afterAll(async () => {
 });
 
 describe("basic", () => {
+  const query = `
+    query {
+      dummy
+    }
+  `;
   test("dummy", async () => {
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/graphql",
+      },
+    });
     const response = await api.post("graphql", { body: query });
     expect(JSON.parse(response.body)).toEqual({
       data: {
