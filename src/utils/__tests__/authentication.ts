@@ -18,10 +18,6 @@ WVcIjpcIumFt+eMv+WIm+Wni+S6ulwifSJ9fQ==; \
 session.sig=EBd4B_3uPCUKomg6NLnWg1Qwk18`,
   },
 });
-const currentUser = {
-  _id: BRAN_ID.toString(),
-  name: "酷猿创始人",
-};
 const query = `
   query {
     currentUser {
@@ -35,10 +31,6 @@ beforeAll(async () => {
   client = await createClient();
   db = client.db();
   const server = createServer({ db });
-  server.express.use((req, res, next) => {
-    console.log(req.headers);
-    next();
-  });
   activeServer = await server.start({
     port: 7878,
     endpoint: "/graphql",
