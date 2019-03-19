@@ -1,5 +1,6 @@
 import { makeExecutableSchema } from "graphql-tools";
 import { GraphQLServer } from "graphql-yoga";
+import { ObjectID } from "mongodb";
 import passport from "passport";
 import resolvers from "../resolvers";
 import typeDefs from "../typeDefs";
@@ -18,12 +19,17 @@ export const schema = makeExecutableSchema({
 
 export const createServer = ({ db }) => {
   const server = new GraphQLServer({
-    context: ({ request }) => ({
-      req: request,
-      db,
-      loader: createLoader(db),
-      currentUser: request.user || null,
-    }),
+    context: ({ request }) => {
+      if (request.user && request.user._id) {
+        request.user._id = new ObjectID(request.user._id);
+      }
+      return {
+        req: request,
+        db,
+        loader: createLoader(db),
+        currentUser: request.user || null,
+      };
+    },
     schema,
     middlewares: [permissions],
   });
