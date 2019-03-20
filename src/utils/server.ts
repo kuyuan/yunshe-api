@@ -1,5 +1,6 @@
+import { formatError } from "apollo-errors";
 import { makeExecutableSchema } from "graphql-tools";
-import { GraphQLServer } from "graphql-yoga";
+import { GraphQLServer, Options } from "graphql-yoga";
 import { ObjectID } from "mongodb";
 import passport from "passport";
 import resolvers from "../resolvers";
@@ -42,4 +43,12 @@ export const createServer = ({ db }) => {
   server.express.use(passport.session());
 
   return server;
+};
+
+export const serverOptions: Options = {
+  port: 4000,
+  endpoint: "/graphql",
+  playground: "/playground",
+  subscriptions: "/websocket",
+  formatError,
 };

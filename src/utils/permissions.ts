@@ -1,13 +1,14 @@
 import { rule, shield } from "graphql-shield";
+import { InvalidUserError, NotAuthorizedError } from "./errors";
 import { IContext } from "./interfaces";
 
 export const isValidUser = rule()(async (parent, args, { currentUser, loader }: IContext, info) => {
   if (!currentUser || !currentUser._id) {
-    return false;
+    return new NotAuthorizedError();
   }
   const user = await loader.user.load(currentUser._id);
   if (!user || user.bannedAt || user.deletedAt) {
-    return false;
+    return new InvalidUserError();
   }
   return true;
 });
