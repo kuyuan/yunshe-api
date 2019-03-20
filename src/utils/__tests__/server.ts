@@ -1,5 +1,5 @@
 import { createClient } from "@utils/mongo";
-import { createServer } from "@utils/server";
+import { createServer, serverOptions } from "@utils/server";
 import getPort from "get-port";
 import got from "got";
 import { Db, MongoClient } from "mongodb";
@@ -15,8 +15,8 @@ beforeAll(async () => {
   const server = createServer({ db });
   port = await getPort();
   activeServer = await server.start({
+    ...serverOptions,
     port,
-    endpoint: "/graphql",
   });
 });
 

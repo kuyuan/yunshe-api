@@ -1,6 +1,6 @@
 import { BRAN_ID } from "@support/seed/constants";
 import { createClient } from "@utils/mongo";
-import { createServer } from "@utils/server";
+import { createServer, serverOptions } from "@utils/server";
 import getPort from "get-port";
 import got from "got";
 import jwt from "jsonwebtoken";
@@ -29,8 +29,8 @@ beforeAll(async () => {
   const server = createServer({ db });
   port = await getPort();
   activeServer = await server.start({
+    ...serverOptions,
     port,
-    endpoint: "/graphql",
   });
 });
 
