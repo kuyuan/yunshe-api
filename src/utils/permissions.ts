@@ -1,6 +1,6 @@
 import { rule, shield } from "graphql-shield";
+import { InvalidUserError, NotAuthorizedError } from "./errors";
 import { IContext } from "./interfaces";
-import { NotAuthorizedError, InvalidUserError } from "./errors";
 
 export const isValidUser = rule()(async (parent, args, { currentUser, loader }: IContext, info) => {
   if (!currentUser || !currentUser._id) {

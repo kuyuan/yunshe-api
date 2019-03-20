@@ -1,8 +1,8 @@
+import { formatError } from "apollo-errors";
 import { makeExecutableSchema } from "graphql-tools";
 import { GraphQLServer, Options } from "graphql-yoga";
 import { ObjectID } from "mongodb";
 import passport from "passport";
-import { formatError } from 'apollo-errors';
 import resolvers from "../resolvers";
 import typeDefs from "../typeDefs";
 import {
@@ -50,5 +50,5 @@ export const serverOptions: Options = {
   endpoint: "/graphql",
   playground: "/playground",
   subscriptions: "/websocket",
-  formatError
-}
+  formatError,
+};
