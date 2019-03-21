@@ -54,7 +54,6 @@ describe("isValidUser", () => {
     expect(body.data).toEqual({
       editUser: null,
     });
-    console.log(body);
     expect(body.errors[0].name).toBe("NotAuthorizedError");
   });
 });
