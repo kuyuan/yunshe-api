@@ -2,7 +2,15 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateUser {
+export const typeDefs = /* GraphQL */ `type AggregateChannel {
+  count: Int!
+}
+
+type AggregateCommunity {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -10,102 +18,112 @@ type BatchPayload {
   count: Long!
 }
 
-scalar Long
-
-type Mutation {
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
-}
-
-enum MutationType {
-  CREATED
-  UPDATED
-  DELETED
-}
-
-interface Node {
-  id: ID!
-}
-
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-}
-
-type Query {
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  node(id: ID!): Node
-}
-
-type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User {
+type Channel {
   id: ID!
   name: String!
+  description: String
+  isPrivate: Boolean!
+  isDefault: Boolean!
+  memberCount: Int
+  createdAt: DateTime!
+  archivedAt: DateTime
+  deletedAt: DateTime
 }
 
-type UserConnection {
+type ChannelConnection {
   pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
+  edges: [ChannelEdge]!
+  aggregate: AggregateChannel!
 }
 
-input UserCreateInput {
+input ChannelCreateInput {
   name: String!
+  description: String
+  isPrivate: Boolean!
+  isDefault: Boolean!
+  memberCount: Int
+  createdAt: DateTime!
+  archivedAt: DateTime
+  deletedAt: DateTime
 }
 
-type UserEdge {
-  node: User!
+type ChannelEdge {
+  node: Channel!
   cursor: String!
 }
 
-enum UserOrderByInput {
+enum ChannelOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
+  description_ASC
+  description_DESC
+  isPrivate_ASC
+  isPrivate_DESC
+  isDefault_ASC
+  isDefault_DESC
+  memberCount_ASC
+  memberCount_DESC
+  createdAt_ASC
+  createdAt_DESC
+  archivedAt_ASC
+  archivedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
 }
 
-type UserPreviousValues {
+type ChannelPreviousValues {
   id: ID!
   name: String!
+  description: String
+  isPrivate: Boolean!
+  isDefault: Boolean!
+  memberCount: Int
+  createdAt: DateTime!
+  archivedAt: DateTime
+  deletedAt: DateTime
 }
 
-type UserSubscriptionPayload {
+type ChannelSubscriptionPayload {
   mutation: MutationType!
-  node: User
+  node: Channel
   updatedFields: [String!]
-  previousValues: UserPreviousValues
+  previousValues: ChannelPreviousValues
 }
 
-input UserSubscriptionWhereInput {
+input ChannelSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
+  node: ChannelWhereInput
+  AND: [ChannelSubscriptionWhereInput!]
 }
 
-input UserUpdateInput {
+input ChannelUpdateInput {
   name: String
+  description: String
+  isPrivate: Boolean
+  isDefault: Boolean
+  memberCount: Int
+  createdAt: DateTime
+  archivedAt: DateTime
+  deletedAt: DateTime
 }
 
-input UserUpdateManyMutationInput {
+input ChannelUpdateManyMutationInput {
   name: String
+  description: String
+  isPrivate: Boolean
+  isDefault: Boolean
+  memberCount: Int
+  createdAt: DateTime
+  archivedAt: DateTime
+  deletedAt: DateTime
 }
 
-input UserWhereInput {
+input ChannelWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -134,6 +152,668 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  isPrivate: Boolean
+  isPrivate_not: Boolean
+  isDefault: Boolean
+  isDefault_not: Boolean
+  memberCount: Int
+  memberCount_not: Int
+  memberCount_in: [Int!]
+  memberCount_not_in: [Int!]
+  memberCount_lt: Int
+  memberCount_lte: Int
+  memberCount_gt: Int
+  memberCount_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  archivedAt: DateTime
+  archivedAt_not: DateTime
+  archivedAt_in: [DateTime!]
+  archivedAt_not_in: [DateTime!]
+  archivedAt_lt: DateTime
+  archivedAt_lte: DateTime
+  archivedAt_gt: DateTime
+  archivedAt_gte: DateTime
+  deletedAt: DateTime
+  deletedAt_not: DateTime
+  deletedAt_in: [DateTime!]
+  deletedAt_not_in: [DateTime!]
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  AND: [ChannelWhereInput!]
+}
+
+input ChannelWhereUniqueInput {
+  id: ID
+}
+
+type Community {
+  id: ID!
+  name: String!
+  description: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  isPrivate: Boolean!
+  createdAt: String!
+  website: String
+  tags: [String!]!
+  deletedAt: DateTime
+  memberCount: Int
+}
+
+type CommunityConnection {
+  pageInfo: PageInfo!
+  edges: [CommunityEdge]!
+  aggregate: AggregateCommunity!
+}
+
+input CommunityCreateInput {
+  name: String!
+  description: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  isPrivate: Boolean!
+  createdAt: String!
+  website: String
+  tags: CommunityCreatetagsInput
+  deletedAt: DateTime
+  memberCount: Int
+}
+
+input CommunityCreatetagsInput {
+  set: [String!]
+}
+
+type CommunityEdge {
+  node: Community!
+  cursor: String!
+}
+
+enum CommunityOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  coverPhoto_ASC
+  coverPhoto_DESC
+  profilePhoto_ASC
+  profilePhoto_DESC
+  isPrivate_ASC
+  isPrivate_DESC
+  createdAt_ASC
+  createdAt_DESC
+  website_ASC
+  website_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  memberCount_ASC
+  memberCount_DESC
+}
+
+type CommunityPreviousValues {
+  id: ID!
+  name: String!
+  description: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  isPrivate: Boolean!
+  createdAt: String!
+  website: String
+  tags: [String!]!
+  deletedAt: DateTime
+  memberCount: Int
+}
+
+type CommunitySubscriptionPayload {
+  mutation: MutationType!
+  node: Community
+  updatedFields: [String!]
+  previousValues: CommunityPreviousValues
+}
+
+input CommunitySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommunityWhereInput
+  AND: [CommunitySubscriptionWhereInput!]
+}
+
+input CommunityUpdateInput {
+  name: String
+  description: String
+  coverPhoto: String
+  profilePhoto: String
+  isPrivate: Boolean
+  createdAt: String
+  website: String
+  tags: CommunityUpdatetagsInput
+  deletedAt: DateTime
+  memberCount: Int
+}
+
+input CommunityUpdateManyMutationInput {
+  name: String
+  description: String
+  coverPhoto: String
+  profilePhoto: String
+  isPrivate: Boolean
+  createdAt: String
+  website: String
+  tags: CommunityUpdatetagsInput
+  deletedAt: DateTime
+  memberCount: Int
+}
+
+input CommunityUpdatetagsInput {
+  set: [String!]
+}
+
+input CommunityWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  coverPhoto: String
+  coverPhoto_not: String
+  coverPhoto_in: [String!]
+  coverPhoto_not_in: [String!]
+  coverPhoto_lt: String
+  coverPhoto_lte: String
+  coverPhoto_gt: String
+  coverPhoto_gte: String
+  coverPhoto_contains: String
+  coverPhoto_not_contains: String
+  coverPhoto_starts_with: String
+  coverPhoto_not_starts_with: String
+  coverPhoto_ends_with: String
+  coverPhoto_not_ends_with: String
+  profilePhoto: String
+  profilePhoto_not: String
+  profilePhoto_in: [String!]
+  profilePhoto_not_in: [String!]
+  profilePhoto_lt: String
+  profilePhoto_lte: String
+  profilePhoto_gt: String
+  profilePhoto_gte: String
+  profilePhoto_contains: String
+  profilePhoto_not_contains: String
+  profilePhoto_starts_with: String
+  profilePhoto_not_starts_with: String
+  profilePhoto_ends_with: String
+  profilePhoto_not_ends_with: String
+  isPrivate: Boolean
+  isPrivate_not: Boolean
+  createdAt: String
+  createdAt_not: String
+  createdAt_in: [String!]
+  createdAt_not_in: [String!]
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  createdAt_contains: String
+  createdAt_not_contains: String
+  createdAt_starts_with: String
+  createdAt_not_starts_with: String
+  createdAt_ends_with: String
+  createdAt_not_ends_with: String
+  website: String
+  website_not: String
+  website_in: [String!]
+  website_not_in: [String!]
+  website_lt: String
+  website_lte: String
+  website_gt: String
+  website_gte: String
+  website_contains: String
+  website_not_contains: String
+  website_starts_with: String
+  website_not_starts_with: String
+  website_ends_with: String
+  website_not_ends_with: String
+  deletedAt: DateTime
+  deletedAt_not: DateTime
+  deletedAt_in: [DateTime!]
+  deletedAt_not_in: [DateTime!]
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  memberCount: Int
+  memberCount_not: Int
+  memberCount_in: [Int!]
+  memberCount_not_in: [Int!]
+  memberCount_lt: Int
+  memberCount_lte: Int
+  memberCount_gt: Int
+  memberCount_gte: Int
+  AND: [CommunityWhereInput!]
+}
+
+input CommunityWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
+scalar Long
+
+type Mutation {
+  createChannel(data: ChannelCreateInput!): Channel!
+  updateChannel(data: ChannelUpdateInput!, where: ChannelWhereUniqueInput!): Channel
+  updateManyChannels(data: ChannelUpdateManyMutationInput!, where: ChannelWhereInput): BatchPayload!
+  upsertChannel(where: ChannelWhereUniqueInput!, create: ChannelCreateInput!, update: ChannelUpdateInput!): Channel!
+  deleteChannel(where: ChannelWhereUniqueInput!): Channel
+  deleteManyChannels(where: ChannelWhereInput): BatchPayload!
+  createCommunity(data: CommunityCreateInput!): Community!
+  updateCommunity(data: CommunityUpdateInput!, where: CommunityWhereUniqueInput!): Community
+  updateManyCommunities(data: CommunityUpdateManyMutationInput!, where: CommunityWhereInput): BatchPayload!
+  upsertCommunity(where: CommunityWhereUniqueInput!, create: CommunityCreateInput!, update: CommunityUpdateInput!): Community!
+  deleteCommunity(where: CommunityWhereUniqueInput!): Community
+  deleteManyCommunities(where: CommunityWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  channel(where: ChannelWhereUniqueInput!): Channel
+  channels(where: ChannelWhereInput, orderBy: ChannelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Channel]!
+  channelsConnection(where: ChannelWhereInput, orderBy: ChannelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChannelConnection!
+  community(where: CommunityWhereUniqueInput!): Community
+  communities(where: CommunityWhereInput, orderBy: CommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Community]!
+  communitiesConnection(where: CommunityWhereInput, orderBy: CommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommunityConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  channel(where: ChannelSubscriptionWhereInput): ChannelSubscriptionPayload
+  community(where: CommunitySubscriptionWhereInput): CommunitySubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type User {
+  id: ID!
+  username: String!
+  name: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  createdAt: DateTime!
+  description: String
+  website: String
+  wechatProviderId: String
+  isOnline: Boolean
+  lastSeen: DateTime
+  bannedAt: DateTime
+  deletedAt: DateTime
+  modifiedAt: DateTime
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  username: String!
+  name: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  createdAt: DateTime!
+  description: String
+  website: String
+  wechatProviderId: String
+  isOnline: Boolean
+  lastSeen: DateTime
+  bannedAt: DateTime
+  deletedAt: DateTime
+  modifiedAt: DateTime
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  username_ASC
+  username_DESC
+  name_ASC
+  name_DESC
+  coverPhoto_ASC
+  coverPhoto_DESC
+  profilePhoto_ASC
+  profilePhoto_DESC
+  createdAt_ASC
+  createdAt_DESC
+  description_ASC
+  description_DESC
+  website_ASC
+  website_DESC
+  wechatProviderId_ASC
+  wechatProviderId_DESC
+  isOnline_ASC
+  isOnline_DESC
+  lastSeen_ASC
+  lastSeen_DESC
+  bannedAt_ASC
+  bannedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  modifiedAt_ASC
+  modifiedAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  username: String!
+  name: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  createdAt: DateTime!
+  description: String
+  website: String
+  wechatProviderId: String
+  isOnline: Boolean
+  lastSeen: DateTime
+  bannedAt: DateTime
+  deletedAt: DateTime
+  modifiedAt: DateTime
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateInput {
+  username: String
+  name: String
+  coverPhoto: String
+  profilePhoto: String
+  createdAt: DateTime
+  description: String
+  website: String
+  wechatProviderId: String
+  isOnline: Boolean
+  lastSeen: DateTime
+  bannedAt: DateTime
+  deletedAt: DateTime
+  modifiedAt: DateTime
+}
+
+input UserUpdateManyMutationInput {
+  username: String
+  name: String
+  coverPhoto: String
+  profilePhoto: String
+  createdAt: DateTime
+  description: String
+  website: String
+  wechatProviderId: String
+  isOnline: Boolean
+  lastSeen: DateTime
+  bannedAt: DateTime
+  deletedAt: DateTime
+  modifiedAt: DateTime
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  coverPhoto: String
+  coverPhoto_not: String
+  coverPhoto_in: [String!]
+  coverPhoto_not_in: [String!]
+  coverPhoto_lt: String
+  coverPhoto_lte: String
+  coverPhoto_gt: String
+  coverPhoto_gte: String
+  coverPhoto_contains: String
+  coverPhoto_not_contains: String
+  coverPhoto_starts_with: String
+  coverPhoto_not_starts_with: String
+  coverPhoto_ends_with: String
+  coverPhoto_not_ends_with: String
+  profilePhoto: String
+  profilePhoto_not: String
+  profilePhoto_in: [String!]
+  profilePhoto_not_in: [String!]
+  profilePhoto_lt: String
+  profilePhoto_lte: String
+  profilePhoto_gt: String
+  profilePhoto_gte: String
+  profilePhoto_contains: String
+  profilePhoto_not_contains: String
+  profilePhoto_starts_with: String
+  profilePhoto_not_starts_with: String
+  profilePhoto_ends_with: String
+  profilePhoto_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  website: String
+  website_not: String
+  website_in: [String!]
+  website_not_in: [String!]
+  website_lt: String
+  website_lte: String
+  website_gt: String
+  website_gte: String
+  website_contains: String
+  website_not_contains: String
+  website_starts_with: String
+  website_not_starts_with: String
+  website_ends_with: String
+  website_not_ends_with: String
+  wechatProviderId: String
+  wechatProviderId_not: String
+  wechatProviderId_in: [String!]
+  wechatProviderId_not_in: [String!]
+  wechatProviderId_lt: String
+  wechatProviderId_lte: String
+  wechatProviderId_gt: String
+  wechatProviderId_gte: String
+  wechatProviderId_contains: String
+  wechatProviderId_not_contains: String
+  wechatProviderId_starts_with: String
+  wechatProviderId_not_starts_with: String
+  wechatProviderId_ends_with: String
+  wechatProviderId_not_ends_with: String
+  isOnline: Boolean
+  isOnline_not: Boolean
+  lastSeen: DateTime
+  lastSeen_not: DateTime
+  lastSeen_in: [DateTime!]
+  lastSeen_not_in: [DateTime!]
+  lastSeen_lt: DateTime
+  lastSeen_lte: DateTime
+  lastSeen_gt: DateTime
+  lastSeen_gte: DateTime
+  bannedAt: DateTime
+  bannedAt_not: DateTime
+  bannedAt_in: [DateTime!]
+  bannedAt_not_in: [DateTime!]
+  bannedAt_lt: DateTime
+  bannedAt_lte: DateTime
+  bannedAt_gt: DateTime
+  bannedAt_gte: DateTime
+  deletedAt: DateTime
+  deletedAt_not: DateTime
+  deletedAt_in: [DateTime!]
+  deletedAt_not_in: [DateTime!]
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  modifiedAt: DateTime
+  modifiedAt_not: DateTime
+  modifiedAt_in: [DateTime!]
+  modifiedAt_not_in: [DateTime!]
+  modifiedAt_lt: DateTime
+  modifiedAt_lte: DateTime
+  modifiedAt_gt: DateTime
+  modifiedAt_gte: DateTime
   AND: [UserWhereInput!]
 }
 
