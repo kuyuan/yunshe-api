@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "lib": [
-      "es5",
-      "es2015.promise"
+      "es2016",
+      "esnext.asynciterable"
     ],
     "esModuleInterop": true,
     "baseUrl": ".",
@@ -12,7 +12,8 @@
       "@utils/*": [ "src/utils/*" ],
       "@resolvers/*": [ "src/resolvers/*" ],
       "@loaders/*": ["src/loaders/*"],
-      "@support/*": ["support/*"]
+      "@support/*": ["support/*"],
+      "@prisma/*": ["generated/prisma-client/*"]
     }
   }
 }

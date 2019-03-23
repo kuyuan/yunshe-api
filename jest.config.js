@@ -22,6 +22,7 @@ module.exports = {
     "^@utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@resolvers/(.*)$": "<rootDir>/src/resolvers/$1",
     "^@loaders/(.*)$": "<rootDir>/src/loaders/$1",
-    "^@support/(.*)$": "<rootDir>/support/$1"
+    "^@support/(.*)$": "<rootDir>/support/$1",
+    "^@prisma/(.*)$": "<rootDir>/generated/prisma-client/$1",
   },
 };
