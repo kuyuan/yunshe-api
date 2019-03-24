@@ -1,11 +1,10 @@
-import { ILoader } from "@utils/loader";
-import { ObjectID } from "mongodb";
+import { IContext } from "@utils/interfaces";
 
 export default {
   Query: {
-    channel: async (_, { id }, { loader }: { loader: ILoader }) => {
-      const channel = await loader.channel.load(new ObjectID(id));
-      return channel;
+    channel: async (_, { id }, { prisma }: IContext) => {
+      const channel = await prisma.channel({ id })
+      return channel
     },
   },
 };

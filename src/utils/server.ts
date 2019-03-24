@@ -12,6 +12,7 @@ import {
 import createLoader from "./loader";
 import initPassport from "./passport";
 import permissions from "./permissions";
+import { Prisma } from "@prisma/index";
 
 export const schema = makeExecutableSchema({
   typeDefs,
@@ -24,9 +25,11 @@ export const createServer = ({ db }) => {
       if (request.user && request.user._id) {
         request.user._id = new ObjectID(request.user._id);
       }
+      const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT })
       return {
         req: request,
         db,
+        prisma,
         loader: createLoader(db),
         currentUser: request.user || null,
       };

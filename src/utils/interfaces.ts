@@ -1,5 +1,6 @@
 import { ILoader } from "@utils/loader";
 import { Db, ObjectID } from "mongodb";
+import { Prisma } from "@prisma/index";
 
 /**
  * GENERAL
@@ -8,6 +9,7 @@ export interface IContext {
   loader?: ILoader;
   currentUser?: IUser;
   db?: Db;
+  prisma?: Prisma;
 }
 
 export interface IFile {

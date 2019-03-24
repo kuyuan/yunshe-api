@@ -13,4 +13,18 @@ services:
         databases:
           default:
             connector: mongo
-            uri: 'mongodb://host.docker.internal:27017/yunsheDev'
+            uri: 'mongodb://localhost:27017/yunsheDev'
+  prisma_test:
+    image: prismagraphql/prisma:1.29
+    restart: always
+    ports:
+    - "4477:4477"
+    environment:
+      PRISMA_CONFIG: |
+        port: 4477
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: mongo
+            uri: 'mongodb://localhost:27017/yunsheTest'
