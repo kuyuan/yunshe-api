@@ -19,6 +19,10 @@ beforeAll(async () => {
   })
 });
 
+afterAll(async () => {
+  await prisma.deleteManyChannels()
+})
+
 describe("Query channel", () => {
   test("get channel info", async () => {
     const query = `
