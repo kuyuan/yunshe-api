@@ -1,9 +1,9 @@
-const users = require('./users');
-const communities = require('./communities');
-const channels = require('./channels');
-const createClient = require('../test/mongo');
+import createClient from "../test/mongo";
+import users from "./users";
+import communities from "./communities";
+import channels from "./channels";
 
-const seed = async () => {
+export const seed = async () => {
   const client = await createClient();
   const db = client.db();
   try {
@@ -19,7 +19,7 @@ const seed = async () => {
   }
 }
 
-const clear = async () => {
+export const clear = async () => {
   const client = await createClient();
   const db = client.db();
 
@@ -32,9 +32,4 @@ const clear = async () => {
   finally {
     await client.close()
   }
-}
-
-module.exports = {
-  seed,
-  clear
 }
