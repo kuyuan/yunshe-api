@@ -26,7 +26,7 @@ export const createServer = ({ db }) => {
         request.user._id = new ObjectID(request.user._id);
       }
       const prisma = new Prisma({
-        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466",
+        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev",
         secret: process.env.PRISMA_SECRET || ""
       })
       return {

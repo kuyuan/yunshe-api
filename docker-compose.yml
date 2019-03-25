@@ -11,16 +11,13 @@ services:
         databases:
           default:
             connector: mongo
-            uri: 'mongodb://localhost:27017/yunsheDev'
-  prisma_test:
-    image: prismagraphql/prisma:1.29
+            uri: mongodb://mongo:27017
+  mongo:
+    image: mongo:4.0
     restart: always
     ports:
-    - "4477:4477"
-    environment:
-      PRISMA_CONFIG: |
-        port: 4477
-        databases:
-          default:
-            connector: mongo
-            uri: 'mongodb://localhost:27017/yunsheTest'
+      - "27017:27017"
+    volumes:
+      - mongo:/var/lib/mongo
+volumes:
+  mongo:

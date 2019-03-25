@@ -1,6 +1,7 @@
-endpoint: http://localhost:4466
+endpoint: ${env:PRISMA_ENDPOINT}
 datamodel: datamodel.prisma
 databaseType: document
+secret: my-secret
 
 generate:
   - generator: typescript-client

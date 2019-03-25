@@ -9,7 +9,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "fix": "yarn lint --fix",
     "test": "jest",
-    "generate": "prisma deploy"
+    "deploy": "prisma deploy --env-file .env && prisma deploy --env-file .env.test"
   },
   "author": "Branliang",
   "license": "MIT",
