@@ -14,10 +14,11 @@ cache:
 
 install:
   - yarn
+  - yarn global add prisma
 
 before_script:
   - docker-compose up -d
-  - ./node_modules/.bin/prisma deploy --env-file .env.test
+  - yarn deploy:test
 
 script:
   - yarn test
