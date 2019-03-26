@@ -23,3 +23,7 @@ before_script:
 
 script:
   - yarn test
+
+branches:
+  only:
+  - master
