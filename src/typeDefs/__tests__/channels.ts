@@ -1,27 +1,27 @@
+import { Channel, Prisma } from "@prisma/index";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
-import { Prisma, Channel } from "@prisma/index";
 
 const rootValue = {};
 let context;
 let channel: Channel;
-const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT })
+const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
 
 beforeAll(async () => {
   context = { prisma };
   channel = await prisma.createChannel({
-    name: '默认频道',
-    description: '社区创建时默认创建的我频道',
+    name: "默认频道",
+    description: "社区创建时默认创建的我频道",
     isPrivate: false,
     isDefault: true,
     memberCount: 5,
-    createdAt: new Date('2019-01-01')
-  })
+    createdAt: new Date("2019-01-01"),
+  });
 });
 
 afterAll(async () => {
-  await prisma.deleteManyChannels()
-})
+  await prisma.deleteManyChannels();
+});
 
 describe("Query channel", () => {
   test("get channel info", async () => {

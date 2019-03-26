@@ -1,6 +1,6 @@
+import { Prisma } from "@prisma/index";
 import { ILoader } from "@utils/loader";
 import { Db, ObjectID } from "mongodb";
-import { Prisma } from "@prisma/index";
 
 /**
  * GENERAL
