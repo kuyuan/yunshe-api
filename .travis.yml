@@ -17,9 +17,7 @@ install:
 
 before_script:
   - docker-compose up -d
-  - docker ps
-  - sleep 10
-  - yarn deploy:test
+  - ./node_modules/.bin/prisma deploy --env-file .env.test
 
 script:
   - yarn test
