@@ -18,6 +18,7 @@ install:
 
 before_script:
   - docker-compose up -d
+  - sleep 20
   - yarn deploy:test
 
 script:
