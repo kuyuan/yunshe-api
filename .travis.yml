@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - "10"
+
+services:
+  - docker
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.15.2
+  - export PATH=$HOME/.yarn/bin:$PATH
+
+cache:
+  yarn: true
+
+install:
+  - yarn
+  - yarn global add prisma
+
+before_script:
+  - docker-compose up -d
+  - sleep 5
+  - yarn deploy:test
+
+script:
+  - yarn test
+
+branches:
+  only:
+  - master

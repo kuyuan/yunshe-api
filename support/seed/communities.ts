@@ -1,12 +1,11 @@
-const constants = require('./constants');
-const {
+import {
   DATE,
   YUNSHE_COMMUNITY_ID,
   DELETED_COMMUNITY_ID,
   PRIVATE_COMMUNITY_ID
-} = constants;
+} from "./constants";
 
-module.exports = [
+export default [
   {
     _id: YUNSHE_COMMUNITY_ID,
     createdAt: DATE,

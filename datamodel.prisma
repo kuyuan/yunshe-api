@@ -1,0 +1,42 @@
+type User {
+  id: ID! @id
+  username: String!
+  name: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  createdAt: DateTime!
+  description: String
+  website: String
+  wechatProviderId: String
+  isOnline: Boolean
+  lastSeen: DateTime
+  bannedAt: DateTime
+  deletedAt: DateTime
+  modifiedAt: DateTime
+}
+
+type Community {
+  id: ID! @id
+  name: String!
+  description: String!
+  coverPhoto: String!
+  profilePhoto: String!
+  isPrivate: Boolean!
+  createdAt: String!
+  website: String
+  tags: [String]
+  deletedAt: DateTime
+  memberCount: Int
+}
+
+type Channel {
+  id: ID! @id
+  name: String!
+  description: String
+  isPrivate: Boolean!
+  isDefault: Boolean!
+  memberCount: Int
+  createdAt: DateTime!
+  archivedAt: DateTime
+  deletedAt: DateTime
+}

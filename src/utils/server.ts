@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/index";
 import { formatError } from "apollo-errors";
 import { makeExecutableSchema } from "graphql-tools";
 import { GraphQLServer, Options } from "graphql-yoga";
@@ -24,9 +25,14 @@ export const createServer = ({ db }) => {
       if (request.user && request.user._id) {
         request.user._id = new ObjectID(request.user._id);
       }
+      const prisma = new Prisma({
+        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev",
+        secret: process.env.PRISMA_SECRET || "",
+      });
       return {
         req: request,
         db,
+        prisma,
         loader: createLoader(db),
         currentUser: request.user || null,
       };

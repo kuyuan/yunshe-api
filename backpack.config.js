@@ -14,7 +14,8 @@ module.exports = {
         '@models': path.resolve(__dirname, 'src/models'),
         '@utils': path.resolve(__dirname, 'src/utils'),
         '@resolvers': path.resolve(__dirname, 'src/resolvers'),
-        '@support': path.resolve(__dirname, 'support')
+        '@support': path.resolve(__dirname, 'support'),
+        '@prisma': path.resolve(__dirname, 'generated/prisma-client')
       }
     };
 

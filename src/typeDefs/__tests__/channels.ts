@@ -1,31 +1,34 @@
-import { YUNSHE_GENERAL_CHANNEL_ID } from "@support/seed/constants";
-import createLoader from "@utils/loader";
-import { createClient } from "@utils/mongo";
+import { Channel, Prisma } from "@prisma/index";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
-import { Db, MongoClient } from "mongodb";
 
-let db: Db;
 const rootValue = {};
 let context;
-let client: MongoClient;
+let channel: Channel;
+const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
 
 beforeAll(async () => {
-  client = await createClient();
-  db = client.db();
-  context = { db, loader: createLoader(db) };
+  context = { prisma };
+  channel = await prisma.createChannel({
+    name: "默认频道",
+    description: "社区创建时默认创建的我频道",
+    isPrivate: false,
+    isDefault: true,
+    memberCount: 5,
+    createdAt: new Date("2019-01-01"),
+  });
 });
 
-afterAll(() => {
-  client.close();
+afterAll(async () => {
+  await prisma.deleteManyChannels();
 });
 
 describe("Query channel", () => {
   test("get channel info", async () => {
     const query = `
       query {
-        channel(id: "${YUNSHE_GENERAL_CHANNEL_ID}") {
-          _id
+        channel(id: "${channel.id}") {
+          id
           name
         }
       }
@@ -33,7 +36,7 @@ describe("Query channel", () => {
     const { data } = await graphql(schema, query, rootValue, context);
     expect(data).toEqual({
       channel: {
-        _id: YUNSHE_GENERAL_CHANNEL_ID.toString(),
+        id: channel.id,
         name: "默认频道",
       },
     });

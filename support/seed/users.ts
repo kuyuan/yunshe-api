@@ -1,5 +1,4 @@
-const constants = require('./constants');
-const {
+import {
   WUQIAN_ID,
   CAOYAN_ID,
   BRAN_ID,
@@ -9,9 +8,9 @@ const {
   CHANNEL_MODERATOR_USER_ID,
   COMMUNITY_MODERATOR_USER_ID,
   DATE
-} = constants;
+} from "./constants";
 
-module.exports = [
+export default [
   {
     _id: WUQIAN_ID,
     name: '吴倩',

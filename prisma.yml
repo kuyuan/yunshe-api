@@ -1,0 +1,12 @@
+endpoint: ${env:PRISMA_ENDPOINT}
+datamodel: datamodel.prisma
+databaseType: document
+secret: my-secret
+
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client/
+
+hooks:
+  post-deploy:
+    - prisma generate

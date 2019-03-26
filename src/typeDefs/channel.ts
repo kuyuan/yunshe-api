@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export default gql`
   type Channel {
-    _id: ID
+    id: ID
     communityId: String
     createdAt: Date
     name: String
