@@ -22,7 +22,7 @@ export const createServer = ({ db }) => {
   const server = new GraphQLServer({
     context: ({ request }) => {
       const prisma = new Prisma({
-        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev"
+        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev",
       });
       return {
         req: request,

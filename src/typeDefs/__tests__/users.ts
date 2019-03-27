@@ -1,4 +1,4 @@
-import { User, Prisma } from "@prisma/index";
+import { Prisma, User } from "@prisma/index";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
 
@@ -13,13 +13,13 @@ beforeAll(async () => {
     name: "测试人员",
     coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
     profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
-    createdAt: new Date()
-  })
+    createdAt: new Date(),
+  });
   context = { prisma, currentUser };
 });
 
 afterAll(() => {
-  prisma.deleteManyUsers({ id: currentUser.id })
+  prisma.deleteManyUsers({ id: currentUser.id });
 });
 
 describe("Query user", () => {
@@ -70,13 +70,13 @@ describe("Mutation User", () => {
       description: "自我介绍",
       coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover11.jpg",
       profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar2.jpg",
-      createdAt: new Date()
-    })
+      createdAt: new Date(),
+    });
   });
 
   afterEach(async () => {
-    await prisma.deleteUser({ id: mutationUser.id })
-  })
+    await prisma.deleteUser({ id: mutationUser.id });
+  });
 
   test("editUser", async () => {
     const query = `

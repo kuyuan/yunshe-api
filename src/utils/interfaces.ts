@@ -31,5 +31,3 @@ export interface IUploadResponse {
 export type ConnectionTypes = "Community" | "Channel" | "Thread" | "DirectMessageThread";
 
 export type ResourceTypes = "User" | "ThreadMessage" | "DirectMessage" | ConnectionTypes;
-
-

@@ -1,10 +1,10 @@
+import { Prisma, User } from "@prisma/index";
 import { createClient } from "@utils/mongo";
 import { createServer, serverOptions } from "@utils/server";
 import getPort from "get-port";
 import got from "got";
 import jwt from "jsonwebtoken";
 import { Db, MongoClient } from "mongodb";
-import { User, Prisma } from "@prisma/index";
 
 let db: Db;
 let client: MongoClient;
@@ -39,8 +39,8 @@ beforeAll(async () => {
     name: "测试人员",
     coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
     profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
-    createdAt: new Date()
-  })
+    createdAt: new Date(),
+  });
   server.express.use((req, _, next) => {
     // console.log(req.session)
     // req.session.passport = {
@@ -53,11 +53,11 @@ beforeAll(async () => {
     if (req.user && req.user.id) {
       req.user = {
         id: currentUser.id,
-        name: currentUser.name
-      }
+        name: currentUser.name,
+      };
     }
-    next()
-  })
+    next();
+  });
   port = await getPort();
   activeServer = await server.start({
     ...serverOptions,
@@ -66,7 +66,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await prisma.deleteUser({ id: currentUser.id })
+  await prisma.deleteUser({ id: currentUser.id });
   await activeServer.close();
   await client.close();
 });
