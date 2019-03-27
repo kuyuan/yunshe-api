@@ -1,10 +1,9 @@
-import { ILoader } from "@utils/loader";
-import { ObjectID } from "mongodb";
+import { IContext } from "@utils/interfaces";
 
 export default {
   Query: {
-    community: async (_, { id }, { loader }: { loader: ILoader }) => {
-      const community = await loader.community.load(new ObjectID(id));
+    community: async (_, { id }, { prisma }: IContext) => {
+      const community = await prisma.community({ id })
       return community;
     },
   },
