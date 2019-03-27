@@ -20,7 +20,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await prisma.deleteManyChannels();
+  await prisma.deleteManyChannels({ id: channel.id });
 });
 
 describe("Query channel", () => {

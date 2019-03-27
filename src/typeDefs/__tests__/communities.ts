@@ -20,7 +20,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await prisma.deleteManyCommunities();
+  await prisma.deleteManyCommunities({ id: community.id });
 });
 
 describe("Query community", () => {

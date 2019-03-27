@@ -1,35 +1,33 @@
-import { BRAN_ID, WUQIAN_ID } from "@support/seed/constants";
-import createLoader from "@utils/loader";
-import { createClient } from "@utils/mongo";
+import { User, Prisma } from "@prisma/index";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
-import { Db, MongoClient, ObjectID } from "mongodb";
 
-let db: Db;
-let context;
-let client: MongoClient;
 const rootValue = {};
-const currentUser = {
-  _id: BRAN_ID,
-  name: "酷猿创始人",
-};
+let context;
+let currentUser: User;
+const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
 
 beforeAll(async () => {
-  client = await createClient();
-  db = client.db();
-  context = { db, loader: createLoader(db), currentUser };
+  currentUser = await prisma.createUser({
+    username: "iamtestuser",
+    name: "测试人员",
+    coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
+    profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
+    createdAt: new Date()
+  })
+  context = { prisma, currentUser };
 });
 
 afterAll(() => {
-  client.close();
+  prisma.deleteManyUsers({ id: currentUser.id })
 });
 
 describe("Query user", () => {
   test("get user info", async () => {
     const query = `
       query {
-        user(id: "${WUQIAN_ID}") {
-          _id
+        user(id: "${currentUser.id}") {
+          id
           name
         }
       }
@@ -37,8 +35,8 @@ describe("Query user", () => {
     const { data } = await graphql(schema, query, rootValue, context);
     expect(data).toEqual({
       user: {
-        _id: WUQIAN_ID.toString(),
-        name: "吴倩",
+        id: currentUser.id,
+        name: currentUser.name,
       },
     });
   });
@@ -47,7 +45,7 @@ describe("Query user", () => {
     const query = `
       query {
         currentUser {
-          _id
+          id
           name
         }
       }
@@ -55,37 +53,36 @@ describe("Query user", () => {
     const { data } = await graphql(schema, query, rootValue, context);
     expect(data).toEqual({
       currentUser: {
-        _id: BRAN_ID.toString(),
-        name: "酷猿创始人",
+        id: currentUser.id,
+        name: currentUser.name,
       },
     });
   });
 });
 
 describe("Mutation User", () => {
-  const testUserId = new ObjectID("5c8ca1074cca2a3a5570c704");
+  let mutationUser: User;
 
   beforeEach(async () => {
-    await db.collection("users").insertOne({
-      _id: testUserId,
-      name: "TEST USER",
-      description: "Who am I?",
-      profilePhoto: "http://corran.cn/profile-1.jpg",
-      coverPhoto: "http://corran.cn/cover-1.jpg",
-    });
+    mutationUser = await prisma.createUser({
+      username: "mutationuser",
+      name: "将被修改测试人员",
+      description: "自我介绍",
+      coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover11.jpg",
+      profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar2.jpg",
+      createdAt: new Date()
+    })
   });
 
   afterEach(async () => {
-    await db.collection("users").deleteOne({
-      _id: testUserId,
-    });
-  });
+    await prisma.deleteUser({ id: mutationUser.id })
+  })
 
   test("editUser", async () => {
     const query = `
       mutation($input: EditUserInput!) {
         editUser(input: $input) {
-          _id
+          id
           name
           description
         }
@@ -93,20 +90,20 @@ describe("Mutation User", () => {
     `;
     const params = {
       input: {
-        name: "TEST USER - updated",
-        description: "Who am I? - updated",
+        name: "名字已经被修改",
+        description: "被修改的自我介绍",
       },
     };
     context.currentUser = {
-      _id: testUserId,
-      name: "TEST USER",
+      id: mutationUser.id,
+      name: "将被修改测试人员",
     };
     const { data } = await graphql(schema, query, rootValue, context, params);
     expect(data).toEqual({
       editUser: {
-        _id: testUserId.toString(),
-        name: "TEST USER - updated",
-        description: "Who am I? - updated",
+        id: mutationUser.id,
+        name: "名字已经被修改",
+        description: "被修改的自我介绍",
       },
     });
   });

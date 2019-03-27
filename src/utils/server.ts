@@ -10,7 +10,6 @@ import {
   authHeaderMiddleware,
   sessionMiddleware,
 } from "./expressMiddlewares";
-import createLoader from "./loader";
 import initPassport from "./passport";
 import permissions from "./permissions";
 
@@ -22,18 +21,13 @@ export const schema = makeExecutableSchema({
 export const createServer = ({ db }) => {
   const server = new GraphQLServer({
     context: ({ request }) => {
-      if (request.user && request.user._id) {
-        request.user._id = new ObjectID(request.user._id);
-      }
       const prisma = new Prisma({
-        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev",
-        secret: process.env.PRISMA_SECRET || "",
+        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev"
       });
       return {
         req: request,
         db,
         prisma,
-        loader: createLoader(db),
         currentUser: request.user || null,
       };
     },

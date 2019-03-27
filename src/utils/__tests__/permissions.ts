@@ -37,7 +37,7 @@ describe("isValidUser", () => {
     const query = `
       mutation($input: EditUserInput!) {
         editUser(input: $input) {
-          _id
+          id
           name
           description
         }
