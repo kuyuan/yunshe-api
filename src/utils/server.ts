@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/index";
+import prisma from "@utils/prisma";
 import { formatError } from "apollo-errors";
 import { makeExecutableSchema } from "graphql-tools";
 import { GraphQLServer, Options } from "graphql-yoga";
@@ -21,9 +21,6 @@ export const schema = makeExecutableSchema({
 export const createServer = ({ db }) => {
   const server = new GraphQLServer({
     context: ({ request }) => {
-      const prisma = new Prisma({
-        endpoint: process.env.PRISMA_ENDPOINT || "http://localhost:4466/default/dev",
-      });
       return {
         req: request,
         db,

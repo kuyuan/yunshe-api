@@ -1,11 +1,11 @@
-import { Channel, Prisma } from "@prisma/index";
+import { Channel } from "@prisma/index";
+import prisma from "@utils/prisma";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
 
 const rootValue = {};
 let context;
 let channel: Channel;
-const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
 
 beforeAll(async () => {
   context = { prisma };

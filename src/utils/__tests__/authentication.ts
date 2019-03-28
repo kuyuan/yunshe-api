@@ -1,4 +1,5 @@
-import { Prisma, User } from "@prisma/index";
+import { User } from "@prisma/index";
+import prisma from "@utils/prisma";
 import { createClient } from "@utils/mongo";
 import { createServer, serverOptions } from "@utils/server";
 import getPort from "get-port";
@@ -11,7 +12,6 @@ let client: MongoClient;
 let activeServer;
 let port: number;
 let currentUser: User;
-const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
 const query = `
   query {
     currentUser {

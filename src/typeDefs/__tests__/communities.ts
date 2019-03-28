@@ -1,11 +1,11 @@
 import { Community, Prisma } from "@prisma/index";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
+import prisma from "@utils/prisma";
 
 const rootValue = {};
 let context;
 let community: Community;
-const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
 
 beforeAll(async () => {
   context = { prisma };
