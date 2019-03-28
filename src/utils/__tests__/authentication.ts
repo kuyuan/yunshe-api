@@ -1,6 +1,6 @@
 import { User } from "@prisma/index";
-import prisma from "@utils/prisma";
 import { createClient } from "@utils/mongo";
+import prisma from "@utils/prisma";
 import { createServer, serverOptions } from "@utils/server";
 import getPort from "get-port";
 import got from "got";

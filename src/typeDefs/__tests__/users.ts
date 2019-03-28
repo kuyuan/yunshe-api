@@ -1,7 +1,7 @@
 import { User } from "@prisma/index";
+import prisma from "@utils/prisma";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
-import prisma from "@utils/prisma";
 
 const rootValue = {};
 let context;

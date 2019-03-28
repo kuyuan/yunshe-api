@@ -7,7 +7,7 @@ export const isValidUser = rule()(async (parent, args, { currentUser }: IContext
   if (!currentUser || !currentUser.id) {
     return new NotAuthorizedError();
   }
-  const user = await prisma.user({ id: currentUser.id })
+  const user = await prisma.user({ id: currentUser.id });
   if (!user || user.bannedAt || user.deletedAt) {
     return new InvalidUserError();
   }
