@@ -1,31 +1,34 @@
-import { YUNSHE_COMMUNITY_ID } from "@support/seed/constants";
-import createLoader from "@utils/loader";
-import { createClient } from "@utils/mongo";
+import { Community, Prisma } from "@prisma/index";
+import prisma from "@utils/prisma";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
-import { Db, MongoClient } from "mongodb";
 
-let db: Db;
 const rootValue = {};
 let context;
-let client: MongoClient;
+let community: Community;
 
 beforeAll(async () => {
-  client = await createClient();
-  db = client.db();
-  context = { db, loader: createLoader(db) };
+  context = { prisma };
+  community = await prisma.createCommunity({
+    name: "测试社区",
+    description: "这是一个测试社区",
+    coverPhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover1.jpg",
+    profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/community/comm1.png",
+    createdAt: new Date(),
+    isPrivate: false,
+  });
 });
 
-afterAll(() => {
-  client.close();
+afterAll(async () => {
+  await prisma.deleteManyCommunities({ id: community.id });
 });
 
 describe("Query community", () => {
   test("get community info", async () => {
     const query = `
       query {
-        community(id: "${YUNSHE_COMMUNITY_ID}") {
-          _id
+        community(id: "${community.id}") {
+          id
           name
         }
       }
@@ -33,8 +36,8 @@ describe("Query community", () => {
     const { data } = await graphql(schema, query, rootValue, context);
     expect(data).toEqual({
       community: {
-        _id: YUNSHE_COMMUNITY_ID.toString(),
-        name: "云社官方社区",
+        id: community.id,
+        name: "测试社区",
       },
     });
   });

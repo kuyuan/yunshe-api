@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export default gql`
   type Community {
-    _id: ID
+    id: ID
     name: String
     description: String
     createdAt: Date

@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export default gql`
   type User {
-    _id: ID
+    id: ID
     name: String
     description: String
     username: String

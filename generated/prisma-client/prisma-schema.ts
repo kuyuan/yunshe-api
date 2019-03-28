@@ -216,7 +216,7 @@ type Community {
   coverPhoto: String!
   profilePhoto: String!
   isPrivate: Boolean!
-  createdAt: String!
+  createdAt: DateTime!
   website: String
   tags: [String!]!
   deletedAt: DateTime
@@ -235,7 +235,7 @@ input CommunityCreateInput {
   coverPhoto: String!
   profilePhoto: String!
   isPrivate: Boolean!
-  createdAt: String!
+  createdAt: DateTime!
   website: String
   tags: CommunityCreatetagsInput
   deletedAt: DateTime
@@ -281,7 +281,7 @@ type CommunityPreviousValues {
   coverPhoto: String!
   profilePhoto: String!
   isPrivate: Boolean!
-  createdAt: String!
+  createdAt: DateTime!
   website: String
   tags: [String!]!
   deletedAt: DateTime
@@ -310,7 +310,7 @@ input CommunityUpdateInput {
   coverPhoto: String
   profilePhoto: String
   isPrivate: Boolean
-  createdAt: String
+  createdAt: DateTime
   website: String
   tags: CommunityUpdatetagsInput
   deletedAt: DateTime
@@ -323,7 +323,7 @@ input CommunityUpdateManyMutationInput {
   coverPhoto: String
   profilePhoto: String
   isPrivate: Boolean
-  createdAt: String
+  createdAt: DateTime
   website: String
   tags: CommunityUpdatetagsInput
   deletedAt: DateTime
@@ -407,20 +407,14 @@ input CommunityWhereInput {
   profilePhoto_not_ends_with: String
   isPrivate: Boolean
   isPrivate_not: Boolean
-  createdAt: String
-  createdAt_not: String
-  createdAt_in: [String!]
-  createdAt_not_in: [String!]
-  createdAt_lt: String
-  createdAt_lte: String
-  createdAt_gt: String
-  createdAt_gte: String
-  createdAt_contains: String
-  createdAt_not_contains: String
-  createdAt_starts_with: String
-  createdAt_not_starts_with: String
-  createdAt_ends_with: String
-  createdAt_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
   website: String
   website_not: String
   website_in: [String!]

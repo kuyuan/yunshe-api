@@ -1,7 +1,7 @@
 import passport from "passport";
 
 interface IUserSessionObject {
-  _id: string;
+  id: string;
   name: string;
   profilePhoto: string;
 }

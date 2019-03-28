@@ -22,7 +22,7 @@ type Community {
   coverPhoto: String!
   profilePhoto: String!
   isPrivate: Boolean!
-  createdAt: String!
+  createdAt: DateTime!
   website: String
   tags: [String]
   deletedAt: DateTime
