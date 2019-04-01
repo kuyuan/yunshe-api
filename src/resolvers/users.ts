@@ -1,13 +1,13 @@
 import { UserUpdateInput } from "@prisma/index";
-import { IContext } from "@utils/interfaces";
+import { Context } from "@utils/interfaces";
 
 export default {
   Query: {
-    user: async (_, { id }, { prisma }: IContext) => {
+    user: async (_, { id }, { prisma }: Context) => {
       const user = await prisma.user({ id });
       return user;
     },
-    currentUser: async (_, __, { currentUser, prisma }: IContext) => {
+    currentUser: async (_, __, { currentUser, prisma }: Context) => {
       if (!currentUser || !currentUser.id) {
         return null;
       }
@@ -19,7 +19,7 @@ export default {
     },
   },
   Mutation: {
-    editUser: async (_, { input }: { input: UserUpdateInput }, { currentUser, prisma }: IContext) => {
+    editUser: async (_, { input }: { input: UserUpdateInput }, { currentUser, prisma }: Context) => {
       const user = await prisma.updateUser({ data: input, where: { id: currentUser.id } });
       return user;
     },

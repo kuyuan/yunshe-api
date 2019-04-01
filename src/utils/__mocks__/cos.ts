@@ -1,7 +1,7 @@
-import { IFile, ResourceTypes } from "@utils/interfaces";
+import { File, ResourceTypes } from "@utils/interfaces";
 
 export const uploadImage = async (
-  file: IFile,
+  file: File,
   entity: ResourceTypes,
   id: string,
 ) => {

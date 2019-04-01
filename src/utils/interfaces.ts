@@ -4,24 +4,24 @@ import { Db } from "mongodb";
 /**
  * GENERAL
  */
-export interface IContext {
+export interface Context {
   currentUser?: User;
   db?: Db;
   prisma?: Prisma;
 }
 
-export interface IFile {
+export interface File {
   stream: any;
   filename: string;
   mimetype?: string;
   encoding?: string;
 }
 
-export interface ILooseObject {
+export interface LooseObject {
   [key: string]: any;
 }
 
-export interface IUploadResponse {
+export interface UploadResponse {
   ETag: string;
   Location: string;
   headers: object;

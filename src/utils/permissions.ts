@@ -1,9 +1,9 @@
 import { rule, shield } from "graphql-shield";
 import { InvalidUserError, NotAuthorizedError } from "./errors";
-import { IContext } from "./interfaces";
+import { Context } from "./interfaces";
 import prisma from "./prisma";
 
-export const isValidUser = rule()(async (parent, args, { currentUser }: IContext, info) => {
+export const isValidUser = rule()(async (parent, args, { currentUser }: Context, info) => {
   if (!currentUser || !currentUser.id) {
     return new NotAuthorizedError();
   }
