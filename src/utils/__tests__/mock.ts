@@ -7,7 +7,7 @@ test("COS mock", async () => {
   const filename = "avatar.jpg";
   const file = { stream, filename };
   const data = await uploadImage(file, "Channel", "12345");
-  expect(data.Location).toBe("dev.myqcloud.com/resource/1/image.jpg");
+  expect(data.Location).toBe("dev.myqcloud.com/channel/12345/avatar.jpg");
 });
 
 test("Mongodb mock", async () => {

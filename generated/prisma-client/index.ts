@@ -207,6 +207,8 @@ export type ChannelOrderByInput =
   | "memberCount_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
   | "archivedAt_ASC"
   | "archivedAt_DESC"
   | "deletedAt_ASC"
@@ -227,6 +229,8 @@ export type CommunityOrderByInput =
   | "isPrivate_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
   | "website_ASC"
   | "website_DESC"
   | "deletedAt_ASC"
@@ -249,6 +253,8 @@ export type UserOrderByInput =
   | "profilePhoto_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
   | "description_ASC"
   | "description_DESC"
   | "website_ASC"
@@ -346,6 +352,14 @@ export interface ChannelWhereInput {
   createdAt_lte?: DateTimeInput;
   createdAt_gt?: DateTimeInput;
   createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   archivedAt?: DateTimeInput;
   archivedAt_not?: DateTimeInput;
   archivedAt_in?: DateTimeInput[] | DateTimeInput;
@@ -374,7 +388,6 @@ export interface UserUpdateInput {
   name?: String;
   coverPhoto?: String;
   profilePhoto?: String;
-  createdAt?: DateTimeInput;
   description?: String;
   website?: String;
   wechatProviderId?: String;
@@ -391,7 +404,6 @@ export interface CommunityCreateInput {
   coverPhoto: String;
   profilePhoto: String;
   isPrivate: Boolean;
-  createdAt: DateTimeInput;
   website?: String;
   tags?: CommunityCreatetagsInput;
   deletedAt?: DateTimeInput;
@@ -404,7 +416,6 @@ export interface CommunityUpdateManyMutationInput {
   coverPhoto?: String;
   profilePhoto?: String;
   isPrivate?: Boolean;
-  createdAt?: DateTimeInput;
   website?: String;
   tags?: CommunityUpdatetagsInput;
   deletedAt?: DateTimeInput;
@@ -417,7 +428,6 @@ export interface ChannelUpdateManyMutationInput {
   isPrivate?: Boolean;
   isDefault?: Boolean;
   memberCount?: Int;
-  createdAt?: DateTimeInput;
   archivedAt?: DateTimeInput;
   deletedAt?: DateTimeInput;
 }
@@ -433,6 +443,7 @@ export interface UserSubscriptionWhereInput {
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  username?: String;
 }>;
 
 export interface CommunityWhereInput {
@@ -516,6 +527,14 @@ export interface CommunityWhereInput {
   createdAt_lte?: DateTimeInput;
   createdAt_gt?: DateTimeInput;
   createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   website?: String;
   website_not?: String;
   website_in?: String[] | String;
@@ -555,7 +574,6 @@ export interface ChannelCreateInput {
   isPrivate: Boolean;
   isDefault: Boolean;
   memberCount?: Int;
-  createdAt: DateTimeInput;
   archivedAt?: DateTimeInput;
   deletedAt?: DateTimeInput;
 }
@@ -648,6 +666,14 @@ export interface UserWhereInput {
   createdAt_lte?: DateTimeInput;
   createdAt_gt?: DateTimeInput;
   createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   description?: String;
   description_not?: String;
   description_in?: String[] | String;
@@ -733,7 +759,6 @@ export interface ChannelUpdateInput {
   isPrivate?: Boolean;
   isDefault?: Boolean;
   memberCount?: Int;
-  createdAt?: DateTimeInput;
   archivedAt?: DateTimeInput;
   deletedAt?: DateTimeInput;
 }
@@ -743,7 +768,6 @@ export interface UserUpdateManyMutationInput {
   name?: String;
   coverPhoto?: String;
   profilePhoto?: String;
-  createdAt?: DateTimeInput;
   description?: String;
   website?: String;
   wechatProviderId?: String;
@@ -760,7 +784,6 @@ export interface CommunityUpdateInput {
   coverPhoto?: String;
   profilePhoto?: String;
   isPrivate?: Boolean;
-  createdAt?: DateTimeInput;
   website?: String;
   tags?: CommunityUpdatetagsInput;
   deletedAt?: DateTimeInput;
@@ -776,7 +799,6 @@ export interface UserCreateInput {
   name: String;
   coverPhoto: String;
   profilePhoto: String;
-  createdAt: DateTimeInput;
   description?: String;
   website?: String;
   wechatProviderId?: String;
@@ -838,6 +860,7 @@ export interface UserPreviousValues {
   coverPhoto: String;
   profilePhoto: String;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   description?: String;
   website?: String;
   wechatProviderId?: String;
@@ -857,6 +880,7 @@ export interface UserPreviousValuesPromise
   coverPhoto: () => Promise<String>;
   profilePhoto: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   description: () => Promise<String>;
   website: () => Promise<String>;
   wechatProviderId: () => Promise<String>;
@@ -876,6 +900,7 @@ export interface UserPreviousValuesSubscription
   coverPhoto: () => Promise<AsyncIterator<String>>;
   profilePhoto: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   description: () => Promise<AsyncIterator<String>>;
   website: () => Promise<AsyncIterator<String>>;
   wechatProviderId: () => Promise<AsyncIterator<String>>;
@@ -1028,6 +1053,7 @@ export interface Community {
   profilePhoto: String;
   isPrivate: Boolean;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   website?: String;
   tags: String[];
   deletedAt?: DateTimeOutput;
@@ -1042,6 +1068,7 @@ export interface CommunityPromise extends Promise<Community>, Fragmentable {
   profilePhoto: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   website: () => Promise<String>;
   tags: () => Promise<String[]>;
   deletedAt: () => Promise<DateTimeOutput>;
@@ -1058,6 +1085,7 @@ export interface CommunitySubscription
   profilePhoto: () => Promise<AsyncIterator<String>>;
   isPrivate: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   website: () => Promise<AsyncIterator<String>>;
   tags: () => Promise<AsyncIterator<String[]>>;
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1072,6 +1100,7 @@ export interface CommunityPreviousValues {
   profilePhoto: String;
   isPrivate: Boolean;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   website?: String;
   tags: String[];
   deletedAt?: DateTimeOutput;
@@ -1088,6 +1117,7 @@ export interface CommunityPreviousValuesPromise
   profilePhoto: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   website: () => Promise<String>;
   tags: () => Promise<String[]>;
   deletedAt: () => Promise<DateTimeOutput>;
@@ -1104,6 +1134,7 @@ export interface CommunityPreviousValuesSubscription
   profilePhoto: () => Promise<AsyncIterator<String>>;
   isPrivate: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   website: () => Promise<AsyncIterator<String>>;
   tags: () => Promise<AsyncIterator<String[]>>;
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1118,6 +1149,7 @@ export interface ChannelPreviousValues {
   isDefault: Boolean;
   memberCount?: Int;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   archivedAt?: DateTimeOutput;
   deletedAt?: DateTimeOutput;
 }
@@ -1132,6 +1164,7 @@ export interface ChannelPreviousValuesPromise
   isDefault: () => Promise<Boolean>;
   memberCount: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   archivedAt: () => Promise<DateTimeOutput>;
   deletedAt: () => Promise<DateTimeOutput>;
 }
@@ -1146,6 +1179,7 @@ export interface ChannelPreviousValuesSubscription
   isDefault: () => Promise<AsyncIterator<Boolean>>;
   memberCount: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   archivedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -1183,6 +1217,7 @@ export interface Channel {
   isDefault: Boolean;
   memberCount?: Int;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   archivedAt?: DateTimeOutput;
   deletedAt?: DateTimeOutput;
 }
@@ -1195,6 +1230,7 @@ export interface ChannelPromise extends Promise<Channel>, Fragmentable {
   isDefault: () => Promise<Boolean>;
   memberCount: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   archivedAt: () => Promise<DateTimeOutput>;
   deletedAt: () => Promise<DateTimeOutput>;
 }
@@ -1209,6 +1245,7 @@ export interface ChannelSubscription
   isDefault: () => Promise<AsyncIterator<Boolean>>;
   memberCount: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   archivedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -1257,6 +1294,7 @@ export interface User {
   coverPhoto: String;
   profilePhoto: String;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   description?: String;
   website?: String;
   wechatProviderId?: String;
@@ -1274,6 +1312,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   coverPhoto: () => Promise<String>;
   profilePhoto: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   description: () => Promise<String>;
   website: () => Promise<String>;
   wechatProviderId: () => Promise<String>;
@@ -1293,6 +1332,7 @@ export interface UserSubscription
   coverPhoto: () => Promise<AsyncIterator<String>>;
   profilePhoto: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   description: () => Promise<AsyncIterator<String>>;
   website: () => Promise<AsyncIterator<String>>;
   wechatProviderId: () => Promise<AsyncIterator<String>>;

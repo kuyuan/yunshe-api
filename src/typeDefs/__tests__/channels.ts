@@ -15,7 +15,6 @@ beforeAll(async () => {
     isPrivate: false,
     isDefault: true,
     memberCount: 5,
-    createdAt: new Date("2019-01-01"),
   });
 });
 

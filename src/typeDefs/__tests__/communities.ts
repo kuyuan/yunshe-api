@@ -14,7 +14,6 @@ beforeAll(async () => {
     description: "这是一个测试社区",
     coverPhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover1.jpg",
     profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/community/comm1.png",
-    createdAt: new Date(),
     isPrivate: false,
   });
 });
