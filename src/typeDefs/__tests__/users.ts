@@ -1,4 +1,5 @@
 import { User } from "@prisma/index";
+import { generateUniqUsername } from "@support/test/helpers";
 import prisma from "@utils/prisma";
 import { schema } from "@utils/server";
 import { graphql } from "graphql";
@@ -9,17 +10,17 @@ let currentUser: User;
 
 beforeAll(async () => {
   currentUser = await prisma.createUser({
-    username: "iamtestuser",
+    username: generateUniqUsername(),
     name: "测试人员",
+    description: "what happened",
     coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
     profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
-    createdAt: new Date(),
   });
   context = { prisma, currentUser };
 });
 
-afterAll(() => {
-  prisma.deleteManyUsers({ id: currentUser.id });
+afterAll(async () => {
+  await prisma.deleteManyUsers({ id: currentUser.id });
 });
 
 describe("Query user", () => {
@@ -65,12 +66,11 @@ describe("Mutation User", () => {
 
   beforeEach(async () => {
     mutationUser = await prisma.createUser({
-      username: "mutationuser",
+      username: generateUniqUsername(),
       name: "将被修改测试人员",
       description: "自我介绍",
       coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover11.jpg",
       profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar2.jpg",
-      createdAt: new Date(),
     });
   });
 

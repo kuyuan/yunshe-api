@@ -1,4 +1,5 @@
 import { User } from "@prisma/index";
+import { generateUniqUsername } from "@support/test/helpers";
 import { createClient } from "@utils/mongo";
 import prisma from "@utils/prisma";
 import { createServer, serverOptions } from "@utils/server";
@@ -35,11 +36,10 @@ beforeAll(async () => {
   db = client.db();
   const server = createServer({ db });
   currentUser = await prisma.createUser({
-    username: "iamtestuser",
+    username: generateUniqUsername(),
     name: "测试人员",
     coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
     profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
-    createdAt: new Date(),
   });
   server.express.use((req, _, next) => {
     // console.log(req.session)

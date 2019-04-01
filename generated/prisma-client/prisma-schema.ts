@@ -26,6 +26,7 @@ type Channel {
   isDefault: Boolean!
   memberCount: Int
   createdAt: DateTime!
+  updatedAt: DateTime!
   archivedAt: DateTime
   deletedAt: DateTime
 }
@@ -42,7 +43,6 @@ input ChannelCreateInput {
   isPrivate: Boolean!
   isDefault: Boolean!
   memberCount: Int
-  createdAt: DateTime!
   archivedAt: DateTime
   deletedAt: DateTime
 }
@@ -67,6 +67,8 @@ enum ChannelOrderByInput {
   memberCount_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   archivedAt_ASC
   archivedAt_DESC
   deletedAt_ASC
@@ -81,6 +83,7 @@ type ChannelPreviousValues {
   isDefault: Boolean!
   memberCount: Int
   createdAt: DateTime!
+  updatedAt: DateTime!
   archivedAt: DateTime
   deletedAt: DateTime
 }
@@ -107,7 +110,6 @@ input ChannelUpdateInput {
   isPrivate: Boolean
   isDefault: Boolean
   memberCount: Int
-  createdAt: DateTime
   archivedAt: DateTime
   deletedAt: DateTime
 }
@@ -118,7 +120,6 @@ input ChannelUpdateManyMutationInput {
   isPrivate: Boolean
   isDefault: Boolean
   memberCount: Int
-  createdAt: DateTime
   archivedAt: DateTime
   deletedAt: DateTime
 }
@@ -186,6 +187,14 @@ input ChannelWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   archivedAt: DateTime
   archivedAt_not: DateTime
   archivedAt_in: [DateTime!]
@@ -217,6 +226,7 @@ type Community {
   profilePhoto: String!
   isPrivate: Boolean!
   createdAt: DateTime!
+  updatedAt: DateTime!
   website: String
   tags: [String!]!
   deletedAt: DateTime
@@ -235,7 +245,6 @@ input CommunityCreateInput {
   coverPhoto: String!
   profilePhoto: String!
   isPrivate: Boolean!
-  createdAt: DateTime!
   website: String
   tags: CommunityCreatetagsInput
   deletedAt: DateTime
@@ -266,6 +275,8 @@ enum CommunityOrderByInput {
   isPrivate_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   website_ASC
   website_DESC
   deletedAt_ASC
@@ -282,6 +293,7 @@ type CommunityPreviousValues {
   profilePhoto: String!
   isPrivate: Boolean!
   createdAt: DateTime!
+  updatedAt: DateTime!
   website: String
   tags: [String!]!
   deletedAt: DateTime
@@ -310,7 +322,6 @@ input CommunityUpdateInput {
   coverPhoto: String
   profilePhoto: String
   isPrivate: Boolean
-  createdAt: DateTime
   website: String
   tags: CommunityUpdatetagsInput
   deletedAt: DateTime
@@ -323,7 +334,6 @@ input CommunityUpdateManyMutationInput {
   coverPhoto: String
   profilePhoto: String
   isPrivate: Boolean
-  createdAt: DateTime
   website: String
   tags: CommunityUpdatetagsInput
   deletedAt: DateTime
@@ -415,6 +425,14 @@ input CommunityWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   website: String
   website_not: String
   website_in: [String!]
@@ -520,6 +538,7 @@ type User {
   coverPhoto: String!
   profilePhoto: String!
   createdAt: DateTime!
+  updatedAt: DateTime!
   description: String
   website: String
   wechatProviderId: String
@@ -541,7 +560,6 @@ input UserCreateInput {
   name: String!
   coverPhoto: String!
   profilePhoto: String!
-  createdAt: DateTime!
   description: String
   website: String
   wechatProviderId: String
@@ -570,6 +588,8 @@ enum UserOrderByInput {
   profilePhoto_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   description_ASC
   description_DESC
   website_ASC
@@ -595,6 +615,7 @@ type UserPreviousValues {
   coverPhoto: String!
   profilePhoto: String!
   createdAt: DateTime!
+  updatedAt: DateTime!
   description: String
   website: String
   wechatProviderId: String
@@ -626,7 +647,6 @@ input UserUpdateInput {
   name: String
   coverPhoto: String
   profilePhoto: String
-  createdAt: DateTime
   description: String
   website: String
   wechatProviderId: String
@@ -642,7 +662,6 @@ input UserUpdateManyMutationInput {
   name: String
   coverPhoto: String
   profilePhoto: String
-  createdAt: DateTime
   description: String
   website: String
   wechatProviderId: String
@@ -732,6 +751,14 @@ input UserWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   description: String
   description_not: String
   description_in: [String!]
@@ -813,5 +840,6 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  username: String
 }
 `

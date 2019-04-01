@@ -1,10 +1,11 @@
 type User {
   id: ID! @id
-  username: String!
+  username: String! @unique
   name: String!
   coverPhoto: String!
   profilePhoto: String!
-  createdAt: DateTime!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   description: String
   website: String
   wechatProviderId: String
@@ -22,7 +23,8 @@ type Community {
   coverPhoto: String!
   profilePhoto: String!
   isPrivate: Boolean!
-  createdAt: DateTime!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   website: String
   tags: [String]
   deletedAt: DateTime
@@ -36,7 +38,8 @@ type Channel {
   isPrivate: Boolean!
   isDefault: Boolean!
   memberCount: Int
-  createdAt: DateTime!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   archivedAt: DateTime
   deletedAt: DateTime
 }

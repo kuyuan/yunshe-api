@@ -9,7 +9,7 @@ export const uploadImage = async (
     resolve(
       {
         ETag: "\"b3fcc759598fb9c9cd8e806e3a6cfe1b\"",
-        Location: "dev.myqcloud.com/resource/1/image.jpg",
+        Location: `dev.myqcloud.com/${entity.toLowerCase()}/${id}/${file.filename}`,
         headers: {
           "connection": "close",
           "content-length": "0",
