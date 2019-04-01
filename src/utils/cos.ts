@@ -1,4 +1,4 @@
-import { File, UploadResponse, ResourceTypes } from "@utils/interfaces";
+import { File, ResourceTypes, UploadResponse } from "@utils/interfaces";
 import COS from "cos-nodejs-sdk-v5";
 import sanitize from "sanitize-filename";
 import uuidv4 from "uuid/v4";
