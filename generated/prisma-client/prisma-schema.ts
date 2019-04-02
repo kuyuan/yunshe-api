@@ -14,6 +14,14 @@ type AggregateUser {
   count: Int!
 }
 
+type AggregateUserChannel {
+  count: Int!
+}
+
+type AggregateUserCommunity {
+  count: Int!
+}
+
 type BatchPayload {
   count: Long!
 }
@@ -40,7 +48,7 @@ type ChannelConnection {
 input ChannelCreateInput {
   name: String!
   description: String
-  isPrivate: Boolean!
+  isPrivate: Boolean
   isDefault: Boolean!
   memberCount: Int
   archivedAt: DateTime
@@ -244,7 +252,7 @@ input CommunityCreateInput {
   description: String!
   coverPhoto: String!
   profilePhoto: String!
-  isPrivate: Boolean!
+  isPrivate: Boolean
   website: String
   tags: CommunityCreatetagsInput
   deletedAt: DateTime
@@ -493,6 +501,18 @@ type Mutation {
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createUserChannel(data: UserChannelCreateInput!): UserChannel!
+  updateUserChannel(data: UserChannelUpdateInput!, where: UserChannelWhereUniqueInput!): UserChannel
+  updateManyUserChannels(data: UserChannelUpdateManyMutationInput!, where: UserChannelWhereInput): BatchPayload!
+  upsertUserChannel(where: UserChannelWhereUniqueInput!, create: UserChannelCreateInput!, update: UserChannelUpdateInput!): UserChannel!
+  deleteUserChannel(where: UserChannelWhereUniqueInput!): UserChannel
+  deleteManyUserChannels(where: UserChannelWhereInput): BatchPayload!
+  createUserCommunity(data: UserCommunityCreateInput!): UserCommunity!
+  updateUserCommunity(data: UserCommunityUpdateInput!, where: UserCommunityWhereUniqueInput!): UserCommunity
+  updateManyUserCommunities(data: UserCommunityUpdateManyMutationInput!, where: UserCommunityWhereInput): BatchPayload!
+  upsertUserCommunity(where: UserCommunityWhereUniqueInput!, create: UserCommunityCreateInput!, update: UserCommunityUpdateInput!): UserCommunity!
+  deleteUserCommunity(where: UserCommunityWhereUniqueInput!): UserCommunity
+  deleteManyUserCommunities(where: UserCommunityWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -522,6 +542,12 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  userChannel(where: UserChannelWhereUniqueInput!): UserChannel
+  userChannels(where: UserChannelWhereInput, orderBy: UserChannelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserChannel]!
+  userChannelsConnection(where: UserChannelWhereInput, orderBy: UserChannelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserChannelConnection!
+  userCommunity(where: UserCommunityWhereUniqueInput!): UserCommunity
+  userCommunities(where: UserCommunityWhereInput, orderBy: UserCommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCommunity]!
+  userCommunitiesConnection(where: UserCommunityWhereInput, orderBy: UserCommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserCommunityConnection!
   node(id: ID!): Node
 }
 
@@ -529,24 +555,366 @@ type Subscription {
   channel(where: ChannelSubscriptionWhereInput): ChannelSubscriptionPayload
   community(where: CommunitySubscriptionWhereInput): CommunitySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  userChannel(where: UserChannelSubscriptionWhereInput): UserChannelSubscriptionPayload
+  userCommunity(where: UserCommunitySubscriptionWhereInput): UserCommunitySubscriptionPayload
 }
 
 type User {
   id: ID!
   username: String!
   name: String!
+  description: String
+  website: String
+  wechatProviderId: String
   coverPhoto: String!
   profilePhoto: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  description: String
-  website: String
-  wechatProviderId: String
-  isOnline: Boolean
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
-  modifiedAt: DateTime
+}
+
+type UserChannel {
+  id: ID!
+  channelId: ID!
+  userId: ID!
+  status: UserChannelStatus!
+  role: UserChannelRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserChannelConnection {
+  pageInfo: PageInfo!
+  edges: [UserChannelEdge]!
+  aggregate: AggregateUserChannel!
+}
+
+input UserChannelCreateInput {
+  channelId: ID!
+  userId: ID!
+  status: UserChannelStatus!
+  role: UserChannelRole!
+}
+
+type UserChannelEdge {
+  node: UserChannel!
+  cursor: String!
+}
+
+enum UserChannelOrderByInput {
+  id_ASC
+  id_DESC
+  channelId_ASC
+  channelId_DESC
+  userId_ASC
+  userId_DESC
+  status_ASC
+  status_DESC
+  role_ASC
+  role_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserChannelPreviousValues {
+  id: ID!
+  channelId: ID!
+  userId: ID!
+  status: UserChannelStatus!
+  role: UserChannelRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum UserChannelRole {
+  OWNER
+  MODERATOR
+  MEMBER
+}
+
+enum UserChannelStatus {
+  PENDING
+  ACTIVE
+  BANNED
+}
+
+type UserChannelSubscriptionPayload {
+  mutation: MutationType!
+  node: UserChannel
+  updatedFields: [String!]
+  previousValues: UserChannelPreviousValues
+}
+
+input UserChannelSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserChannelWhereInput
+  AND: [UserChannelSubscriptionWhereInput!]
+}
+
+input UserChannelUpdateInput {
+  channelId: ID
+  userId: ID
+  status: UserChannelStatus
+  role: UserChannelRole
+}
+
+input UserChannelUpdateManyMutationInput {
+  channelId: ID
+  userId: ID
+  status: UserChannelStatus
+  role: UserChannelRole
+}
+
+input UserChannelWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  channelId: ID
+  channelId_not: ID
+  channelId_in: [ID!]
+  channelId_not_in: [ID!]
+  channelId_lt: ID
+  channelId_lte: ID
+  channelId_gt: ID
+  channelId_gte: ID
+  channelId_contains: ID
+  channelId_not_contains: ID
+  channelId_starts_with: ID
+  channelId_not_starts_with: ID
+  channelId_ends_with: ID
+  channelId_not_ends_with: ID
+  userId: ID
+  userId_not: ID
+  userId_in: [ID!]
+  userId_not_in: [ID!]
+  userId_lt: ID
+  userId_lte: ID
+  userId_gt: ID
+  userId_gte: ID
+  userId_contains: ID
+  userId_not_contains: ID
+  userId_starts_with: ID
+  userId_not_starts_with: ID
+  userId_ends_with: ID
+  userId_not_ends_with: ID
+  status: UserChannelStatus
+  status_not: UserChannelStatus
+  status_in: [UserChannelStatus!]
+  status_not_in: [UserChannelStatus!]
+  role: UserChannelRole
+  role_not: UserChannelRole
+  role_in: [UserChannelRole!]
+  role_not_in: [UserChannelRole!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [UserChannelWhereInput!]
+}
+
+input UserChannelWhereUniqueInput {
+  id: ID
+}
+
+type UserCommunity {
+  id: ID!
+  communityId: ID!
+  userId: ID!
+  status: UserCommunityStatus!
+  role: UserCommunityRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserCommunityConnection {
+  pageInfo: PageInfo!
+  edges: [UserCommunityEdge]!
+  aggregate: AggregateUserCommunity!
+}
+
+input UserCommunityCreateInput {
+  communityId: ID!
+  userId: ID!
+  status: UserCommunityStatus!
+  role: UserCommunityRole!
+}
+
+type UserCommunityEdge {
+  node: UserCommunity!
+  cursor: String!
+}
+
+enum UserCommunityOrderByInput {
+  id_ASC
+  id_DESC
+  communityId_ASC
+  communityId_DESC
+  userId_ASC
+  userId_DESC
+  status_ASC
+  status_DESC
+  role_ASC
+  role_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserCommunityPreviousValues {
+  id: ID!
+  communityId: ID!
+  userId: ID!
+  status: UserCommunityStatus!
+  role: UserCommunityRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum UserCommunityRole {
+  OWNER
+  MODERATOR
+  MEMBER
+}
+
+enum UserCommunityStatus {
+  PENDING
+  ACTIVE
+  BANNED
+}
+
+type UserCommunitySubscriptionPayload {
+  mutation: MutationType!
+  node: UserCommunity
+  updatedFields: [String!]
+  previousValues: UserCommunityPreviousValues
+}
+
+input UserCommunitySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserCommunityWhereInput
+  AND: [UserCommunitySubscriptionWhereInput!]
+}
+
+input UserCommunityUpdateInput {
+  communityId: ID
+  userId: ID
+  status: UserCommunityStatus
+  role: UserCommunityRole
+}
+
+input UserCommunityUpdateManyMutationInput {
+  communityId: ID
+  userId: ID
+  status: UserCommunityStatus
+  role: UserCommunityRole
+}
+
+input UserCommunityWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  communityId: ID
+  communityId_not: ID
+  communityId_in: [ID!]
+  communityId_not_in: [ID!]
+  communityId_lt: ID
+  communityId_lte: ID
+  communityId_gt: ID
+  communityId_gte: ID
+  communityId_contains: ID
+  communityId_not_contains: ID
+  communityId_starts_with: ID
+  communityId_not_starts_with: ID
+  communityId_ends_with: ID
+  communityId_not_ends_with: ID
+  userId: ID
+  userId_not: ID
+  userId_in: [ID!]
+  userId_not_in: [ID!]
+  userId_lt: ID
+  userId_lte: ID
+  userId_gt: ID
+  userId_gte: ID
+  userId_contains: ID
+  userId_not_contains: ID
+  userId_starts_with: ID
+  userId_not_starts_with: ID
+  userId_ends_with: ID
+  userId_not_ends_with: ID
+  status: UserCommunityStatus
+  status_not: UserCommunityStatus
+  status_in: [UserCommunityStatus!]
+  status_not_in: [UserCommunityStatus!]
+  role: UserCommunityRole
+  role_not: UserCommunityRole
+  role_in: [UserCommunityRole!]
+  role_not_in: [UserCommunityRole!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [UserCommunityWhereInput!]
+}
+
+input UserCommunityWhereUniqueInput {
+  id: ID
 }
 
 type UserConnection {
@@ -558,16 +926,14 @@ type UserConnection {
 input UserCreateInput {
   username: String!
   name: String!
-  coverPhoto: String!
-  profilePhoto: String!
   description: String
   website: String
   wechatProviderId: String
-  isOnline: Boolean
+  coverPhoto: String!
+  profilePhoto: String!
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
-  modifiedAt: DateTime
 }
 
 type UserEdge {
@@ -582,6 +948,12 @@ enum UserOrderByInput {
   username_DESC
   name_ASC
   name_DESC
+  description_ASC
+  description_DESC
+  website_ASC
+  website_DESC
+  wechatProviderId_ASC
+  wechatProviderId_DESC
   coverPhoto_ASC
   coverPhoto_DESC
   profilePhoto_ASC
@@ -590,40 +962,28 @@ enum UserOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  description_ASC
-  description_DESC
-  website_ASC
-  website_DESC
-  wechatProviderId_ASC
-  wechatProviderId_DESC
-  isOnline_ASC
-  isOnline_DESC
   lastSeen_ASC
   lastSeen_DESC
   bannedAt_ASC
   bannedAt_DESC
   deletedAt_ASC
   deletedAt_DESC
-  modifiedAt_ASC
-  modifiedAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   username: String!
   name: String!
+  description: String
+  website: String
+  wechatProviderId: String
   coverPhoto: String!
   profilePhoto: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  description: String
-  website: String
-  wechatProviderId: String
-  isOnline: Boolean
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
-  modifiedAt: DateTime
 }
 
 type UserSubscriptionPayload {
@@ -645,31 +1005,27 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   username: String
   name: String
-  coverPhoto: String
-  profilePhoto: String
   description: String
   website: String
   wechatProviderId: String
-  isOnline: Boolean
+  coverPhoto: String
+  profilePhoto: String
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
-  modifiedAt: DateTime
 }
 
 input UserUpdateManyMutationInput {
   username: String
   name: String
-  coverPhoto: String
-  profilePhoto: String
   description: String
   website: String
   wechatProviderId: String
-  isOnline: Boolean
+  coverPhoto: String
+  profilePhoto: String
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
-  modifiedAt: DateTime
 }
 
 input UserWhereInput {
@@ -715,6 +1071,48 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  website: String
+  website_not: String
+  website_in: [String!]
+  website_not_in: [String!]
+  website_lt: String
+  website_lte: String
+  website_gt: String
+  website_gte: String
+  website_contains: String
+  website_not_contains: String
+  website_starts_with: String
+  website_not_starts_with: String
+  website_ends_with: String
+  website_not_ends_with: String
+  wechatProviderId: String
+  wechatProviderId_not: String
+  wechatProviderId_in: [String!]
+  wechatProviderId_not_in: [String!]
+  wechatProviderId_lt: String
+  wechatProviderId_lte: String
+  wechatProviderId_gt: String
+  wechatProviderId_gte: String
+  wechatProviderId_contains: String
+  wechatProviderId_not_contains: String
+  wechatProviderId_starts_with: String
+  wechatProviderId_not_starts_with: String
+  wechatProviderId_ends_with: String
+  wechatProviderId_not_ends_with: String
   coverPhoto: String
   coverPhoto_not: String
   coverPhoto_in: [String!]
@@ -759,50 +1157,6 @@ input UserWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  description: String
-  description_not: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_lt: String
-  description_lte: String
-  description_gt: String
-  description_gte: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
-  website: String
-  website_not: String
-  website_in: [String!]
-  website_not_in: [String!]
-  website_lt: String
-  website_lte: String
-  website_gt: String
-  website_gte: String
-  website_contains: String
-  website_not_contains: String
-  website_starts_with: String
-  website_not_starts_with: String
-  website_ends_with: String
-  website_not_ends_with: String
-  wechatProviderId: String
-  wechatProviderId_not: String
-  wechatProviderId_in: [String!]
-  wechatProviderId_not_in: [String!]
-  wechatProviderId_lt: String
-  wechatProviderId_lte: String
-  wechatProviderId_gt: String
-  wechatProviderId_gte: String
-  wechatProviderId_contains: String
-  wechatProviderId_not_contains: String
-  wechatProviderId_starts_with: String
-  wechatProviderId_not_starts_with: String
-  wechatProviderId_ends_with: String
-  wechatProviderId_not_ends_with: String
-  isOnline: Boolean
-  isOnline_not: Boolean
   lastSeen: DateTime
   lastSeen_not: DateTime
   lastSeen_in: [DateTime!]
@@ -827,14 +1181,6 @@ input UserWhereInput {
   deletedAt_lte: DateTime
   deletedAt_gt: DateTime
   deletedAt_gte: DateTime
-  modifiedAt: DateTime
-  modifiedAt_not: DateTime
-  modifiedAt_in: [DateTime!]
-  modifiedAt_not_in: [DateTime!]
-  modifiedAt_lt: DateTime
-  modifiedAt_lte: DateTime
-  modifiedAt_gt: DateTime
-  modifiedAt_gte: DateTime
   AND: [UserWhereInput!]
 }
 

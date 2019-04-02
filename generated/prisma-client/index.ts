@@ -17,6 +17,8 @@ export interface Exists {
   channel: (where?: ChannelWhereInput) => Promise<boolean>;
   community: (where?: CommunityWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
+  userChannel: (where?: UserChannelWhereInput) => Promise<boolean>;
+  userCommunity: (where?: UserCommunityWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -107,6 +109,52 @@ export interface Prisma {
       last?: Int;
     }
   ) => UserConnectionPromise;
+  userChannel: (where: UserChannelWhereUniqueInput) => UserChannelPromise;
+  userChannels: (
+    args?: {
+      where?: UserChannelWhereInput;
+      orderBy?: UserChannelOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<UserChannel>;
+  userChannelsConnection: (
+    args?: {
+      where?: UserChannelWhereInput;
+      orderBy?: UserChannelOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => UserChannelConnectionPromise;
+  userCommunity: (where: UserCommunityWhereUniqueInput) => UserCommunityPromise;
+  userCommunities: (
+    args?: {
+      where?: UserCommunityWhereInput;
+      orderBy?: UserCommunityOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<UserCommunity>;
+  userCommunitiesConnection: (
+    args?: {
+      where?: UserCommunityWhereInput;
+      orderBy?: UserCommunityOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => UserCommunityConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -164,6 +212,53 @@ export interface Prisma {
   ) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  createUserChannel: (data: UserChannelCreateInput) => UserChannelPromise;
+  updateUserChannel: (
+    args: { data: UserChannelUpdateInput; where: UserChannelWhereUniqueInput }
+  ) => UserChannelPromise;
+  updateManyUserChannels: (
+    args: {
+      data: UserChannelUpdateManyMutationInput;
+      where?: UserChannelWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertUserChannel: (
+    args: {
+      where: UserChannelWhereUniqueInput;
+      create: UserChannelCreateInput;
+      update: UserChannelUpdateInput;
+    }
+  ) => UserChannelPromise;
+  deleteUserChannel: (where: UserChannelWhereUniqueInput) => UserChannelPromise;
+  deleteManyUserChannels: (
+    where?: UserChannelWhereInput
+  ) => BatchPayloadPromise;
+  createUserCommunity: (data: UserCommunityCreateInput) => UserCommunityPromise;
+  updateUserCommunity: (
+    args: {
+      data: UserCommunityUpdateInput;
+      where: UserCommunityWhereUniqueInput;
+    }
+  ) => UserCommunityPromise;
+  updateManyUserCommunities: (
+    args: {
+      data: UserCommunityUpdateManyMutationInput;
+      where?: UserCommunityWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertUserCommunity: (
+    args: {
+      where: UserCommunityWhereUniqueInput;
+      create: UserCommunityCreateInput;
+      update: UserCommunityUpdateInput;
+    }
+  ) => UserCommunityPromise;
+  deleteUserCommunity: (
+    where: UserCommunityWhereUniqueInput
+  ) => UserCommunityPromise;
+  deleteManyUserCommunities: (
+    where?: UserCommunityWhereInput
+  ) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -182,6 +277,12 @@ export interface Subscription {
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
+  userChannel: (
+    where?: UserChannelSubscriptionWhereInput
+  ) => UserChannelSubscriptionPayloadSubscription;
+  userCommunity: (
+    where?: UserCommunitySubscriptionWhereInput
+  ) => UserCommunitySubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -192,27 +293,21 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ChannelOrderByInput =
+export type UserChannelOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "isPrivate_ASC"
-  | "isPrivate_DESC"
-  | "isDefault_ASC"
-  | "isDefault_DESC"
-  | "memberCount_ASC"
-  | "memberCount_DESC"
+  | "channelId_ASC"
+  | "channelId_DESC"
+  | "userId_ASC"
+  | "userId_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "role_ASC"
+  | "role_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "archivedAt_ASC"
-  | "archivedAt_DESC"
-  | "deletedAt_ASC"
-  | "deletedAt_DESC";
+  | "updatedAt_DESC";
 
 export type CommunityOrderByInput =
   | "id_ASC"
@@ -238,8 +333,6 @@ export type CommunityOrderByInput =
   | "memberCount_ASC"
   | "memberCount_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -247,6 +340,12 @@ export type UserOrderByInput =
   | "username_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "website_ASC"
+  | "website_DESC"
+  | "wechatProviderId_ASC"
+  | "wechatProviderId_DESC"
   | "coverPhoto_ASC"
   | "coverPhoto_DESC"
   | "profilePhoto_ASC"
@@ -255,41 +354,62 @@ export type UserOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "website_ASC"
-  | "website_DESC"
-  | "wechatProviderId_ASC"
-  | "wechatProviderId_DESC"
-  | "isOnline_ASC"
-  | "isOnline_DESC"
   | "lastSeen_ASC"
   | "lastSeen_DESC"
   | "bannedAt_ASC"
   | "bannedAt_DESC"
   | "deletedAt_ASC"
-  | "deletedAt_DESC"
-  | "modifiedAt_ASC"
-  | "modifiedAt_DESC";
+  | "deletedAt_DESC";
 
-export type CommunityWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export type UserChannelStatus = "PENDING" | "ACTIVE" | "BANNED";
 
-export type ChannelWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export type ChannelOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "isPrivate_ASC"
+  | "isPrivate_DESC"
+  | "isDefault_ASC"
+  | "isDefault_DESC"
+  | "memberCount_ASC"
+  | "memberCount_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "archivedAt_ASC"
+  | "archivedAt_DESC"
+  | "deletedAt_ASC"
+  | "deletedAt_DESC";
 
-export interface ChannelSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ChannelWhereInput;
-  AND?: ChannelSubscriptionWhereInput[] | ChannelSubscriptionWhereInput;
-}
+export type UserChannelRole = "OWNER" | "MODERATOR" | "MEMBER";
 
-export interface ChannelWhereInput {
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type UserCommunityStatus = "PENDING" | "ACTIVE" | "BANNED";
+
+export type UserCommunityRole = "OWNER" | "MODERATOR" | "MEMBER";
+
+export type UserCommunityOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "communityId_ASC"
+  | "communityId_DESC"
+  | "userId_ASC"
+  | "userId_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "role_ASC"
+  | "role_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export interface UserCommunityWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -304,46 +424,42 @@ export interface ChannelWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  description?: String;
-  description_not?: String;
-  description_in?: String[] | String;
-  description_not_in?: String[] | String;
-  description_lt?: String;
-  description_lte?: String;
-  description_gt?: String;
-  description_gte?: String;
-  description_contains?: String;
-  description_not_contains?: String;
-  description_starts_with?: String;
-  description_not_starts_with?: String;
-  description_ends_with?: String;
-  description_not_ends_with?: String;
-  isPrivate?: Boolean;
-  isPrivate_not?: Boolean;
-  isDefault?: Boolean;
-  isDefault_not?: Boolean;
-  memberCount?: Int;
-  memberCount_not?: Int;
-  memberCount_in?: Int[] | Int;
-  memberCount_not_in?: Int[] | Int;
-  memberCount_lt?: Int;
-  memberCount_lte?: Int;
-  memberCount_gt?: Int;
-  memberCount_gte?: Int;
+  communityId?: ID_Input;
+  communityId_not?: ID_Input;
+  communityId_in?: ID_Input[] | ID_Input;
+  communityId_not_in?: ID_Input[] | ID_Input;
+  communityId_lt?: ID_Input;
+  communityId_lte?: ID_Input;
+  communityId_gt?: ID_Input;
+  communityId_gte?: ID_Input;
+  communityId_contains?: ID_Input;
+  communityId_not_contains?: ID_Input;
+  communityId_starts_with?: ID_Input;
+  communityId_not_starts_with?: ID_Input;
+  communityId_ends_with?: ID_Input;
+  communityId_not_ends_with?: ID_Input;
+  userId?: ID_Input;
+  userId_not?: ID_Input;
+  userId_in?: ID_Input[] | ID_Input;
+  userId_not_in?: ID_Input[] | ID_Input;
+  userId_lt?: ID_Input;
+  userId_lte?: ID_Input;
+  userId_gt?: ID_Input;
+  userId_gte?: ID_Input;
+  userId_contains?: ID_Input;
+  userId_not_contains?: ID_Input;
+  userId_starts_with?: ID_Input;
+  userId_not_starts_with?: ID_Input;
+  userId_ends_with?: ID_Input;
+  userId_not_ends_with?: ID_Input;
+  status?: UserCommunityStatus;
+  status_not?: UserCommunityStatus;
+  status_in?: UserCommunityStatus[] | UserCommunityStatus;
+  status_not_in?: UserCommunityStatus[] | UserCommunityStatus;
+  role?: UserCommunityRole;
+  role_not?: UserCommunityRole;
+  role_in?: UserCommunityRole[] | UserCommunityRole;
+  role_not_in?: UserCommunityRole[] | UserCommunityRole;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -360,91 +476,42 @@ export interface ChannelWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
+  AND?: UserCommunityWhereInput[] | UserCommunityWhereInput;
+}
+
+export type ChannelWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserChannelCreateInput {
+  channelId: ID_Input;
+  userId: ID_Input;
+  status: UserChannelStatus;
+  role: UserChannelRole;
+}
+
+export interface ChannelCreateInput {
+  name: String;
+  description?: String;
+  isPrivate?: Boolean;
+  isDefault: Boolean;
+  memberCount?: Int;
   archivedAt?: DateTimeInput;
-  archivedAt_not?: DateTimeInput;
-  archivedAt_in?: DateTimeInput[] | DateTimeInput;
-  archivedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  archivedAt_lt?: DateTimeInput;
-  archivedAt_lte?: DateTimeInput;
-  archivedAt_gt?: DateTimeInput;
-  archivedAt_gte?: DateTimeInput;
   deletedAt?: DateTimeInput;
-  deletedAt_not?: DateTimeInput;
-  deletedAt_in?: DateTimeInput[] | DateTimeInput;
-  deletedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  deletedAt_lt?: DateTimeInput;
-  deletedAt_lte?: DateTimeInput;
-  deletedAt_gt?: DateTimeInput;
-  deletedAt_gte?: DateTimeInput;
-  AND?: ChannelWhereInput[] | ChannelWhereInput;
 }
 
-export interface CommunityCreatetagsInput {
-  set?: String[] | String;
-}
-
-export interface UserUpdateInput {
+export interface UserUpdateManyMutationInput {
   username?: String;
   name?: String;
-  coverPhoto?: String;
-  profilePhoto?: String;
   description?: String;
   website?: String;
   wechatProviderId?: String;
-  isOnline?: Boolean;
+  coverPhoto?: String;
+  profilePhoto?: String;
   lastSeen?: DateTimeInput;
   bannedAt?: DateTimeInput;
   deletedAt?: DateTimeInput;
-  modifiedAt?: DateTimeInput;
 }
-
-export interface CommunityCreateInput {
-  name: String;
-  description: String;
-  coverPhoto: String;
-  profilePhoto: String;
-  isPrivate: Boolean;
-  website?: String;
-  tags?: CommunityCreatetagsInput;
-  deletedAt?: DateTimeInput;
-  memberCount?: Int;
-}
-
-export interface CommunityUpdateManyMutationInput {
-  name?: String;
-  description?: String;
-  coverPhoto?: String;
-  profilePhoto?: String;
-  isPrivate?: Boolean;
-  website?: String;
-  tags?: CommunityUpdatetagsInput;
-  deletedAt?: DateTimeInput;
-  memberCount?: Int;
-}
-
-export interface ChannelUpdateManyMutationInput {
-  name?: String;
-  description?: String;
-  isPrivate?: Boolean;
-  isDefault?: Boolean;
-  memberCount?: Int;
-  archivedAt?: DateTimeInput;
-  deletedAt?: DateTimeInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  username?: String;
-}>;
 
 export interface CommunityWhereInput {
   id?: ID_Input;
@@ -568,23 +635,333 @@ export interface CommunityWhereInput {
   AND?: CommunityWhereInput[] | CommunityWhereInput;
 }
 
-export interface ChannelCreateInput {
+export interface ChannelWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  isPrivate?: Boolean;
+  isPrivate_not?: Boolean;
+  isDefault?: Boolean;
+  isDefault_not?: Boolean;
+  memberCount?: Int;
+  memberCount_not?: Int;
+  memberCount_in?: Int[] | Int;
+  memberCount_not_in?: Int[] | Int;
+  memberCount_lt?: Int;
+  memberCount_lte?: Int;
+  memberCount_gt?: Int;
+  memberCount_gte?: Int;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  archivedAt?: DateTimeInput;
+  archivedAt_not?: DateTimeInput;
+  archivedAt_in?: DateTimeInput[] | DateTimeInput;
+  archivedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  archivedAt_lt?: DateTimeInput;
+  archivedAt_lte?: DateTimeInput;
+  archivedAt_gt?: DateTimeInput;
+  archivedAt_gte?: DateTimeInput;
+  deletedAt?: DateTimeInput;
+  deletedAt_not?: DateTimeInput;
+  deletedAt_in?: DateTimeInput[] | DateTimeInput;
+  deletedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  deletedAt_lt?: DateTimeInput;
+  deletedAt_lte?: DateTimeInput;
+  deletedAt_gt?: DateTimeInput;
+  deletedAt_gte?: DateTimeInput;
+  AND?: ChannelWhereInput[] | ChannelWhereInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface UserChannelWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  channelId?: ID_Input;
+  channelId_not?: ID_Input;
+  channelId_in?: ID_Input[] | ID_Input;
+  channelId_not_in?: ID_Input[] | ID_Input;
+  channelId_lt?: ID_Input;
+  channelId_lte?: ID_Input;
+  channelId_gt?: ID_Input;
+  channelId_gte?: ID_Input;
+  channelId_contains?: ID_Input;
+  channelId_not_contains?: ID_Input;
+  channelId_starts_with?: ID_Input;
+  channelId_not_starts_with?: ID_Input;
+  channelId_ends_with?: ID_Input;
+  channelId_not_ends_with?: ID_Input;
+  userId?: ID_Input;
+  userId_not?: ID_Input;
+  userId_in?: ID_Input[] | ID_Input;
+  userId_not_in?: ID_Input[] | ID_Input;
+  userId_lt?: ID_Input;
+  userId_lte?: ID_Input;
+  userId_gt?: ID_Input;
+  userId_gte?: ID_Input;
+  userId_contains?: ID_Input;
+  userId_not_contains?: ID_Input;
+  userId_starts_with?: ID_Input;
+  userId_not_starts_with?: ID_Input;
+  userId_ends_with?: ID_Input;
+  userId_not_ends_with?: ID_Input;
+  status?: UserChannelStatus;
+  status_not?: UserChannelStatus;
+  status_in?: UserChannelStatus[] | UserChannelStatus;
+  status_not_in?: UserChannelStatus[] | UserChannelStatus;
+  role?: UserChannelRole;
+  role_not?: UserChannelRole;
+  role_in?: UserChannelRole[] | UserChannelRole;
+  role_not_in?: UserChannelRole[] | UserChannelRole;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  AND?: UserChannelWhereInput[] | UserChannelWhereInput;
+}
+
+export interface ChannelSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ChannelWhereInput;
+  AND?: ChannelSubscriptionWhereInput[] | ChannelSubscriptionWhereInput;
+}
+
+export interface UserUpdateInput {
+  username?: String;
+  name?: String;
+  description?: String;
+  website?: String;
+  wechatProviderId?: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
+  lastSeen?: DateTimeInput;
+  bannedAt?: DateTimeInput;
+  deletedAt?: DateTimeInput;
+}
+
+export interface UserCommunityUpdateManyMutationInput {
+  communityId?: ID_Input;
+  userId?: ID_Input;
+  status?: UserCommunityStatus;
+  role?: UserCommunityRole;
+}
+
+export interface UserCreateInput {
+  username: String;
   name: String;
   description?: String;
-  isPrivate: Boolean;
-  isDefault: Boolean;
+  website?: String;
+  wechatProviderId?: String;
+  coverPhoto: String;
+  profilePhoto: String;
+  lastSeen?: DateTimeInput;
+  bannedAt?: DateTimeInput;
+  deletedAt?: DateTimeInput;
+}
+
+export interface UserCommunityUpdateInput {
+  communityId?: ID_Input;
+  userId?: ID_Input;
+  status?: UserCommunityStatus;
+  role?: UserCommunityRole;
+}
+
+export interface CommunityUpdateManyMutationInput {
+  name?: String;
+  description?: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
+  isPrivate?: Boolean;
+  website?: String;
+  tags?: CommunityUpdatetagsInput;
+  deletedAt?: DateTimeInput;
+  memberCount?: Int;
+}
+
+export interface UserChannelUpdateManyMutationInput {
+  channelId?: ID_Input;
+  userId?: ID_Input;
+  status?: UserChannelStatus;
+  role?: UserChannelRole;
+}
+
+export interface CommunityUpdatetagsInput {
+  set?: String[] | String;
+}
+
+export type UserChannelWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export type UserCommunityWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserChannelSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserChannelWhereInput;
+  AND?: UserChannelSubscriptionWhereInput[] | UserChannelSubscriptionWhereInput;
+}
+
+export interface CommunityUpdateInput {
+  name?: String;
+  description?: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
+  isPrivate?: Boolean;
+  website?: String;
+  tags?: CommunityUpdatetagsInput;
+  deletedAt?: DateTimeInput;
+  memberCount?: Int;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  username?: String;
+}>;
+
+export interface CommunityCreatetagsInput {
+  set?: String[] | String;
+}
+
+export interface UserCommunityCreateInput {
+  communityId: ID_Input;
+  userId: ID_Input;
+  status: UserCommunityStatus;
+  role: UserCommunityRole;
+}
+
+export type CommunityWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ChannelUpdateInput {
+  name?: String;
+  description?: String;
+  isPrivate?: Boolean;
+  isDefault?: Boolean;
   memberCount?: Int;
   archivedAt?: DateTimeInput;
   deletedAt?: DateTimeInput;
 }
 
-export interface CommunitySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CommunityWhereInput;
-  AND?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
+export interface ChannelUpdateManyMutationInput {
+  name?: String;
+  description?: String;
+  isPrivate?: Boolean;
+  isDefault?: Boolean;
+  memberCount?: Int;
+  archivedAt?: DateTimeInput;
+  deletedAt?: DateTimeInput;
+}
+
+export interface CommunityCreateInput {
+  name: String;
+  description: String;
+  coverPhoto: String;
+  profilePhoto: String;
+  isPrivate?: Boolean;
+  website?: String;
+  tags?: CommunityCreatetagsInput;
+  deletedAt?: DateTimeInput;
+  memberCount?: Int;
+}
+
+export interface UserChannelUpdateInput {
+  channelId?: ID_Input;
+  userId?: ID_Input;
+  status?: UserChannelStatus;
+  role?: UserChannelRole;
 }
 
 export interface UserWhereInput {
@@ -630,6 +1007,48 @@ export interface UserWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  website?: String;
+  website_not?: String;
+  website_in?: String[] | String;
+  website_not_in?: String[] | String;
+  website_lt?: String;
+  website_lte?: String;
+  website_gt?: String;
+  website_gte?: String;
+  website_contains?: String;
+  website_not_contains?: String;
+  website_starts_with?: String;
+  website_not_starts_with?: String;
+  website_ends_with?: String;
+  website_not_ends_with?: String;
+  wechatProviderId?: String;
+  wechatProviderId_not?: String;
+  wechatProviderId_in?: String[] | String;
+  wechatProviderId_not_in?: String[] | String;
+  wechatProviderId_lt?: String;
+  wechatProviderId_lte?: String;
+  wechatProviderId_gt?: String;
+  wechatProviderId_gte?: String;
+  wechatProviderId_contains?: String;
+  wechatProviderId_not_contains?: String;
+  wechatProviderId_starts_with?: String;
+  wechatProviderId_not_starts_with?: String;
+  wechatProviderId_ends_with?: String;
+  wechatProviderId_not_ends_with?: String;
   coverPhoto?: String;
   coverPhoto_not?: String;
   coverPhoto_in?: String[] | String;
@@ -674,50 +1093,6 @@ export interface UserWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
-  description?: String;
-  description_not?: String;
-  description_in?: String[] | String;
-  description_not_in?: String[] | String;
-  description_lt?: String;
-  description_lte?: String;
-  description_gt?: String;
-  description_gte?: String;
-  description_contains?: String;
-  description_not_contains?: String;
-  description_starts_with?: String;
-  description_not_starts_with?: String;
-  description_ends_with?: String;
-  description_not_ends_with?: String;
-  website?: String;
-  website_not?: String;
-  website_in?: String[] | String;
-  website_not_in?: String[] | String;
-  website_lt?: String;
-  website_lte?: String;
-  website_gt?: String;
-  website_gte?: String;
-  website_contains?: String;
-  website_not_contains?: String;
-  website_starts_with?: String;
-  website_not_starts_with?: String;
-  website_ends_with?: String;
-  website_not_ends_with?: String;
-  wechatProviderId?: String;
-  wechatProviderId_not?: String;
-  wechatProviderId_in?: String[] | String;
-  wechatProviderId_not_in?: String[] | String;
-  wechatProviderId_lt?: String;
-  wechatProviderId_lte?: String;
-  wechatProviderId_gt?: String;
-  wechatProviderId_gte?: String;
-  wechatProviderId_contains?: String;
-  wechatProviderId_not_contains?: String;
-  wechatProviderId_starts_with?: String;
-  wechatProviderId_not_starts_with?: String;
-  wechatProviderId_ends_with?: String;
-  wechatProviderId_not_ends_with?: String;
-  isOnline?: Boolean;
-  isOnline_not?: Boolean;
   lastSeen?: DateTimeInput;
   lastSeen_not?: DateTimeInput;
   lastSeen_in?: DateTimeInput[] | DateTimeInput;
@@ -742,92 +1117,102 @@ export interface UserWhereInput {
   deletedAt_lte?: DateTimeInput;
   deletedAt_gt?: DateTimeInput;
   deletedAt_gte?: DateTimeInput;
-  modifiedAt?: DateTimeInput;
-  modifiedAt_not?: DateTimeInput;
-  modifiedAt_in?: DateTimeInput[] | DateTimeInput;
-  modifiedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  modifiedAt_lt?: DateTimeInput;
-  modifiedAt_lte?: DateTimeInput;
-  modifiedAt_gt?: DateTimeInput;
-  modifiedAt_gte?: DateTimeInput;
   AND?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface ChannelUpdateInput {
-  name?: String;
-  description?: String;
-  isPrivate?: Boolean;
-  isDefault?: Boolean;
-  memberCount?: Int;
-  archivedAt?: DateTimeInput;
-  deletedAt?: DateTimeInput;
+export interface CommunitySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CommunityWhereInput;
+  AND?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
 }
 
-export interface UserUpdateManyMutationInput {
-  username?: String;
-  name?: String;
-  coverPhoto?: String;
-  profilePhoto?: String;
-  description?: String;
-  website?: String;
-  wechatProviderId?: String;
-  isOnline?: Boolean;
-  lastSeen?: DateTimeInput;
-  bannedAt?: DateTimeInput;
-  deletedAt?: DateTimeInput;
-  modifiedAt?: DateTimeInput;
-}
-
-export interface CommunityUpdateInput {
-  name?: String;
-  description?: String;
-  coverPhoto?: String;
-  profilePhoto?: String;
-  isPrivate?: Boolean;
-  website?: String;
-  tags?: CommunityUpdatetagsInput;
-  deletedAt?: DateTimeInput;
-  memberCount?: Int;
-}
-
-export interface CommunityUpdatetagsInput {
-  set?: String[] | String;
-}
-
-export interface UserCreateInput {
-  username: String;
-  name: String;
-  coverPhoto: String;
-  profilePhoto: String;
-  description?: String;
-  website?: String;
-  wechatProviderId?: String;
-  isOnline?: Boolean;
-  lastSeen?: DateTimeInput;
-  bannedAt?: DateTimeInput;
-  deletedAt?: DateTimeInput;
-  modifiedAt?: DateTimeInput;
+export interface UserCommunitySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserCommunityWhereInput;
+  AND?:
+    | UserCommunitySubscriptionWhereInput[]
+    | UserCommunitySubscriptionWhereInput;
 }
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface UserEdge {
-  node: User;
-  cursor: String;
+export interface UserCommunityPreviousValues {
+  id: ID_Output;
+  communityId: ID_Output;
+  userId: ID_Output;
+  status: UserCommunityStatus;
+  role: UserCommunityRole;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface UserCommunityPreviousValuesPromise
+  extends Promise<UserCommunityPreviousValues>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<ID_Output>;
+  communityId: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  status: () => Promise<UserCommunityStatus>;
+  role: () => Promise<UserCommunityRole>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserCommunityPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserCommunityPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  communityId: () => Promise<AsyncIterator<ID_Output>>;
+  userId: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<UserCommunityStatus>>;
+  role: () => Promise<AsyncIterator<UserCommunityRole>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface AggregateChannel {
+  count: Int;
+}
+
+export interface AggregateChannelPromise
+  extends Promise<AggregateChannel>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChannelSubscription
+  extends Promise<AsyncIterator<AggregateChannel>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PageInfo {
@@ -853,136 +1238,142 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserPreviousValues {
+export interface AggregateUserCommunity {
+  count: Int;
+}
+
+export interface AggregateUserCommunityPromise
+  extends Promise<AggregateUserCommunity>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserCommunitySubscription
+  extends Promise<AsyncIterator<AggregateUserCommunity>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface User {
   id: ID_Output;
   username: String;
   name: String;
+  description?: String;
+  website?: String;
+  wechatProviderId?: String;
   coverPhoto: String;
   profilePhoto: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  description?: String;
-  website?: String;
-  wechatProviderId?: String;
-  isOnline?: Boolean;
   lastSeen?: DateTimeOutput;
   bannedAt?: DateTimeOutput;
   deletedAt?: DateTimeOutput;
-  modifiedAt?: DateTimeOutput;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
+export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
   name: () => Promise<String>;
+  description: () => Promise<String>;
+  website: () => Promise<String>;
+  wechatProviderId: () => Promise<String>;
   coverPhoto: () => Promise<String>;
   profilePhoto: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  description: () => Promise<String>;
-  website: () => Promise<String>;
-  wechatProviderId: () => Promise<String>;
-  isOnline: () => Promise<Boolean>;
   lastSeen: () => Promise<DateTimeOutput>;
   bannedAt: () => Promise<DateTimeOutput>;
   deletedAt: () => Promise<DateTimeOutput>;
-  modifiedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   username: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  website: () => Promise<AsyncIterator<String>>;
+  wechatProviderId: () => Promise<AsyncIterator<String>>;
   coverPhoto: () => Promise<AsyncIterator<String>>;
   profilePhoto: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  description: () => Promise<AsyncIterator<String>>;
-  website: () => Promise<AsyncIterator<String>>;
-  wechatProviderId: () => Promise<AsyncIterator<String>>;
-  isOnline: () => Promise<AsyncIterator<Boolean>>;
   lastSeen: () => Promise<AsyncIterator<DateTimeOutput>>;
   bannedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  modifiedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface ChannelConnection {
+export interface UserCommunityConnection {
   pageInfo: PageInfo;
-  edges: ChannelEdge[];
+  edges: UserCommunityEdge[];
 }
 
-export interface ChannelConnectionPromise
-  extends Promise<ChannelConnection>,
+export interface UserCommunityConnectionPromise
+  extends Promise<UserCommunityConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ChannelEdge>>() => T;
-  aggregate: <T = AggregateChannelPromise>() => T;
+  edges: <T = FragmentableArray<UserCommunityEdge>>() => T;
+  aggregate: <T = AggregateUserCommunityPromise>() => T;
 }
 
-export interface ChannelConnectionSubscription
-  extends Promise<AsyncIterator<ChannelConnection>>,
+export interface UserCommunityConnectionSubscription
+  extends Promise<AsyncIterator<UserCommunityConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ChannelEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateChannelSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserCommunityEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserCommunitySubscription>() => T;
 }
 
-export interface AggregateUser {
-  count: Int;
+export interface UserChannelPreviousValues {
+  id: ID_Output;
+  channelId: ID_Output;
+  userId: ID_Output;
+  status: UserChannelStatus;
+  role: UserChannelRole;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface UserChannelPreviousValuesPromise
+  extends Promise<UserChannelPreviousValues>,
     Fragmentable {
-  count: () => Promise<Int>;
+  id: () => Promise<ID_Output>;
+  channelId: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  status: () => Promise<UserChannelStatus>;
+  role: () => Promise<UserChannelRole>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface UserChannelPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserChannelPreviousValues>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  channelId: () => Promise<AsyncIterator<ID_Output>>;
+  userId: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<UserChannelStatus>>;
+  role: () => Promise<AsyncIterator<UserChannelRole>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
+export interface ChannelEdge {
+  node: Channel;
+  cursor: String;
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface ChannelEdgePromise extends Promise<ChannelEdge>, Fragmentable {
+  node: <T = ChannelPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ChannelEdgeSubscription
+  extends Promise<AsyncIterator<ChannelEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface AggregateCommunity {
-  count: Int;
-}
-
-export interface AggregateCommunityPromise
-  extends Promise<AggregateCommunity>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCommunitySubscription
-  extends Promise<AsyncIterator<AggregateCommunity>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = ChannelSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface BatchPayload {
@@ -1001,48 +1392,164 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface CommunitySubscriptionPayload {
-  mutation: MutationType;
-  node: Community;
-  updatedFields: String[];
-  previousValues: CommunityPreviousValues;
+export interface AggregateCommunity {
+  count: Int;
 }
 
-export interface CommunitySubscriptionPayloadPromise
-  extends Promise<CommunitySubscriptionPayload>,
+export interface AggregateCommunityPromise
+  extends Promise<AggregateCommunity>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCommunitySubscription
+  extends Promise<AsyncIterator<AggregateCommunity>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserChannelSubscriptionPayload {
+  mutation: MutationType;
+  node: UserChannel;
+  updatedFields: String[];
+  previousValues: UserChannelPreviousValues;
+}
+
+export interface UserChannelSubscriptionPayloadPromise
+  extends Promise<UserChannelSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = CommunityPromise>() => T;
+  node: <T = UserChannelPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = CommunityPreviousValuesPromise>() => T;
+  previousValues: <T = UserChannelPreviousValuesPromise>() => T;
 }
 
-export interface CommunitySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CommunitySubscriptionPayload>>,
+export interface UserChannelSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserChannelSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CommunitySubscription>() => T;
+  node: <T = UserChannelSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CommunityPreviousValuesSubscription>() => T;
+  previousValues: <T = UserChannelPreviousValuesSubscription>() => T;
 }
 
-export interface CommunityEdge {
-  node: Community;
+export interface UserCommunity {
+  id: ID_Output;
+  communityId: ID_Output;
+  userId: ID_Output;
+  status: UserCommunityStatus;
+  role: UserCommunityRole;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserCommunityPromise
+  extends Promise<UserCommunity>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  communityId: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  status: () => Promise<UserCommunityStatus>;
+  role: () => Promise<UserCommunityRole>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserCommunitySubscription
+  extends Promise<AsyncIterator<UserCommunity>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  communityId: () => Promise<AsyncIterator<ID_Output>>;
+  userId: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<UserCommunityStatus>>;
+  role: () => Promise<AsyncIterator<UserCommunityRole>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface Channel {
+  id: ID_Output;
+  name: String;
+  description?: String;
+  isPrivate: Boolean;
+  isDefault: Boolean;
+  memberCount?: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  archivedAt?: DateTimeOutput;
+  deletedAt?: DateTimeOutput;
+}
+
+export interface ChannelPromise extends Promise<Channel>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
+  isDefault: () => Promise<Boolean>;
+  memberCount: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  archivedAt: () => Promise<DateTimeOutput>;
+  deletedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ChannelSubscription
+  extends Promise<AsyncIterator<Channel>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  isPrivate: () => Promise<AsyncIterator<Boolean>>;
+  isDefault: () => Promise<AsyncIterator<Boolean>>;
+  memberCount: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  archivedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserChannelEdge {
+  node: UserChannel;
   cursor: String;
 }
 
-export interface CommunityEdgePromise
-  extends Promise<CommunityEdge>,
+export interface UserChannelEdgePromise
+  extends Promise<UserChannelEdge>,
     Fragmentable {
-  node: <T = CommunityPromise>() => T;
+  node: <T = UserChannelPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface CommunityEdgeSubscription
-  extends Promise<AsyncIterator<CommunityEdge>>,
+export interface UserChannelEdgeSubscription
+  extends Promise<AsyncIterator<UserChannelEdge>>,
     Fragmentable {
-  node: <T = CommunitySubscription>() => T;
+  node: <T = UserChannelSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChannelSubscriptionPayload {
+  mutation: MutationType;
+  node: Channel;
+  updatedFields: String[];
+  previousValues: ChannelPreviousValues;
+}
+
+export interface ChannelSubscriptionPayloadPromise
+  extends Promise<ChannelSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ChannelPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ChannelPreviousValuesPromise>() => T;
+}
+
+export interface ChannelSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ChannelSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ChannelSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ChannelPreviousValuesSubscription>() => T;
 }
 
 export interface Community {
@@ -1077,55 +1584,6 @@ export interface CommunityPromise extends Promise<Community>, Fragmentable {
 
 export interface CommunitySubscription
   extends Promise<AsyncIterator<Community>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  coverPhoto: () => Promise<AsyncIterator<String>>;
-  profilePhoto: () => Promise<AsyncIterator<String>>;
-  isPrivate: () => Promise<AsyncIterator<Boolean>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  website: () => Promise<AsyncIterator<String>>;
-  tags: () => Promise<AsyncIterator<String[]>>;
-  deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  memberCount: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CommunityPreviousValues {
-  id: ID_Output;
-  name: String;
-  description: String;
-  coverPhoto: String;
-  profilePhoto: String;
-  isPrivate: Boolean;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  website?: String;
-  tags: String[];
-  deletedAt?: DateTimeOutput;
-  memberCount?: Int;
-}
-
-export interface CommunityPreviousValuesPromise
-  extends Promise<CommunityPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  coverPhoto: () => Promise<String>;
-  profilePhoto: () => Promise<String>;
-  isPrivate: () => Promise<Boolean>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  website: () => Promise<String>;
-  tags: () => Promise<String[]>;
-  deletedAt: () => Promise<DateTimeOutput>;
-  memberCount: () => Promise<Int>;
-}
-
-export interface CommunityPreviousValuesSubscription
-  extends Promise<AsyncIterator<CommunityPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
@@ -1184,163 +1642,195 @@ export interface ChannelPreviousValuesSubscription
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface ChannelSubscriptionPayload {
-  mutation: MutationType;
-  node: Channel;
-  updatedFields: String[];
-  previousValues: ChannelPreviousValues;
-}
-
-export interface ChannelSubscriptionPayloadPromise
-  extends Promise<ChannelSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ChannelPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ChannelPreviousValuesPromise>() => T;
-}
-
-export interface ChannelSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ChannelSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ChannelSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ChannelPreviousValuesSubscription>() => T;
-}
-
-export interface Channel {
+export interface UserChannel {
   id: ID_Output;
-  name: String;
-  description?: String;
-  isPrivate: Boolean;
-  isDefault: Boolean;
-  memberCount?: Int;
+  channelId: ID_Output;
+  userId: ID_Output;
+  status: UserChannelStatus;
+  role: UserChannelRole;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  archivedAt?: DateTimeOutput;
-  deletedAt?: DateTimeOutput;
 }
 
-export interface ChannelPromise extends Promise<Channel>, Fragmentable {
+export interface UserChannelPromise extends Promise<UserChannel>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  isPrivate: () => Promise<Boolean>;
-  isDefault: () => Promise<Boolean>;
-  memberCount: () => Promise<Int>;
+  channelId: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  status: () => Promise<UserChannelStatus>;
+  role: () => Promise<UserChannelRole>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  archivedAt: () => Promise<DateTimeOutput>;
-  deletedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface ChannelSubscription
-  extends Promise<AsyncIterator<Channel>>,
+export interface UserChannelSubscription
+  extends Promise<AsyncIterator<UserChannel>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  isPrivate: () => Promise<AsyncIterator<Boolean>>;
-  isDefault: () => Promise<AsyncIterator<Boolean>>;
-  memberCount: () => Promise<AsyncIterator<Int>>;
+  channelId: () => Promise<AsyncIterator<ID_Output>>;
+  userId: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<UserChannelStatus>>;
+  role: () => Promise<AsyncIterator<UserChannelRole>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  archivedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface AggregateChannel {
-  count: Int;
+export interface CommunityEdge {
+  node: Community;
+  cursor: String;
 }
 
-export interface AggregateChannelPromise
-  extends Promise<AggregateChannel>,
+export interface CommunityEdgePromise
+  extends Promise<CommunityEdge>,
     Fragmentable {
-  count: () => Promise<Int>;
+  node: <T = CommunityPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregateChannelSubscription
-  extends Promise<AsyncIterator<AggregateChannel>>,
+export interface CommunityEdgeSubscription
+  extends Promise<AsyncIterator<CommunityEdge>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = CommunitySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CommunityConnection {
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommunitySubscriptionPayload {
+  mutation: MutationType;
+  node: Community;
+  updatedFields: String[];
+  previousValues: CommunityPreviousValues;
+}
+
+export interface CommunitySubscriptionPayloadPromise
+  extends Promise<CommunitySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CommunityPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CommunityPreviousValuesPromise>() => T;
+}
+
+export interface CommunitySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CommunitySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CommunitySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CommunityPreviousValuesSubscription>() => T;
+}
+
+export interface UserCommunitySubscriptionPayload {
+  mutation: MutationType;
+  node: UserCommunity;
+  updatedFields: String[];
+  previousValues: UserCommunityPreviousValues;
+}
+
+export interface UserCommunitySubscriptionPayloadPromise
+  extends Promise<UserCommunitySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserCommunityPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserCommunityPreviousValuesPromise>() => T;
+}
+
+export interface UserCommunitySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserCommunitySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserCommunitySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserCommunityPreviousValuesSubscription>() => T;
+}
+
+export interface UserChannelConnection {
   pageInfo: PageInfo;
-  edges: CommunityEdge[];
+  edges: UserChannelEdge[];
 }
 
-export interface CommunityConnectionPromise
-  extends Promise<CommunityConnection>,
+export interface UserChannelConnectionPromise
+  extends Promise<UserChannelConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CommunityEdge>>() => T;
-  aggregate: <T = AggregateCommunityPromise>() => T;
+  edges: <T = FragmentableArray<UserChannelEdge>>() => T;
+  aggregate: <T = AggregateUserChannelPromise>() => T;
 }
 
-export interface CommunityConnectionSubscription
-  extends Promise<AsyncIterator<CommunityConnection>>,
+export interface UserChannelConnectionSubscription
+  extends Promise<AsyncIterator<UserChannelConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CommunityEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCommunitySubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserChannelEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserChannelSubscription>() => T;
 }
 
-export interface User {
+export interface UserPreviousValues {
   id: ID_Output;
   username: String;
   name: String;
+  description?: String;
+  website?: String;
+  wechatProviderId?: String;
   coverPhoto: String;
   profilePhoto: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  description?: String;
-  website?: String;
-  wechatProviderId?: String;
-  isOnline?: Boolean;
   lastSeen?: DateTimeOutput;
   bannedAt?: DateTimeOutput;
   deletedAt?: DateTimeOutput;
-  modifiedAt?: DateTimeOutput;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   username: () => Promise<String>;
   name: () => Promise<String>;
+  description: () => Promise<String>;
+  website: () => Promise<String>;
+  wechatProviderId: () => Promise<String>;
   coverPhoto: () => Promise<String>;
   profilePhoto: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  description: () => Promise<String>;
-  website: () => Promise<String>;
-  wechatProviderId: () => Promise<String>;
-  isOnline: () => Promise<Boolean>;
   lastSeen: () => Promise<DateTimeOutput>;
   bannedAt: () => Promise<DateTimeOutput>;
   deletedAt: () => Promise<DateTimeOutput>;
-  modifiedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   username: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  website: () => Promise<AsyncIterator<String>>;
+  wechatProviderId: () => Promise<AsyncIterator<String>>;
   coverPhoto: () => Promise<AsyncIterator<String>>;
   profilePhoto: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  description: () => Promise<AsyncIterator<String>>;
-  website: () => Promise<AsyncIterator<String>>;
-  wechatProviderId: () => Promise<AsyncIterator<String>>;
-  isOnline: () => Promise<AsyncIterator<Boolean>>;
   lastSeen: () => Promise<AsyncIterator<DateTimeOutput>>;
   bannedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  modifiedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -1368,22 +1858,155 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface ChannelEdge {
-  node: Channel;
+export interface CommunityConnection {
+  pageInfo: PageInfo;
+  edges: CommunityEdge[];
+}
+
+export interface CommunityConnectionPromise
+  extends Promise<CommunityConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CommunityEdge>>() => T;
+  aggregate: <T = AggregateCommunityPromise>() => T;
+}
+
+export interface CommunityConnectionSubscription
+  extends Promise<AsyncIterator<CommunityConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommunityEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommunitySubscription>() => T;
+}
+
+export interface CommunityPreviousValues {
+  id: ID_Output;
+  name: String;
+  description: String;
+  coverPhoto: String;
+  profilePhoto: String;
+  isPrivate: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  website?: String;
+  tags: String[];
+  deletedAt?: DateTimeOutput;
+  memberCount?: Int;
+}
+
+export interface CommunityPreviousValuesPromise
+  extends Promise<CommunityPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  coverPhoto: () => Promise<String>;
+  profilePhoto: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  website: () => Promise<String>;
+  tags: () => Promise<String[]>;
+  deletedAt: () => Promise<DateTimeOutput>;
+  memberCount: () => Promise<Int>;
+}
+
+export interface CommunityPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommunityPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  coverPhoto: () => Promise<AsyncIterator<String>>;
+  profilePhoto: () => Promise<AsyncIterator<String>>;
+  isPrivate: () => Promise<AsyncIterator<Boolean>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  website: () => Promise<AsyncIterator<String>>;
+  tags: () => Promise<AsyncIterator<String[]>>;
+  deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  memberCount: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ChannelConnection {
+  pageInfo: PageInfo;
+  edges: ChannelEdge[];
+}
+
+export interface ChannelConnectionPromise
+  extends Promise<ChannelConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ChannelEdge>>() => T;
+  aggregate: <T = AggregateChannelPromise>() => T;
+}
+
+export interface ChannelConnectionSubscription
+  extends Promise<AsyncIterator<ChannelConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ChannelEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateChannelSubscription>() => T;
+}
+
+export interface AggregateUserChannel {
+  count: Int;
+}
+
+export interface AggregateUserChannelPromise
+  extends Promise<AggregateUserChannel>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserChannelSubscription
+  extends Promise<AsyncIterator<AggregateUserChannel>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserCommunityEdge {
+  node: UserCommunity;
   cursor: String;
 }
 
-export interface ChannelEdgePromise extends Promise<ChannelEdge>, Fragmentable {
-  node: <T = ChannelPromise>() => T;
+export interface UserCommunityEdgePromise
+  extends Promise<UserCommunityEdge>,
+    Fragmentable {
+  node: <T = UserCommunityPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ChannelEdgeSubscription
-  extends Promise<AsyncIterator<ChannelEdge>>,
+export interface UserCommunityEdgeSubscription
+  extends Promise<AsyncIterator<UserCommunityEdge>>,
     Fragmentable {
-  node: <T = ChannelSubscription>() => T;
+  node: <T = UserCommunitySubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
+export type Long = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -1400,23 +2023,15 @@ DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
 
-export type Long = string;
-
 /*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
-export type ID_Input = string | number;
-export type ID_Output = string;
+export type String = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /**
  * Model Metadata
@@ -1433,6 +2048,30 @@ export const models: Model[] = [
   },
   {
     name: "Channel",
+    embedded: false
+  },
+  {
+    name: "UserCommunityStatus",
+    embedded: false
+  },
+  {
+    name: "UserCommunityRole",
+    embedded: false
+  },
+  {
+    name: "UserCommunity",
+    embedded: false
+  },
+  {
+    name: "UserChannelStatus",
+    embedded: false
+  },
+  {
+    name: "UserChannelRole",
+    embedded: false
+  },
+  {
+    name: "UserChannel",
     embedded: false
   }
 ];
