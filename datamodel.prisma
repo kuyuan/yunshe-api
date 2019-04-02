@@ -2,18 +2,16 @@ type User {
   id: ID! @id
   username: String! @unique
   name: String!
+  description: String
+  website: String
+  wechatProviderId: String
   coverPhoto: String!
   profilePhoto: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  description: String
-  website: String
-  wechatProviderId: String
-  isOnline: Boolean
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
-  modifiedAt: DateTime
 }
 
 type Community {
@@ -22,7 +20,7 @@ type Community {
   description: String!
   coverPhoto: String!
   profilePhoto: String!
-  isPrivate: Boolean!
+  isPrivate: Boolean! @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   website: String
@@ -35,11 +33,55 @@ type Channel {
   id: ID! @id
   name: String!
   description: String
-  isPrivate: Boolean!
+  isPrivate: Boolean! @default(value: false)
   isDefault: Boolean!
   memberCount: Int
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   archivedAt: DateTime
   deletedAt: DateTime
+}
+
+enum UserCommunityStatus {
+  PENDING,
+  ACTIVE,
+  BANNED
+}
+
+enum UserCommunityRole {
+  OWNER,
+  MODERATOR,
+  MEMBER
+}
+
+type UserCommunity {
+  id: ID! @id
+  communityId: ID!
+  userId: ID!
+  status: UserCommunityStatus!
+  role: UserCommunityRole!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum UserChannelStatus {
+  PENDING,
+  ACTIVE,
+  BANNED
+}
+
+enum UserChannelRole {
+  OWNER,
+  MODERATOR,
+  MEMBER
+}
+
+type UserChannel {
+  id: ID! @id
+  channelId: ID!
+  userId: ID!
+  status: UserChannelStatus!
+  role: UserChannelRole!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
