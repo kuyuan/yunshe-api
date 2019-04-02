@@ -15,6 +15,9 @@ export const isValidUser = rule()(async (parent, args, { currentUser }: Context,
 });
 
 export default shield({
+  Query: {
+    currentUser: isValidUser,
+  },
   Mutation: {
     editUser: isValidUser,
   },
