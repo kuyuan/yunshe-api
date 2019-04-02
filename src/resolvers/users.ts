@@ -1,5 +1,6 @@
 import { UserUpdateInput } from "@prisma/index";
 import { Context } from "@utils/interfaces";
+import { editUser } from "@models/user";
 
 export default {
   Query: {
@@ -19,8 +20,8 @@ export default {
     },
   },
   Mutation: {
-    editUser: async (_, { input }: { input: UserUpdateInput }, { currentUser, prisma }: Context) => {
-      const user = await prisma.updateUser({ data: input, where: { id: currentUser.id } });
+    editUser: async (_, { input }: { input: UserUpdateInput }, { currentUser }: Context) => {
+      const user = await editUser(currentUser.id, input);
       return user;
     },
   },
