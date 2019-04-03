@@ -1,24 +1,40 @@
-import { rule, shield } from "graphql-shield";
-import { InvalidUserError, NotAuthorizedError } from "./errors";
-import { Context } from "./interfaces";
+import { Channel, Community } from "@prisma/index";
 import prisma from "./prisma";
 
-export const isValidUser = rule()(async (parent, args, { currentUser }: Context, info) => {
-  if (!currentUser || !currentUser.id) {
-    return new NotAuthorizedError();
+export const canViewCommunity = async (userId: string, community: Community): Promise<boolean> => {
+  if (!community.isPrivate) {
+    return true;
   }
-  const user = await prisma.user({ id: currentUser.id });
-  if (!user || user.bannedAt || user.deletedAt) {
-    return new InvalidUserError();
+  if (userId === null) {
+    return false;
+  }
+  const userCommunities = await prisma.userCommunities({
+    where: { userId, communityId: community.id, status: "ACTIVE" },
+  });
+  const userCommunity = userCommunities[0];
+  if (!userCommunity) {
+    return false;
   }
   return true;
-});
+};
 
-export default shield({
-  Query: {
-    currentUser: isValidUser,
-  },
-  Mutation: {
-    editUser: isValidUser,
-  },
-});
+export const canViewChannel = async (userId: string, channel: Channel): Promise<boolean> => {
+  const community = await prisma.community({ id: channel.communityId });
+  if (!await canViewCommunity(userId, community)) {
+    return false;
+  }
+  if (!channel.isPrivate) {
+    return true;
+  }
+  if (userId === null) {
+    return false;
+  }
+  const userChannels = await prisma.userChannels({
+    where: { userId, channelId: channel.id, status: "ACTIVE" },
+  });
+  const userChannel = userChannels[0];
+  if (!userChannel) {
+    return false;
+  }
+  return true;
+};

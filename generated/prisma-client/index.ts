@@ -366,6 +366,8 @@ export type UserChannelStatus = "PENDING" | "ACTIVE" | "BANNED";
 export type ChannelOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "communityId_ASC"
+  | "communityId_DESC"
   | "name_ASC"
   | "name_DESC"
   | "description_ASC"
@@ -491,6 +493,7 @@ export interface UserChannelCreateInput {
 }
 
 export interface ChannelCreateInput {
+  communityId: ID_Input;
   name: String;
   description?: String;
   isPrivate?: Boolean;
@@ -650,6 +653,20 @@ export interface ChannelWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
+  communityId?: ID_Input;
+  communityId_not?: ID_Input;
+  communityId_in?: ID_Input[] | ID_Input;
+  communityId_not_in?: ID_Input[] | ID_Input;
+  communityId_lt?: ID_Input;
+  communityId_lte?: ID_Input;
+  communityId_gt?: ID_Input;
+  communityId_gte?: ID_Input;
+  communityId_contains?: ID_Input;
+  communityId_not_contains?: ID_Input;
+  communityId_starts_with?: ID_Input;
+  communityId_not_starts_with?: ID_Input;
+  communityId_ends_with?: ID_Input;
+  communityId_not_ends_with?: ID_Input;
   name?: String;
   name_not?: String;
   name_in?: String[] | String;
@@ -926,6 +943,7 @@ export type CommunityWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface ChannelUpdateInput {
+  communityId?: ID_Input;
   name?: String;
   description?: String;
   isPrivate?: Boolean;
@@ -936,6 +954,7 @@ export interface ChannelUpdateInput {
 }
 
 export interface ChannelUpdateManyMutationInput {
+  communityId?: ID_Input;
   name?: String;
   description?: String;
   isPrivate?: Boolean;
@@ -1469,6 +1488,7 @@ export interface UserCommunitySubscription
 
 export interface Channel {
   id: ID_Output;
+  communityId: ID_Output;
   name: String;
   description?: String;
   isPrivate: Boolean;
@@ -1482,6 +1502,7 @@ export interface Channel {
 
 export interface ChannelPromise extends Promise<Channel>, Fragmentable {
   id: () => Promise<ID_Output>;
+  communityId: () => Promise<ID_Output>;
   name: () => Promise<String>;
   description: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
@@ -1497,6 +1518,7 @@ export interface ChannelSubscription
   extends Promise<AsyncIterator<Channel>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  communityId: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   isPrivate: () => Promise<AsyncIterator<Boolean>>;
@@ -1601,6 +1623,7 @@ export interface CommunitySubscription
 
 export interface ChannelPreviousValues {
   id: ID_Output;
+  communityId: ID_Output;
   name: String;
   description?: String;
   isPrivate: Boolean;
@@ -1616,6 +1639,7 @@ export interface ChannelPreviousValuesPromise
   extends Promise<ChannelPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  communityId: () => Promise<ID_Output>;
   name: () => Promise<String>;
   description: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
@@ -1631,6 +1655,7 @@ export interface ChannelPreviousValuesSubscription
   extends Promise<AsyncIterator<ChannelPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  communityId: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   isPrivate: () => Promise<AsyncIterator<Boolean>>;
