@@ -1,4 +1,4 @@
-import { Community, User, UserCommunity } from "@prisma/index";
+import { Community, User } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import prisma from "@utils/prisma";
 import { getCommunityById } from "../community";

@@ -31,6 +31,7 @@ type Community {
 
 type Channel {
   id: ID! @id
+  communityId: ID!
   name: String!
   description: String
   isPrivate: Boolean! @default(value: false)

@@ -16,6 +16,10 @@ export const canViewCommunity = async (userId: string, community: Community): Pr
 };
 
 export const canViewChannel = async (userId: string, channel: Channel): Promise<boolean> => {
+  const community = await prisma.community({ id: channel.communityId });
+  if (!await canViewCommunity(userId, community)) {
+    return false
+  }
   if (!channel.isPrivate) {
     return true;
   }

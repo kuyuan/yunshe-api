@@ -28,6 +28,7 @@ type BatchPayload {
 
 type Channel {
   id: ID!
+  communityId: ID!
   name: String!
   description: String
   isPrivate: Boolean!
@@ -46,6 +47,7 @@ type ChannelConnection {
 }
 
 input ChannelCreateInput {
+  communityId: ID!
   name: String!
   description: String
   isPrivate: Boolean
@@ -63,6 +65,8 @@ type ChannelEdge {
 enum ChannelOrderByInput {
   id_ASC
   id_DESC
+  communityId_ASC
+  communityId_DESC
   name_ASC
   name_DESC
   description_ASC
@@ -85,6 +89,7 @@ enum ChannelOrderByInput {
 
 type ChannelPreviousValues {
   id: ID!
+  communityId: ID!
   name: String!
   description: String
   isPrivate: Boolean!
@@ -113,6 +118,7 @@ input ChannelSubscriptionWhereInput {
 }
 
 input ChannelUpdateInput {
+  communityId: ID
   name: String
   description: String
   isPrivate: Boolean
@@ -123,6 +129,7 @@ input ChannelUpdateInput {
 }
 
 input ChannelUpdateManyMutationInput {
+  communityId: ID
   name: String
   description: String
   isPrivate: Boolean
@@ -147,6 +154,20 @@ input ChannelWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  communityId: ID
+  communityId_not: ID
+  communityId_in: [ID!]
+  communityId_not_in: [ID!]
+  communityId_lt: ID
+  communityId_lte: ID
+  communityId_gt: ID
+  communityId_gte: ID
+  communityId_contains: ID
+  communityId_not_contains: ID
+  communityId_starts_with: ID
+  communityId_not_starts_with: ID
+  communityId_ends_with: ID
+  communityId_not_ends_with: ID
   name: String
   name_not: String
   name_in: [String!]
