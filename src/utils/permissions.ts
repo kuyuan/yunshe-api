@@ -5,6 +5,9 @@ export const canViewCommunity = async (userId: string, community: Community): Pr
   if (!community.isPrivate) {
     return true;
   }
+  if (userId === null) {
+    return false;
+  }
   const userCommunities = await prisma.userCommunities({
     where: { userId, communityId: community.id, status: "ACTIVE" },
   });
@@ -18,10 +21,13 @@ export const canViewCommunity = async (userId: string, community: Community): Pr
 export const canViewChannel = async (userId: string, channel: Channel): Promise<boolean> => {
   const community = await prisma.community({ id: channel.communityId });
   if (!await canViewCommunity(userId, community)) {
-    return false
+    return false;
   }
   if (!channel.isPrivate) {
     return true;
+  }
+  if (userId === null) {
+    return false;
   }
   const userChannels = await prisma.userChannels({
     where: { userId, channelId: channel.id, status: "ACTIVE" },
