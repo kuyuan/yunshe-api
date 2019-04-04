@@ -251,8 +251,8 @@ type Community {
   id: ID!
   name: String!
   description: String!
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   isPrivate: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -271,8 +271,8 @@ type CommunityConnection {
 input CommunityCreateInput {
   name: String!
   description: String!
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   isPrivate: Boolean
   website: String
   tags: CommunityCreatetagsInput
@@ -318,8 +318,8 @@ type CommunityPreviousValues {
   id: ID!
   name: String!
   description: String!
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   isPrivate: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -587,8 +587,8 @@ type User {
   description: String
   website: String
   wechatProviderId: String
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   createdAt: DateTime!
   updatedAt: DateTime!
   lastSeen: DateTime
@@ -950,8 +950,8 @@ input UserCreateInput {
   description: String
   website: String
   wechatProviderId: String
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   lastSeen: DateTime
   bannedAt: DateTime
   deletedAt: DateTime
@@ -998,8 +998,8 @@ type UserPreviousValues {
   description: String
   website: String
   wechatProviderId: String
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   createdAt: DateTime!
   updatedAt: DateTime!
   lastSeen: DateTime
