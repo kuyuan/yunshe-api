@@ -5,8 +5,8 @@ type User {
   description: String
   website: String
   wechatProviderId: String
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   lastSeen: DateTime
@@ -18,8 +18,8 @@ type Community {
   id: ID! @id
   name: String!
   description: String!
-  coverPhoto: String!
-  profilePhoto: String!
+  coverPhoto: String
+  profilePhoto: String
   isPrivate: Boolean! @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

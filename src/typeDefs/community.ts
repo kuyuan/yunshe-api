@@ -16,4 +16,17 @@ export default gql`
   type Query {
     community(id: ID!): Community
   }
+
+  input CreateCommunityInput {
+    name: String!
+    description: String!
+    website: String
+    profileFile: Upload
+    coverFile: Upload
+    isPrivate: Boolean!
+  }
+
+  type Mutation {
+    createCommunity(input: CreateCommunityInput!): Community
+  }
 `;

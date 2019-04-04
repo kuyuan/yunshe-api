@@ -856,8 +856,8 @@ export interface UserCreateInput {
   description?: String;
   website?: String;
   wechatProviderId?: String;
-  coverPhoto: String;
-  profilePhoto: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
   lastSeen?: DateTimeInput;
   bannedAt?: DateTimeInput;
   deletedAt?: DateTimeInput;
@@ -967,8 +967,8 @@ export interface ChannelUpdateManyMutationInput {
 export interface CommunityCreateInput {
   name: String;
   description: String;
-  coverPhoto: String;
-  profilePhoto: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
   isPrivate?: Boolean;
   website?: String;
   tags?: CommunityCreatetagsInput;
@@ -1280,8 +1280,8 @@ export interface User {
   description?: String;
   website?: String;
   wechatProviderId?: String;
-  coverPhoto: String;
-  profilePhoto: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   lastSeen?: DateTimeOutput;
@@ -1578,8 +1578,8 @@ export interface Community {
   id: ID_Output;
   name: String;
   description: String;
-  coverPhoto: String;
-  profilePhoto: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
   isPrivate: Boolean;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -1813,8 +1813,8 @@ export interface UserPreviousValues {
   description?: String;
   website?: String;
   wechatProviderId?: String;
-  coverPhoto: String;
-  profilePhoto: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   lastSeen?: DateTimeOutput;
@@ -1908,8 +1908,8 @@ export interface CommunityPreviousValues {
   id: ID_Output;
   name: String;
   description: String;
-  coverPhoto: String;
-  profilePhoto: String;
+  coverPhoto?: String;
+  profilePhoto?: String;
   isPrivate: Boolean;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
