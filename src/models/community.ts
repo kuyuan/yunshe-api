@@ -34,7 +34,7 @@ export const createCommunity = async (userId: string, input: CreateCommunityInpu
     description: input.description,
     coverPhoto: defaultCommunityCoverPhoto,
     profilePhoto: defaultCommunityProfilePhoto,
-    isPrivate: input.isPrivate
+    isPrivate: input.isPrivate,
   };
   // Create community
   let community = await prisma.createCommunity(communityCreateInput);
