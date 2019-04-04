@@ -1,7 +1,8 @@
 import { Community, User } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import prisma from "@utils/prisma";
-import { getCommunityById } from "../community";
+import { getCommunityById, createCommunity } from "../community";
+import fs from "fs";
 
 let user: User;
 let publicCommunity: Community;
@@ -59,3 +60,25 @@ describe("getCommunityById", () => {
     expect(result.name).toBe("测试社区");
   });
 });
+
+describe("createCommunity", () => {
+  test("it create new community", async () => {
+    const createCommunityInput = {
+      name: "测试创建社区",
+      description: "Testing",
+      isPrivate: false,
+      coverFile: {
+        stream: fs.createReadStream("./support/files/avatar.jpg"),
+        filename: "cover.jpg",
+      },
+      profileFile: {
+        stream: fs.createReadStream("./support/files/avatar.jpg"),
+        filename: "profile.jpg",
+      },
+    }
+    const community = await createCommunity(user.id, createCommunityInput);
+    expect(community.name).toBe("测试创建社区")
+    expect(community.coverPhoto).toBe(`dev.myqcloud.com/community/${community.id}/cover.jpg`)
+    expect(community.profilePhoto).toBe(`dev.myqcloud.com/community/${community.id}/profile.jpg`)
+  })
+})

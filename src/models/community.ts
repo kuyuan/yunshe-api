@@ -23,8 +23,8 @@ export interface CreateCommunityInput {
   name: string;
   description: string;
   website?: string;
-  isPrivate?: boolean;
-  profileFile: File;
+  isPrivate: boolean;
+  profileFile?: File;
   coverFile?: File;
 }
 
@@ -34,6 +34,7 @@ export const createCommunity = async (userId: string, input: CreateCommunityInpu
     description: input.description,
     coverPhoto: defaultCommunityCoverPhoto,
     profilePhoto: defaultCommunityProfilePhoto,
+    isPrivate: input.isPrivate
   };
   // Create community
   let community = await prisma.createCommunity(communityCreateInput);

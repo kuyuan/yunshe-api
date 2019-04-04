@@ -21,9 +21,9 @@ export default gql`
     name: String!
     description: String!
     website: String
-    profileFile: Upload!
+    profileFile: Upload
     coverFile: Upload
-    isPrivate: Boolean
+    isPrivate: Boolean!
   }
 
   type Mutation {
