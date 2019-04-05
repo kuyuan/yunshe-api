@@ -79,7 +79,7 @@ describe("createCommunity", () => {
     };
     const community = await createCommunity(user.id, createCommunityInput);
     const userCommunity = await getUserCommunity(user.id, community.id);
-    expect(userCommunity.status).toBe("ACTIVE")
+    expect(userCommunity.status).toBe("ACTIVE");
     expect(community.name).toBe("测试创建社区");
     expect(community.coverPhoto).toBe(`dev.myqcloud.com/community/${community.id}/cover.jpg`);
     expect(community.profilePhoto).toBe(`dev.myqcloud.com/community/${community.id}/profile.jpg`);
