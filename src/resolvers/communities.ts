@@ -1,4 +1,8 @@
-import { createCommunity, getCommunityById } from "@models/community";
+import {
+  createCommunity,
+  getCommunityById,
+  updateCommunity
+} from "@models/community";
 import { Context } from "@utils/interfaces";
 
 export default {
@@ -11,6 +15,10 @@ export default {
   Mutation: {
     createCommunity: async (_, { input }, { currentUser }: Context) => {
       const community = await createCommunity(currentUser.id, input);
+      return community;
+    },
+    updateCommunity: async (_, { input }, { currentUser }: Context) => {
+      const community = await updateCommunity(currentUser.id, input);
       return community;
     },
   },

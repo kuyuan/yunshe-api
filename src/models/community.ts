@@ -1,7 +1,14 @@
 import { Community, CommunityCreateInput, CommunityUpdateInput } from "@prisma/index";
 import { uploadImage } from "@utils/cos";
+import {
+  NotAllowedError,
+  NotFoundError,
+} from "@utils/errors";
 import { File } from "@utils/interfaces";
-import { canViewCommunity } from "@utils/permissions";
+import {
+  canUpdateCommunity,
+  canViewCommunity,
+} from "@utils/permissions";
 import prisma from "@utils/prisma";
 
 export const defaultCommunityCoverPhoto = "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover1.jpg";
@@ -19,7 +26,7 @@ export const getCommunityById = async (communityId: string, userId: string): Pro
   }
 };
 
-export interface CreateCommunityInput {
+export interface UserCreateCommunityInput {
   name: string;
   description: string;
   website?: string;
@@ -28,7 +35,7 @@ export interface CreateCommunityInput {
   coverFile?: File;
 }
 
-export const createCommunity = async (userId: string, input: CreateCommunityInput) => {
+export const createCommunity = async (userId: string, input: UserCreateCommunityInput): Promise<Community> => {
   const communityCreateInput: CommunityCreateInput = {
     name: input.name,
     description: input.description,
@@ -64,4 +71,48 @@ export const createCommunity = async (userId: string, input: CreateCommunityInpu
     where: { id: community.id },
   });
   return community;
+};
+
+export interface UserUpdateCommunityInput {
+  communityId: string;
+  description?: string;
+  website?: string;
+  isPrivate?: boolean;
+  profileFile?: File;
+  coverFile?: File;
+}
+
+export const updateCommunity = async (userId: string, input: UserUpdateCommunityInput): Promise<Community> => {
+  let community = await prisma.community({ id: input.communityId });
+  if (!community) {
+    throw new NotFoundError();
+  }
+  if (await canUpdateCommunity(userId, community)) {
+    const inputData: CommunityUpdateInput = {};
+    if (input.description !== null) {
+      inputData.description = input.description;
+    }
+    if (input.isPrivate !== null) {
+      inputData.isPrivate = input.isPrivate;
+    }
+    if (input.website !== null) {
+      inputData.website = input.website;
+    }
+    if (input.coverFile) {
+      const converUploadResponse = await uploadImage(input.coverFile, "Community", community.id);
+      if (converUploadResponse.statusCode === 200) {
+        inputData.coverPhoto = converUploadResponse.Location;
+      }
+    }
+    if (input.profileFile) {
+      const profileUploadResponse = await uploadImage(input.profileFile, "Community", community.id);
+      if (profileUploadResponse.statusCode === 200) {
+        inputData.profilePhoto = profileUploadResponse.Location;
+      }
+    }
+    community = await prisma.updateCommunity({ data: inputData, where: { id: community.id } });
+    return community;
+  } else {
+    throw new NotAllowedError();
+  }
 };

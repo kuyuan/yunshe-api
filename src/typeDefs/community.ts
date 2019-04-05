@@ -26,7 +26,16 @@ export default gql`
     isPrivate: Boolean!
   }
 
+  input UpdateCommunityInput {
+    description: String
+    website: String
+    profileFile: Upload
+    coverFile: Upload
+    isPrivate: Boolean
+  }
+
   type Mutation {
     createCommunity(input: CreateCommunityInput!): Community
+    updateCommunity(input: UpdateCommunityInput!): Community
   }
 `;
