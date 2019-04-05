@@ -1,7 +1,7 @@
 import {
   createCommunity,
   getCommunityById,
-  updateCommunity
+  updateCommunity,
 } from "@models/community";
 import { Context } from "@utils/interfaces";
 

@@ -27,6 +27,7 @@ export default gql`
   }
 
   input UpdateCommunityInput {
+    communityId: String!
     description: String
     website: String
     profileFile: Upload
