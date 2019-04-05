@@ -12,10 +12,10 @@ export interface EditUserInput {
 
 export const editUser = async (userId: string, input: EditUserInput): Promise<User> => {
   const userUpdateInput: UserUpdateInput = {};
-  if (input.name) {
+  if (input.name !== null) {
     userUpdateInput.name = input.name;
   }
-  if (input.description) {
+  if (input.description !== null) {
     userUpdateInput.description = input.description;
   }
   if (input.coverFile) {

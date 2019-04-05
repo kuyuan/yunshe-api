@@ -20,6 +20,7 @@ export default shield({
   },
   Mutation: {
     createCommunity: isValidUser,
+    updateCommunity: isValidUser,
     editUser: isValidUser,
   },
 });
