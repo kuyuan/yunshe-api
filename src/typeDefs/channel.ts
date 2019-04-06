@@ -15,4 +15,15 @@ export default gql`
   type Query {
     channel(id: ID!): Channel
   }
+
+  input CreateChannelInput {
+    communityId: ID!
+    name: String!
+    description: String
+    isPrivate: Boolean!
+  }
+
+  type Mutation {
+    createChannel(input: CreateChannelInput!): Channel
+  }
 `;
