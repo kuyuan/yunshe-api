@@ -13,6 +13,6 @@ test("COS mock", async () => {
 test("Mongodb mock", async () => {
   const client = await createClient();
   const db = client.db();
-  expect(db.databaseName).toBe("yunsheTest");
+  expect(db.databaseName).toBe("yunshe_test");
   await client.close();
 });
