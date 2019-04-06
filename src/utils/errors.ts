@@ -15,3 +15,7 @@ export const InvalidUserError = createError("InvalidUserError", {
 export const NotFoundError = createError("NotFoundError", {
   message: "Not Found",
 });
+
+export const ArgumentError = createError("ArgumentError", {
+  message: "参数错误",
+});
