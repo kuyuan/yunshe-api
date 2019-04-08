@@ -1,15 +1,46 @@
-import { Channel, Community } from "@prisma/index";
+import { Channel, Community, User } from "@prisma/index";
+import { generateUniqUsername } from "@support/test/helpers";
+import { generateSessionCookie } from "@utils/cookie";
+import { createClient } from "@utils/mongo";
 import prisma from "@utils/prisma";
 import { schema } from "@utils/server";
+import { createServer, serverOptions } from "@utils/server";
+import getPort from "get-port";
+import got from "got";
 import { graphql } from "graphql";
+import { Db, MongoClient } from "mongodb";
 
 const rootValue = {};
 let context;
 let channel: Channel;
 let community: Community;
+let currentUser: User;
+
+let db: Db;
+let client: MongoClient;
+let activeServer;
+let port: number;
+let cookie: string;
 
 beforeAll(async () => {
-  context = { prisma };
+  client = await createClient();
+  db = client.db();
+  const server = createServer({ db });
+  port = await getPort();
+  activeServer = await server.start({
+    ...serverOptions,
+    port,
+  });
+  currentUser = await prisma.createUser({
+    username: generateUniqUsername(),
+    name: "测试人员",
+    description: "what happened",
+    coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
+    profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
+  });
+  cookie = generateSessionCookie({
+    passport: { user: JSON.stringify({ id: currentUser.id, name: currentUser.name }) },
+  });
   community = await prisma.createCommunity({
     name: "测试社区",
     description: "这是一个测试社区",
@@ -25,10 +56,13 @@ beforeAll(async () => {
     isDefault: true,
     memberCount: 5,
   });
+  context = { prisma, currentUser };
 });
 
 afterAll(async () => {
   await prisma.deleteManyChannels({ id: channel.id });
+  await activeServer.close();
+  await client.close();
 });
 
 describe("Query channel", () => {
@@ -47,6 +81,44 @@ describe("Query channel", () => {
         id: channel.id,
         name: "默认频道",
       },
+    });
+  });
+});
+
+describe("Mutation Channel", () => {
+  test("createChannel", async () => {
+    const query = `
+      mutation CreateChannel($input: CreateChannelInput!) {
+        createChannel(input: $input) {
+          name
+        }
+      }
+    `;
+    const variables = {
+      input: {
+        communityId: community.id,
+        name: "新频道",
+        description: "New description",
+        isPrivate: false,
+      },
+    };
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Cookie": cookie,
+      },
+    });
+    const response = await api.post("graphql", { body: JSON.stringify({ query, variables }) });
+    const { data, errors } = JSON.parse(response.body);
+    expect(data).toEqual({
+      createChannel: null,
+    });
+    expect(errors[0]).toMatchObject({
+      message: "没有权限",
+      name: "NotAllowedError",
     });
   });
 });
