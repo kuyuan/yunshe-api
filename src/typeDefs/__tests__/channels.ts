@@ -53,7 +53,7 @@ beforeAll(async () => {
     name: "默认频道",
     description: "社区创建时默认创建的我频道",
     isPrivate: false,
-    isDefault: true,
+    isDefault: false,
     memberCount: 5,
   });
   context = { prisma, currentUser };
@@ -120,5 +120,59 @@ describe("Mutation Channel", () => {
       message: "没有权限",
       name: "NotAllowedError",
     });
+  });
+
+  test("updateChannel", async () => {
+    const targetChannel = await prisma.createChannel({
+      communityId: community.id,
+      name: "默认频道",
+      description: "社区创建时默认创建的我频道",
+      isPrivate: false,
+      isDefault: false,
+      memberCount: 5,
+    });
+    const userChannel = await prisma.createUserChannel({
+      userId: currentUser.id,
+      channelId: targetChannel.id,
+      role: "OWNER",
+      status: "ACTIVE",
+    });
+    const query = `
+      mutation UpdateChannel($input: UpdateChannelInput!) {
+        updateChannel(input: $input) {
+          description
+          isDefault
+          isPrivate
+        }
+      }
+    `;
+    const variables = {
+      input: {
+        channelId: targetChannel.id,
+        description: "Updated description",
+        isPrivate: true,
+        isDefault: true,
+      },
+    };
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Cookie": cookie,
+      },
+    });
+    const response = await api.post("graphql", { body: JSON.stringify({ query, variables }) });
+    const { data } = JSON.parse(response.body);
+    expect(data).toEqual({
+      updateChannel: {
+        description: "Updated description",
+        isPrivate: true,
+        isDefault: true,
+      },
+    });
+    await prisma.deleteManyChannels({ id: targetChannel.id });
+    await prisma.deleteManyUserChannels({ id: userChannel.id });
   });
 });

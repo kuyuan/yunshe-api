@@ -1,11 +1,14 @@
-import { Channel } from "@prisma/index";
+import { Channel, ChannelUpdateInput } from "@prisma/index";
 import {
   ArgumentError,
   NotAllowedError,
   NotFoundError,
 } from "@utils/errors";
-import { canViewChannel } from "@utils/permissions";
-import { canUpdateCommunity } from "@utils/permissions";
+import {
+  canUpdateChannel,
+  canUpdateCommunity,
+  canViewChannel,
+} from "@utils/permissions";
 import prisma from "@utils/prisma";
 
 export const getChannelById = async (channlId: string, userId: string): Promise<Channel> => {
@@ -56,7 +59,51 @@ export const createChannel = async (userId: string, input: UserCreateChannelInpu
       ...input,
       isDefault,
     });
+    await prisma.createUserChannel({
+      channelId: channel.id,
+      userId,
+      role: "OWNER",
+      status: "ACTIVE",
+    });
     return channel;
+  } else {
+    throw new NotAllowedError();
+  }
+};
+
+export interface UserUpdateChannelInput {
+  channelId: string;
+  description?: string;
+  isPrivate?: boolean;
+  isDefault?: boolean;
+}
+
+export const updateChannel = async (userId: string, input: UserUpdateChannelInput) => {
+  const channel = await prisma.channel({ id: input.channelId });
+  if (!channel) {
+    throw new NotFoundError();
+  }
+  const updateDate: ChannelUpdateInput = {};
+  if (await canUpdateChannel(userId, channel)) {
+    // Update isDefault
+    if (input.isDefault === true && channel.isDefault === false) {
+      await prisma.updateManyChannels({
+        data: { isDefault: false },
+        where: { isDefault: true, communityId: channel.communityId },
+      });
+      updateDate.isDefault = true;
+    }
+    if (input.description !== null) {
+      updateDate.description = input.description;
+    }
+    if (input.isPrivate !== null) {
+      updateDate.isPrivate = input.isPrivate;
+    }
+    const updatedChannel = await prisma.updateChannel({
+      data: updateDate,
+      where: { id: channel.id },
+    });
+    return updatedChannel;
   } else {
     throw new NotAllowedError();
   }

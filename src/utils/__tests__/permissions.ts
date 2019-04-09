@@ -1,6 +1,10 @@
 import { Channel, Community, User } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
-import { canViewChannel, canViewCommunity } from "@utils/permissions";
+import {
+  canUpdateChannel,
+  canViewChannel,
+  canViewCommunity,
+} from "@utils/permissions";
 import prisma from "@utils/prisma";
 
 let user: User;
@@ -127,5 +131,24 @@ describe("canViewChannel", () => {
       await prisma.deleteUserCommunity({ id: userCommunity.id });
       await prisma.deleteUserChannel({ id: userChannel.id });
     });
+  });
+});
+
+describe("canUpdateChannel", () => {
+  test("it return false for other's channel", async () => {
+    const result = await canUpdateChannel(user.id, publicChannel);
+    expect(result).toBe(false);
+  });
+
+  test("it return true for it's own channel", async () => {
+    const userChannel = await prisma.createUserChannel({
+      userId: user.id,
+      channelId: publicChannel.id,
+      status: "ACTIVE",
+      role: "OWNER",
+    });
+    const result = await canUpdateChannel(user.id, publicChannel);
+    expect(result).toBe(true);
+    await prisma.deleteManyUserChannels({ id: userChannel.id });
   });
 });

@@ -1,4 +1,8 @@
-import { createChannel, getChannelById } from "@models/channel";
+import {
+  createChannel,
+  getChannelById,
+  updateChannel,
+} from "@models/channel";
 import { Context } from "@utils/interfaces";
 
 export default {
@@ -11,6 +15,10 @@ export default {
   Mutation: {
     createChannel: async (_, { input }, { currentUser }: Context) => {
       const channel = await createChannel(currentUser.id, input);
+      return channel;
+    },
+    updateChannel: async (_, { input }, { currentUser }: Context) => {
+      const channel = await updateChannel(currentUser.id, input);
       return channel;
     },
   },

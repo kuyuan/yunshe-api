@@ -1,3 +1,4 @@
+import { getUserChannel } from "@models/userChannel";
 import { getUserCommunity } from "@models/userCommunity";
 import { Channel, Community } from "@prisma/index";
 import prisma from "./prisma";
@@ -49,4 +50,15 @@ export const canViewChannel = async (userId: string, channel: Channel): Promise<
     return false;
   }
   return true;
+};
+
+export const canUpdateChannel = async (userId: string, channel: Channel): Promise<boolean> => {
+  if (channel.deletedAt) {
+    return false;
+  }
+  const userChannel = await getUserChannel(userId, channel.id);
+  if (userChannel && userChannel.status === "ACTIVE" && userChannel.role === "OWNER") {
+    return true;
+  }
+  return false;
 };
