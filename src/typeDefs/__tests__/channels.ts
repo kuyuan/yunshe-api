@@ -135,8 +135,8 @@ describe("Mutation Channel", () => {
       userId: currentUser.id,
       channelId: targetChannel.id,
       role: "OWNER",
-      status: "ACTIVE"
-    })
+      status: "ACTIVE",
+    });
     const query = `
       mutation UpdateChannel($input: UpdateChannelInput!) {
         updateChannel(input: $input) {
@@ -151,7 +151,7 @@ describe("Mutation Channel", () => {
         channelId: targetChannel.id,
         description: "Updated description",
         isPrivate: true,
-        isDefault: true
+        isDefault: true,
       },
     };
     const api = got.extend({
@@ -169,10 +169,10 @@ describe("Mutation Channel", () => {
       updateChannel: {
         description: "Updated description",
         isPrivate: true,
-        isDefault: true
-      }
+        isDefault: true,
+      },
     });
-    await prisma.deleteManyChannels({ id: targetChannel.id })
-    await prisma.deleteManyUserChannels({ id: userChannel.id })
-  })
+    await prisma.deleteManyChannels({ id: targetChannel.id });
+    await prisma.deleteManyUserChannels({ id: userChannel.id });
+  });
 });
