@@ -1,4 +1,4 @@
-import { Channel } from "@prisma/index";
+import { Channel, ChannelUpdateInput } from "@prisma/index";
 import {
   ArgumentError,
   NotAllowedError,
@@ -83,16 +83,24 @@ export const updateChannel = async (userId: string, input: UserUpdateChannelInpu
   if (!channel) {
     throw new NotFoundError();
   }
+  let updateDate: ChannelUpdateInput = {}
   if (await canUpdateChannel(userId, channel)) {
     // Update isDefault
     if (input.isDefault === true && channel.isDefault === false) {
       await prisma.updateManyChannels({
         data: { isDefault: false },
-        where: { isDefault: true },
+        where: { isDefault: true, communityId: channel.communityId },
       });
+      updateDate.isDefault = true
+    }
+    if (input.description !== null) {
+      updateDate.description = input.description
+    }
+    if (input.isPrivate !== null) {
+      updateDate.isPrivate = input.isPrivate
     }
     const updatedChannel = await prisma.updateChannel({
-      data: input,
+      data: updateDate,
       where: { id: channel.id },
     });
     return updatedChannel;
