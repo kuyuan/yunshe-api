@@ -23,7 +23,15 @@ export default gql`
     isPrivate: Boolean!
   }
 
+  input UpdateChannelInput {
+    channelId: ID!
+    description: String
+    isPrivate: Boolean
+    isDefault: Boolean
+  }
+
   type Mutation {
     createChannel(input: CreateChannelInput!): Channel
+    updateChannel(input: UpdateChannelInput!): Channel
   }
 `;
