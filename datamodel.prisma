@@ -43,6 +43,28 @@ type Channel {
   deletedAt: DateTime
 }
 
+enum ThreadContentType {
+  EDITORJS
+}
+
+type ThreadContent @embedded {
+  title: String!
+  body: String!
+  type: ThreadContentType! @default(value: EDITORJS)
+}
+
+type Thread {
+  id: ID! @id
+  channelId: ID!
+  communityId: ID!
+  authorId: ID!
+  content: ThreadContent!
+  isPublished: Boolean! @default(value: false)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  lastActive: DateTime
+}
+
 enum UserCommunityStatus {
   PENDING,
   ACTIVE,

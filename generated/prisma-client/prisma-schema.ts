@@ -10,6 +10,10 @@ type AggregateCommunity {
   count: Int!
 }
 
+type AggregateThread {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -516,6 +520,12 @@ type Mutation {
   upsertCommunity(where: CommunityWhereUniqueInput!, create: CommunityCreateInput!, update: CommunityUpdateInput!): Community!
   deleteCommunity(where: CommunityWhereUniqueInput!): Community
   deleteManyCommunities(where: CommunityWhereInput): BatchPayload!
+  createThread(data: ThreadCreateInput!): Thread!
+  updateThread(data: ThreadUpdateInput!, where: ThreadWhereUniqueInput!): Thread
+  updateManyThreads(data: ThreadUpdateManyMutationInput!, where: ThreadWhereInput): BatchPayload!
+  upsertThread(where: ThreadWhereUniqueInput!, create: ThreadCreateInput!, update: ThreadUpdateInput!): Thread!
+  deleteThread(where: ThreadWhereUniqueInput!): Thread
+  deleteManyThreads(where: ThreadWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -560,6 +570,9 @@ type Query {
   community(where: CommunityWhereUniqueInput!): Community
   communities(where: CommunityWhereInput, orderBy: CommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Community]!
   communitiesConnection(where: CommunityWhereInput, orderBy: CommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommunityConnection!
+  thread(where: ThreadWhereUniqueInput!): Thread
+  threads(where: ThreadWhereInput, orderBy: ThreadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Thread]!
+  threadsConnection(where: ThreadWhereInput, orderBy: ThreadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ThreadConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -575,9 +588,269 @@ type Query {
 type Subscription {
   channel(where: ChannelSubscriptionWhereInput): ChannelSubscriptionPayload
   community(where: CommunitySubscriptionWhereInput): CommunitySubscriptionPayload
+  thread(where: ThreadSubscriptionWhereInput): ThreadSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   userChannel(where: UserChannelSubscriptionWhereInput): UserChannelSubscriptionPayload
   userCommunity(where: UserCommunitySubscriptionWhereInput): UserCommunitySubscriptionPayload
+}
+
+type Thread {
+  id: ID!
+  channelId: ID!
+  communityId: ID!
+  authorId: ID!
+  content: ThreadContent!
+  isPublished: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  lastActive: DateTime
+}
+
+type ThreadConnection {
+  pageInfo: PageInfo!
+  edges: [ThreadEdge]!
+  aggregate: AggregateThread!
+}
+
+type ThreadContent {
+  title: String!
+  body: String!
+  type: ThreadContentType!
+}
+
+input ThreadContentCreateInput {
+  title: String!
+  body: String!
+  type: ThreadContentType
+}
+
+input ThreadContentCreateOneInput {
+  create: ThreadContentCreateInput
+}
+
+enum ThreadContentType {
+  EDITORJS
+}
+
+input ThreadContentUpdateDataInput {
+  title: String
+  body: String
+  type: ThreadContentType
+}
+
+input ThreadContentUpdateOneRequiredInput {
+  create: ThreadContentCreateInput
+  update: ThreadContentUpdateDataInput
+  upsert: ThreadContentUpsertNestedInput
+}
+
+input ThreadContentUpsertNestedInput {
+  update: ThreadContentUpdateDataInput!
+  create: ThreadContentCreateInput!
+}
+
+input ThreadContentWhereInput {
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  type: ThreadContentType
+  type_not: ThreadContentType
+  type_in: [ThreadContentType!]
+  type_not_in: [ThreadContentType!]
+  AND: [ThreadContentWhereInput!]
+}
+
+input ThreadCreateInput {
+  channelId: ID!
+  communityId: ID!
+  authorId: ID!
+  content: ThreadContentCreateOneInput!
+  isPublished: Boolean
+  lastActive: DateTime
+}
+
+type ThreadEdge {
+  node: Thread!
+  cursor: String!
+}
+
+enum ThreadOrderByInput {
+  id_ASC
+  id_DESC
+  channelId_ASC
+  channelId_DESC
+  communityId_ASC
+  communityId_DESC
+  authorId_ASC
+  authorId_DESC
+  isPublished_ASC
+  isPublished_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  lastActive_ASC
+  lastActive_DESC
+}
+
+type ThreadPreviousValues {
+  id: ID!
+  channelId: ID!
+  communityId: ID!
+  authorId: ID!
+  isPublished: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  lastActive: DateTime
+}
+
+type ThreadSubscriptionPayload {
+  mutation: MutationType!
+  node: Thread
+  updatedFields: [String!]
+  previousValues: ThreadPreviousValues
+}
+
+input ThreadSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ThreadWhereInput
+  AND: [ThreadSubscriptionWhereInput!]
+}
+
+input ThreadUpdateInput {
+  channelId: ID
+  communityId: ID
+  authorId: ID
+  content: ThreadContentUpdateOneRequiredInput
+  isPublished: Boolean
+  lastActive: DateTime
+}
+
+input ThreadUpdateManyMutationInput {
+  channelId: ID
+  communityId: ID
+  authorId: ID
+  isPublished: Boolean
+  lastActive: DateTime
+}
+
+input ThreadWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  channelId: ID
+  channelId_not: ID
+  channelId_in: [ID!]
+  channelId_not_in: [ID!]
+  channelId_lt: ID
+  channelId_lte: ID
+  channelId_gt: ID
+  channelId_gte: ID
+  channelId_contains: ID
+  channelId_not_contains: ID
+  channelId_starts_with: ID
+  channelId_not_starts_with: ID
+  channelId_ends_with: ID
+  channelId_not_ends_with: ID
+  communityId: ID
+  communityId_not: ID
+  communityId_in: [ID!]
+  communityId_not_in: [ID!]
+  communityId_lt: ID
+  communityId_lte: ID
+  communityId_gt: ID
+  communityId_gte: ID
+  communityId_contains: ID
+  communityId_not_contains: ID
+  communityId_starts_with: ID
+  communityId_not_starts_with: ID
+  communityId_ends_with: ID
+  communityId_not_ends_with: ID
+  authorId: ID
+  authorId_not: ID
+  authorId_in: [ID!]
+  authorId_not_in: [ID!]
+  authorId_lt: ID
+  authorId_lte: ID
+  authorId_gt: ID
+  authorId_gte: ID
+  authorId_contains: ID
+  authorId_not_contains: ID
+  authorId_starts_with: ID
+  authorId_not_starts_with: ID
+  authorId_ends_with: ID
+  authorId_not_ends_with: ID
+  content: ThreadContentWhereInput
+  isPublished: Boolean
+  isPublished_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  lastActive: DateTime
+  lastActive_not: DateTime
+  lastActive_in: [DateTime!]
+  lastActive_not_in: [DateTime!]
+  lastActive_lt: DateTime
+  lastActive_lte: DateTime
+  lastActive_gt: DateTime
+  lastActive_gte: DateTime
+  AND: [ThreadWhereInput!]
+}
+
+input ThreadWhereUniqueInput {
+  id: ID
 }
 
 type User {
