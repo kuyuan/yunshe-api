@@ -1,4 +1,4 @@
-import { Channel, Community, User, Thread } from "@prisma/index";
+import { Channel, Community, Thread, User } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import { generateSessionCookie } from "@utils/cookie";
 import { createClient } from "@utils/mongo";
@@ -95,7 +95,7 @@ describe("Query Thread", () => {
     const { data, errors } = JSON.parse(response.body);
     expect(data).toEqual({
       thread: {
-        title: "测试帖子"
+        title: "测试帖子",
       },
     });
   });
