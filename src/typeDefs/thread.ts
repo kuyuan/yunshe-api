@@ -5,18 +5,14 @@ export default gql`
     EDITORJS
   }
 
-  type ThreadContent {
-    title: String
-    body: String
-    type: ThreadContentType
-  }
-
   type Thread {
     id: ID
     channelId: ID
     communityId: ID
     authorId: ID
-    content: ThreadContent
+    title: String
+    body: String
+    contentType: ThreadContentType
     isPublished: Boolean
     createdAt: Date
     updatedAt: Date
