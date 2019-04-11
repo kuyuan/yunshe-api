@@ -47,18 +47,14 @@ enum ThreadContentType {
   EDITORJS
 }
 
-type ThreadContent @embedded {
-  title: String!
-  body: String!
-  type: ThreadContentType! @default(value: EDITORJS)
-}
-
 type Thread {
   id: ID! @id
   channelId: ID!
   communityId: ID!
   authorId: ID!
-  content: ThreadContent!
+  title: String!
+  body: String!
+  contentType: ThreadContentType! @default(value: EDITORJS)
   isPublished: Boolean! @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

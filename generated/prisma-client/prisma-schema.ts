@@ -599,7 +599,9 @@ type Thread {
   channelId: ID!
   communityId: ID!
   authorId: ID!
-  content: ThreadContent!
+  title: String!
+  body: String!
+  contentType: ThreadContentType!
   isPublished: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -612,84 +614,17 @@ type ThreadConnection {
   aggregate: AggregateThread!
 }
 
-type ThreadContent {
-  title: String!
-  body: String!
-  type: ThreadContentType!
-}
-
-input ThreadContentCreateInput {
-  title: String!
-  body: String!
-  type: ThreadContentType
-}
-
-input ThreadContentCreateOneInput {
-  create: ThreadContentCreateInput
-}
-
 enum ThreadContentType {
   EDITORJS
-}
-
-input ThreadContentUpdateDataInput {
-  title: String
-  body: String
-  type: ThreadContentType
-}
-
-input ThreadContentUpdateOneRequiredInput {
-  create: ThreadContentCreateInput
-  update: ThreadContentUpdateDataInput
-  upsert: ThreadContentUpsertNestedInput
-}
-
-input ThreadContentUpsertNestedInput {
-  update: ThreadContentUpdateDataInput!
-  create: ThreadContentCreateInput!
-}
-
-input ThreadContentWhereInput {
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  body: String
-  body_not: String
-  body_in: [String!]
-  body_not_in: [String!]
-  body_lt: String
-  body_lte: String
-  body_gt: String
-  body_gte: String
-  body_contains: String
-  body_not_contains: String
-  body_starts_with: String
-  body_not_starts_with: String
-  body_ends_with: String
-  body_not_ends_with: String
-  type: ThreadContentType
-  type_not: ThreadContentType
-  type_in: [ThreadContentType!]
-  type_not_in: [ThreadContentType!]
-  AND: [ThreadContentWhereInput!]
 }
 
 input ThreadCreateInput {
   channelId: ID!
   communityId: ID!
   authorId: ID!
-  content: ThreadContentCreateOneInput!
+  title: String!
+  body: String!
+  contentType: ThreadContentType
   isPublished: Boolean
   lastActive: DateTime
 }
@@ -708,6 +643,12 @@ enum ThreadOrderByInput {
   communityId_DESC
   authorId_ASC
   authorId_DESC
+  title_ASC
+  title_DESC
+  body_ASC
+  body_DESC
+  contentType_ASC
+  contentType_DESC
   isPublished_ASC
   isPublished_DESC
   createdAt_ASC
@@ -723,6 +664,9 @@ type ThreadPreviousValues {
   channelId: ID!
   communityId: ID!
   authorId: ID!
+  title: String!
+  body: String!
+  contentType: ThreadContentType!
   isPublished: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -749,7 +693,9 @@ input ThreadUpdateInput {
   channelId: ID
   communityId: ID
   authorId: ID
-  content: ThreadContentUpdateOneRequiredInput
+  title: String
+  body: String
+  contentType: ThreadContentType
   isPublished: Boolean
   lastActive: DateTime
 }
@@ -758,6 +704,9 @@ input ThreadUpdateManyMutationInput {
   channelId: ID
   communityId: ID
   authorId: ID
+  title: String
+  body: String
+  contentType: ThreadContentType
   isPublished: Boolean
   lastActive: DateTime
 }
@@ -819,7 +768,38 @@ input ThreadWhereInput {
   authorId_not_starts_with: ID
   authorId_ends_with: ID
   authorId_not_ends_with: ID
-  content: ThreadContentWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  contentType: ThreadContentType
+  contentType_not: ThreadContentType
+  contentType_in: [ThreadContentType!]
+  contentType_not_in: [ThreadContentType!]
   isPublished: Boolean
   isPublished_not: Boolean
   createdAt: DateTime
