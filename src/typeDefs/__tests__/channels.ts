@@ -61,6 +61,8 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.deleteManyChannels({ id: channel.id });
+  await prisma.deleteManyCommunities({ id: community.id });
+  await prisma.deleteManyUsers({ id: currentUser.id });
   await activeServer.close();
   await client.close();
 });

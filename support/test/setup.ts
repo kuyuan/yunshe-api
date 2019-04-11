@@ -8,4 +8,7 @@ module.exports = async () => {
   await prisma.deleteManyUsers();
   await prisma.deleteManyCommunities();
   await prisma.deleteManyChannels();
+  await prisma.deleteManyUserChannels();
+  await prisma.deleteManyUserCommunities();
+  await prisma.deleteManyThreads();
 };

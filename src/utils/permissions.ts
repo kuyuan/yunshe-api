@@ -1,6 +1,6 @@
 import { getUserChannel } from "@models/userChannel";
 import { getUserCommunity } from "@models/userCommunity";
-import { Channel, Community } from "@prisma/index";
+import { Channel, Community, Thread, User } from "@prisma/index";
 import prisma from "./prisma";
 
 export const canViewCommunity = async (userId: string, community: Community): Promise<boolean> => {
@@ -61,4 +61,37 @@ export const canUpdateChannel = async (userId: string, channel: Channel): Promis
     return true;
   }
   return false;
+};
+
+export const canViewThread = async (user: User, thread: Thread): Promise<boolean> => {
+  const channel = await prisma.channel({ id: thread.channelId });
+  const community = await prisma.community({ id: thread.communityId });
+  if (!channel || channel.deletedAt || !community || community.deletedAt) {
+    return false;
+  }
+  if (!channel.isPrivate && !community.isPrivate && thread.isPublished) {
+    return true;
+  }
+  if (!user) {
+    return false;
+  }
+  if (user.id === thread.authorId) {
+    return true;
+  }
+  if (channel.isPrivate) {
+    const userChannel = await getUserChannel(user.id, channel.id);
+    if (!userChannel || userChannel.status !== "ACTIVE") {
+      return false;
+    }
+  }
+  if (community.isPrivate) {
+    const userCommunity = await getUserCommunity(user.id, community.id);
+    if (!userCommunity || userCommunity.status !== "ACTIVE") {
+      return false;
+    }
+  }
+  if (!thread.isPublished) {
+    return false;
+  }
+  return true;
 };

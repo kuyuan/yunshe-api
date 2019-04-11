@@ -1,9 +1,10 @@
-import { Channel, Community, User } from "@prisma/index";
+import { Channel, Community, Thread, User } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import {
   canUpdateChannel,
   canViewChannel,
   canViewCommunity,
+  canViewThread,
 } from "@utils/permissions";
 import prisma from "@utils/prisma";
 
@@ -13,6 +14,9 @@ let publicChannel: Channel;
 let privateCommunity: Community;
 let publicCommunity: Community;
 let publicChannelPrivateCommunity: Channel;
+let publicThread: Thread;
+let publicNotPublishedThread: Thread;
+let privateThread: Thread;
 
 beforeAll(async () => {
   user = await prisma.createUser({
@@ -60,6 +64,33 @@ beforeAll(async () => {
     isDefault: false,
     memberCount: 5,
   });
+  publicThread = await prisma.createThread({
+    authorId: user.id,
+    channelId: publicChannel.id,
+    communityId: publicCommunity.id,
+    title: "测试帖子",
+    body: "测试内容",
+    contentType: "EDITORJS",
+    isPublished: true,
+  });
+  publicNotPublishedThread = await prisma.createThread({
+    authorId: user.id,
+    channelId: publicChannel.id,
+    communityId: publicCommunity.id,
+    title: "测试帖子",
+    body: "测试内容",
+    contentType: "EDITORJS",
+    isPublished: false,
+  });
+  privateThread = await prisma.createThread({
+    authorId: user.id,
+    channelId: privateChannel.id,
+    communityId: privateCommunity.id,
+    title: "测试帖子",
+    body: "测试内容",
+    contentType: "EDITORJS",
+    isPublished: true,
+  });
 });
 
 afterAll(async () => {
@@ -68,7 +99,13 @@ afterAll(async () => {
   ] });
   await prisma.deleteManyChannels({ id_in: [
     privateChannel.id, publicChannel.id, publicChannelPrivateCommunity.id,
-  ]});
+  ] });
+  await prisma.deleteManyUsers({ id_in: [
+    user.id,
+  ] });
+  await prisma.deleteManyThreads({ id_in: [
+    publicThread.id, publicNotPublishedThread.id, privateThread.id,
+  ] });
 });
 
 describe("canViewCommunity", () => {
@@ -150,5 +187,62 @@ describe("canUpdateChannel", () => {
     const result = await canUpdateChannel(user.id, publicChannel);
     expect(result).toBe(true);
     await prisma.deleteManyUserChannels({ id: userChannel.id });
+  });
+});
+
+describe("canViewThread", () => {
+  let threadUser: User;
+
+  beforeAll(async () => {
+    threadUser = await prisma.createUser({
+      username: generateUniqUsername(),
+      name: "测试人员",
+      description: "what happened",
+      coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
+      profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
+    });
+  });
+
+  afterAll(async () => {
+    await prisma.deleteUser({ id: threadUser.id });
+  });
+
+  test("anyone can view public thread", async () => {
+    const result = await canViewThread(null, publicThread);
+    expect(result).toBe(true);
+  });
+
+  test("private thread is protected", async () => {
+    const result = await canViewThread(threadUser, privateThread);
+    expect(result).toBe(false);
+  });
+
+  test("not published thread is not visible to other people", async () => {
+    const result = await canViewThread(threadUser, publicNotPublishedThread);
+    expect(result).toBe(false);
+  });
+
+  test("not published thread is only visible to author", async () => {
+    const result = await canViewThread(user, publicNotPublishedThread);
+    expect(result).toBe(true);
+  });
+
+  test("authed user can view private thread", async () => {
+    const userChannel = await prisma.createUserChannel({
+      userId: threadUser.id,
+      channelId: privateChannel.id,
+      status: "ACTIVE",
+      role: "MEMBER",
+    });
+    const userCommunity = await prisma.createUserCommunity({
+      userId: threadUser.id,
+      communityId: privateCommunity.id,
+      status: "ACTIVE",
+      role: "MEMBER",
+    });
+    const result = await canViewThread(threadUser, privateThread);
+    expect(result).toBe(true);
+    await prisma.deleteUserChannel({ id: userChannel.id });
+    await prisma.deleteUserCommunity({ id: userCommunity.id });
   });
 });
