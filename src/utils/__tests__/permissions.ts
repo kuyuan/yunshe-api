@@ -1,10 +1,10 @@
-import { Channel, Community, User, Thread } from "@prisma/index";
+import { Channel, Community, Thread, User } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import {
   canUpdateChannel,
   canViewChannel,
   canViewCommunity,
-  canViewThread
+  canViewThread,
 } from "@utils/permissions";
 import prisma from "@utils/prisma";
 
@@ -71,7 +71,7 @@ beforeAll(async () => {
     title: "测试帖子",
     body: "测试内容",
     contentType: "EDITORJS",
-    isPublished: true
+    isPublished: true,
   });
   publicNotPublishedThread = await prisma.createThread({
     authorId: user.id,
@@ -80,7 +80,7 @@ beforeAll(async () => {
     title: "测试帖子",
     body: "测试内容",
     contentType: "EDITORJS",
-    isPublished: false
+    isPublished: false,
   });
   privateThread = await prisma.createThread({
     authorId: user.id,
@@ -89,7 +89,7 @@ beforeAll(async () => {
     title: "测试帖子",
     body: "测试内容",
     contentType: "EDITORJS",
-    isPublished: true
+    isPublished: true,
   });
 });
 
@@ -101,10 +101,10 @@ afterAll(async () => {
     privateChannel.id, publicChannel.id, publicChannelPrivateCommunity.id,
   ] });
   await prisma.deleteManyUsers({ id_in: [
-    user.id
+    user.id,
   ] });
   await prisma.deleteManyThreads({ id_in: [
-    publicThread.id, publicNotPublishedThread.id, privateThread.id
+    publicThread.id, publicNotPublishedThread.id, privateThread.id,
   ] });
 });
 
@@ -201,48 +201,48 @@ describe("canViewThread", () => {
       coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
       profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
     });
-  })
+  });
 
   afterAll(async () => {
     await prisma.deleteUser({ id: threadUser.id });
-  })
+  });
 
   test("anyone can view public thread", async () => {
     const result = await canViewThread(null, publicThread);
-    expect(result).toBe(true)
-  })
+    expect(result).toBe(true);
+  });
 
   test("private thread is protected", async () => {
     const result = await canViewThread(threadUser, privateThread);
-    expect(result).toBe(false)
-  })
+    expect(result).toBe(false);
+  });
 
   test("not published thread is not visible to other people", async () => {
     const result = await canViewThread(threadUser, publicNotPublishedThread);
-    expect(result).toBe(false)
-  })
+    expect(result).toBe(false);
+  });
 
   test("not published thread is only visible to author", async () => {
     const result = await canViewThread(user, publicNotPublishedThread);
-    expect(result).toBe(true)
-  })
+    expect(result).toBe(true);
+  });
 
   test("authed user can view private thread", async () => {
     const userChannel = await prisma.createUserChannel({
       userId: threadUser.id,
       channelId: privateChannel.id,
       status: "ACTIVE",
-      role: "MEMBER"
-    })
+      role: "MEMBER",
+    });
     const userCommunity = await prisma.createUserCommunity({
       userId: threadUser.id,
       communityId: privateCommunity.id,
       status: "ACTIVE",
-      role: "MEMBER"
-    })
+      role: "MEMBER",
+    });
     const result = await canViewThread(threadUser, privateThread);
-    expect(result).toBe(true)
-    await prisma.deleteUserChannel({ id: userChannel.id })
-    await prisma.deleteUserCommunity({ id: userCommunity.id })
-  })
-})
+    expect(result).toBe(true);
+    await prisma.deleteUserChannel({ id: userChannel.id });
+    await prisma.deleteUserCommunity({ id: userCommunity.id });
+  });
+});
