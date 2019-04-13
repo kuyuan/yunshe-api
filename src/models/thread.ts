@@ -21,7 +21,6 @@ export const getThreadById = async (threadId: string, currentUser: User): Promis
 
 export interface UserCreateThreadInput {
   channelId: string;
-  communityId: string;
   title: string;
   body: string;
   contentType?: ThreadContentType;
@@ -30,11 +29,13 @@ export interface UserCreateThreadInput {
 
 export const createThread = async (userId: string, input: UserCreateThreadInput): Promise<Thread> => {
   const userChannel = await getUserChannel(userId, input.channelId);
-  if (!userChannel || userChannel.status === "ACTIVE") {
+  if (!userChannel || userChannel.status !== "ACTIVE") {
     throw new NotAllowedError();
   }
+  const channel = await prisma.channel({ id: input.channelId });
   const thread = await prisma.createThread({
     ...input,
+    communityId: channel.communityId,
     authorId: userId,
   });
   return thread;

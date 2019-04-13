@@ -25,7 +25,6 @@ export default gql`
 
   input CreateThreadInput {
     channelId: ID!
-    communityId: ID!
     title: String!
     body: String!
     contentType: ThreadContentType
