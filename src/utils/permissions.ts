@@ -100,6 +100,9 @@ export const canViewThread = async (user: User, thread: Thread): Promise<boolean
 };
 
 export const canUpdateThread = async (userId: string, thread: Thread): Promise<boolean> => {
+  if (thread.deletedAt) {
+    return false;
+  }
   if (userId === thread.authorId) {
     return true;
   }
