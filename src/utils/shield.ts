@@ -24,5 +24,6 @@ export default shield({
     editUser: isValidUser,
     createChannel: isValidUser,
     updateChannel: isValidUser,
+    createThread: isValidUser,
   },
 });

@@ -1,10 +1,11 @@
-import { Thread, User } from "@prisma/index";
+import { Thread, ThreadContentType, User } from "@prisma/index";
 import {
   NotAllowedError,
   NotFoundError,
 } from "@utils/errors";
 import { canViewThread } from "@utils/permissions";
 import prisma from "@utils/prisma";
+import { getUserChannel } from "./userChannel";
 
 export const getThreadById = async (threadId: string, currentUser: User): Promise<Thread> => {
   const thread = await prisma.thread({ id: threadId });
@@ -16,4 +17,25 @@ export const getThreadById = async (threadId: string, currentUser: User): Promis
   } else {
     throw new NotAllowedError();
   }
+};
+
+export interface UserCreateThreadInput {
+  channelId: string;
+  communityId: string;
+  title: string;
+  body: string;
+  contentType?: ThreadContentType;
+  isPublished?: boolean;
+}
+
+export const createThread = async (userId: string, input: UserCreateThreadInput): Promise<Thread> => {
+  const userChannel = await getUserChannel(userId, input.channelId);
+  if (!userChannel || userChannel.status === "ACTIVE") {
+    throw new NotAllowedError();
+  }
+  const thread = await prisma.createThread({
+    ...input,
+    authorId: userId,
+  });
+  return thread;
 };
