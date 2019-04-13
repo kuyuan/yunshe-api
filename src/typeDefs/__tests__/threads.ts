@@ -161,3 +161,47 @@ describe("Mutation createThread", () => {
     });
   });
 });
+
+describe("Mutation updateThread", () => {
+  test("owner can update the thread", async () => {
+    const targetThread = await prisma.createThread({
+      authorId: currentUser.id,
+      channelId: channel.id,
+      communityId: community.id,
+      title: "测试帖子",
+      body: "测试内容",
+      contentType: "EDITORJS",
+      isPublished: true,
+    });
+    const query = `
+      mutation($input: UpdateThreadInput!) {
+        updateThread(input: $input) {
+          title
+        }
+      }
+    `;
+    const variables = {
+      input: {
+        threadId: targetThread.id,
+        title: "thread title updated",
+      },
+    };
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Cookie": cookie,
+      },
+    });
+    const response = await api.post("graphql", { body: JSON.stringify({ query, variables }) });
+    const { data } = JSON.parse(response.body);
+    expect(data).toEqual({
+      updateThread: {
+        title: "thread title updated",
+      },
+    });
+    await prisma.deleteThread({ id: targetThread.id });
+  });
+});
