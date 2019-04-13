@@ -3,7 +3,9 @@ import {
   getChannelById,
   updateChannel,
 } from "@models/channel";
+import { Channel } from "@prisma/index";
 import { Context } from "@utils/interfaces";
+import prisma from "@utils/prisma";
 
 export default {
   Query: {
@@ -20,6 +22,12 @@ export default {
     updateChannel: async (_, { input }, { currentUser }: Context) => {
       const channel = await updateChannel(currentUser.id, input);
       return channel;
+    },
+  },
+  Channel: {
+    community: async (channel: Channel, _, __) => {
+      const community = await prisma.community({ id: channel.communityId });
+      return community;
     },
   },
 };

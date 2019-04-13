@@ -1,14 +1,9 @@
 const path = require("path");
 require('dotenv').config({ path: path.resolve(".env.test") })
-import { Prisma } from "../../generated/prisma-client";
-
-const prisma = new Prisma({ endpoint: process.env.PRISMA_ENDPOINT });
+import createClient from "./mongo";
 
 module.exports = async () => {
-  await prisma.deleteManyUsers();
-  await prisma.deleteManyCommunities();
-  await prisma.deleteManyChannels();
-  await prisma.deleteManyUserChannels();
-  await prisma.deleteManyUserCommunities();
-  await prisma.deleteManyThreads();
+  const client = await createClient();
+  await client.db().dropDatabase();
+  await client.close()
 };

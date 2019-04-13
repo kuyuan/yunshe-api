@@ -4,6 +4,7 @@ export default gql`
   type Channel {
     id: ID
     communityId: String
+    community: Community
     createdAt: Date
     name: String
     description: String

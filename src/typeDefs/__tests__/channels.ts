@@ -74,6 +74,9 @@ describe("Query channel", () => {
         channel(id: "${channel.id}") {
           id
           name
+          community {
+            name
+          }
         }
       }
     `;
@@ -82,6 +85,9 @@ describe("Query channel", () => {
       channel: {
         id: channel.id,
         name: "默认频道",
+        community: {
+          name: "测试社区",
+        },
       },
     });
   });
