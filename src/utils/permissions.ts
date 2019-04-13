@@ -64,6 +64,9 @@ export const canUpdateChannel = async (userId: string, channel: Channel): Promis
 };
 
 export const canViewThread = async (user: User, thread: Thread): Promise<boolean> => {
+  if (thread.deletedAt) {
+    return false;
+  }
   const channel = await prisma.channel({ id: thread.channelId });
   const community = await prisma.community({ id: thread.communityId });
   if (!channel || channel.deletedAt || !community || community.deletedAt) {
@@ -94,4 +97,18 @@ export const canViewThread = async (user: User, thread: Thread): Promise<boolean
     return false;
   }
   return true;
+};
+
+export const canUpdateThread = async (userId: string, thread: Thread): Promise<boolean> => {
+  if (thread.deletedAt) {
+    return false;
+  }
+  if (userId === thread.authorId) {
+    return true;
+  }
+  const userChannel = await getUserChannel(userId, thread.channelId);
+  if (userChannel && userChannel.status === "ACTIVE" && (userChannel.role === "MODERATOR" || userChannel.role === "OWNER")) {
+    return true;
+  }
+  return false;
 };

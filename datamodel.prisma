@@ -59,6 +59,7 @@ type Thread {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   lastActive: DateTime
+  deletedAt: DateTime
 }
 
 enum UserCommunityStatus {

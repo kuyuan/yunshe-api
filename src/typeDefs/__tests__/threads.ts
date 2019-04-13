@@ -1,4 +1,4 @@
-import { Channel, Community, Thread, User } from "@prisma/index";
+import { Channel, Community, Thread, User, UserChannel, UserCommunity } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import { generateSessionCookie } from "@utils/cookie";
 import { createClient } from "@utils/mongo";
@@ -100,4 +100,108 @@ describe("Query Thread", () => {
     });
   });
 
+});
+
+describe("Mutation createThread", () => {
+  let userChannel: UserChannel;
+  let userCommunity: UserCommunity;
+
+  beforeAll(async () => {
+    userChannel = await prisma.createUserChannel({
+      userId: currentUser.id,
+      channelId: channel.id,
+      role: "MEMBER",
+      status: "ACTIVE",
+    });
+    userCommunity = await prisma.createUserCommunity({
+      userId: currentUser.id,
+      communityId: community.id,
+      role: "MEMBER",
+      status: "ACTIVE",
+    });
+  });
+
+  afterAll(async () => {
+    await prisma.deleteManyUserChannels({ id: userChannel.id });
+    await prisma.deleteManyUserCommunities({ id: userCommunity.id });
+  });
+
+  test("it create a new thread", async () => {
+    const query = `
+      mutation($input: CreateThreadInput!) {
+        createThread(input: $input) {
+          title
+        }
+      }
+    `;
+    const variables = {
+      input: {
+        channelId: channel.id,
+        title: "test thread",
+        body: "test body",
+        isPublished: true,
+        contentType: "EDITORJS",
+      },
+    };
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Cookie": cookie,
+      },
+    });
+    const response = await api.post("graphql", { body: JSON.stringify({ query, variables }) });
+    const { data, errors } = JSON.parse(response.body);
+    expect(data).toEqual({
+      createThread: {
+        title: "test thread",
+      },
+    });
+  });
+});
+
+describe("Mutation updateThread", () => {
+  test("owner can update the thread", async () => {
+    const targetThread = await prisma.createThread({
+      authorId: currentUser.id,
+      channelId: channel.id,
+      communityId: community.id,
+      title: "测试帖子",
+      body: "测试内容",
+      contentType: "EDITORJS",
+      isPublished: true,
+    });
+    const query = `
+      mutation($input: UpdateThreadInput!) {
+        updateThread(input: $input) {
+          title
+        }
+      }
+    `;
+    const variables = {
+      input: {
+        threadId: targetThread.id,
+        title: "thread title updated",
+      },
+    };
+    const api = got.extend({
+      baseUrl: `http://localhost:${port}`,
+      responseType: "json",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Cookie": cookie,
+      },
+    });
+    const response = await api.post("graphql", { body: JSON.stringify({ query, variables }) });
+    const { data } = JSON.parse(response.body);
+    expect(data).toEqual({
+      updateThread: {
+        title: "thread title updated",
+      },
+    });
+    await prisma.deleteThread({ id: targetThread.id });
+  });
 });
