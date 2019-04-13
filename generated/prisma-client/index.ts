@@ -388,7 +388,9 @@ export type ThreadOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "lastActive_ASC"
-  | "lastActive_DESC";
+  | "lastActive_DESC"
+  | "deletedAt_ASC"
+  | "deletedAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -905,6 +907,7 @@ export interface ThreadUpdateManyMutationInput {
   contentType?: ThreadContentType;
   isPublished?: Boolean;
   lastActive?: DateTimeInput;
+  deletedAt?: DateTimeInput;
 }
 
 export interface UserWhereInput {
@@ -1072,6 +1075,7 @@ export interface ThreadUpdateInput {
   contentType?: ThreadContentType;
   isPublished?: Boolean;
   lastActive?: DateTimeInput;
+  deletedAt?: DateTimeInput;
 }
 
 export interface UserChannelUpdateManyMutationInput {
@@ -1090,6 +1094,7 @@ export interface ThreadCreateInput {
   contentType?: ThreadContentType;
   isPublished?: Boolean;
   lastActive?: DateTimeInput;
+  deletedAt?: DateTimeInput;
 }
 
 export interface UserChannelCreateInput {
@@ -1371,6 +1376,14 @@ export interface ThreadWhereInput {
   lastActive_lte?: DateTimeInput;
   lastActive_gt?: DateTimeInput;
   lastActive_gte?: DateTimeInput;
+  deletedAt?: DateTimeInput;
+  deletedAt_not?: DateTimeInput;
+  deletedAt_in?: DateTimeInput[] | DateTimeInput;
+  deletedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  deletedAt_lt?: DateTimeInput;
+  deletedAt_lte?: DateTimeInput;
+  deletedAt_gt?: DateTimeInput;
+  deletedAt_gte?: DateTimeInput;
   AND?: ThreadWhereInput[] | ThreadWhereInput;
 }
 
@@ -1665,6 +1678,7 @@ export interface Thread {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   lastActive?: DateTimeOutput;
+  deletedAt?: DateTimeOutput;
 }
 
 export interface ThreadPromise extends Promise<Thread>, Fragmentable {
@@ -1679,6 +1693,7 @@ export interface ThreadPromise extends Promise<Thread>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   lastActive: () => Promise<DateTimeOutput>;
+  deletedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface ThreadSubscription
@@ -1695,6 +1710,7 @@ export interface ThreadSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   lastActive: () => Promise<AsyncIterator<DateTimeOutput>>;
+  deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserCommunityConnection {
@@ -2306,6 +2322,7 @@ export interface ThreadPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   lastActive?: DateTimeOutput;
+  deletedAt?: DateTimeOutput;
 }
 
 export interface ThreadPreviousValuesPromise
@@ -2322,6 +2339,7 @@ export interface ThreadPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   lastActive: () => Promise<DateTimeOutput>;
+  deletedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface ThreadPreviousValuesSubscription
@@ -2338,6 +2356,7 @@ export interface ThreadPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   lastActive: () => Promise<AsyncIterator<DateTimeOutput>>;
+  deletedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserConnection {

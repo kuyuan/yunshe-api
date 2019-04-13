@@ -31,7 +31,16 @@ export default gql`
     isPublished: Boolean
   }
 
+  input UpdateThreadInput {
+    threadId: ID!
+    title: String
+    body: String
+    contentType: ThreadContentType
+    isPublished: Boolean
+  }
+
   type Mutation {
     createThread(input: CreateThreadInput!): Thread
+    updateThread(input: UpdateThreadInput!): Thread
   }
 `;

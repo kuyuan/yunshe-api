@@ -1,9 +1,12 @@
-import { Thread, ThreadContentType, User } from "@prisma/index";
+import { Thread, ThreadContentType, ThreadUpdateInput, User } from "@prisma/index";
 import {
   NotAllowedError,
   NotFoundError,
 } from "@utils/errors";
-import { canViewThread } from "@utils/permissions";
+import {
+  canUpdateThread,
+  canViewThread,
+} from "@utils/permissions";
 import prisma from "@utils/prisma";
 import { getUserChannel } from "./userChannel";
 
@@ -39,4 +42,40 @@ export const createThread = async (userId: string, input: UserCreateThreadInput)
     authorId: userId,
   });
   return thread;
+};
+
+export interface UserUpdateThreadInput {
+  threadId: string;
+  title?: string;
+  body?: string;
+  contentType?: ThreadContentType;
+  isPublished?: boolean;
+}
+
+export const updateThread = async (userId: string, input: UserUpdateThreadInput): Promise<Thread> => {
+  const thread = await prisma.thread({ id: input.threadId });
+  if (await canUpdateThread(userId, thread)) {
+    const updateDate: ThreadUpdateInput = {};
+    if (input.title !== null) {
+      updateDate.title = input.title;
+    }
+    if (input.body !== null) {
+      updateDate.body = input.body;
+    }
+    if (input.contentType !== null) {
+      updateDate.contentType = input.contentType;
+    }
+    if (input.isPublished !== null) {
+      updateDate.isPublished = input.isPublished;
+    }
+    const updatedThread = await prisma.updateThread({
+      data: updateDate,
+      where: {
+        id: thread.id,
+      },
+    });
+    return updatedThread;
+  } else {
+    throw new NotAllowedError();
+  }
 };

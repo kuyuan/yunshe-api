@@ -606,6 +606,7 @@ type Thread {
   createdAt: DateTime!
   updatedAt: DateTime!
   lastActive: DateTime
+  deletedAt: DateTime
 }
 
 type ThreadConnection {
@@ -627,6 +628,7 @@ input ThreadCreateInput {
   contentType: ThreadContentType
   isPublished: Boolean
   lastActive: DateTime
+  deletedAt: DateTime
 }
 
 type ThreadEdge {
@@ -657,6 +659,8 @@ enum ThreadOrderByInput {
   updatedAt_DESC
   lastActive_ASC
   lastActive_DESC
+  deletedAt_ASC
+  deletedAt_DESC
 }
 
 type ThreadPreviousValues {
@@ -671,6 +675,7 @@ type ThreadPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   lastActive: DateTime
+  deletedAt: DateTime
 }
 
 type ThreadSubscriptionPayload {
@@ -698,6 +703,7 @@ input ThreadUpdateInput {
   contentType: ThreadContentType
   isPublished: Boolean
   lastActive: DateTime
+  deletedAt: DateTime
 }
 
 input ThreadUpdateManyMutationInput {
@@ -709,6 +715,7 @@ input ThreadUpdateManyMutationInput {
   contentType: ThreadContentType
   isPublished: Boolean
   lastActive: DateTime
+  deletedAt: DateTime
 }
 
 input ThreadWhereInput {
@@ -826,6 +833,14 @@ input ThreadWhereInput {
   lastActive_lte: DateTime
   lastActive_gt: DateTime
   lastActive_gte: DateTime
+  deletedAt: DateTime
+  deletedAt_not: DateTime
+  deletedAt_in: [DateTime!]
+  deletedAt_not_in: [DateTime!]
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
   AND: [ThreadWhereInput!]
 }
 

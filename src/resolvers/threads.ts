@@ -1,6 +1,7 @@
 import {
   createThread,
   getThreadById,
+  updateThread,
 } from "@models/thread";
 import { Context } from "@utils/interfaces";
 
@@ -14,6 +15,10 @@ export default {
   Mutation: {
     createThread: async (_, { input }, { currentUser }: Context) => {
       const thread = await createThread(currentUser.id, input);
+      return thread;
+    },
+    updateThread: async (_, { input }, { currentUser }: Context) => {
+      const thread = await updateThread(currentUser.id, input);
       return thread;
     },
   },
