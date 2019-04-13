@@ -22,4 +22,17 @@ export default gql`
   type Query {
     thread(id: ID!): Thread
   }
+
+  input CreateThreadInput {
+    channelId: ID!
+    communityId: ID!
+    title: String!
+    body: String!
+    contentType: ThreadContentType
+    isPublished: Boolean
+  }
+
+  type Mutation {
+    createThread(input: CreateThreadInput!): Thread
+  }
 `;
