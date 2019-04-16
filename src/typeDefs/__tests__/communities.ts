@@ -1,4 +1,4 @@
-import { Community, User, UserCommunity } from "@prisma/index";
+import { Channel, Community, User, UserCommunity } from "@prisma/index";
 import { generateUniqUsername } from "@support/test/helpers";
 import prisma from "@utils/prisma";
 import { schema } from "@utils/server";
@@ -7,6 +7,8 @@ import { graphql } from "graphql";
 const rootValue = {};
 let context;
 let community: Community;
+let publicChannel: Channel;
+let privateChannel: Channel;
 let currentUser: User;
 
 beforeAll(async () => {
@@ -24,21 +26,47 @@ beforeAll(async () => {
     coverPhoto: "	https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/cover/cover12.jpg",
     profilePhoto: "https://yunshe-sample-1256437689.cos.ap-shanghai.myqcloud.com/avatar/avatar1.jpg",
   });
+  publicChannel = await prisma.createChannel({
+    communityId: community.id,
+    name: "默认频道",
+    description: "社区创建时默认创建的我频道",
+    isPrivate: false,
+    isDefault: true,
+  });
+  privateChannel = await prisma.createChannel({
+    communityId: community.id,
+    name: "私人频道",
+    description: "私人频道",
+    isPrivate: true,
+    isDefault: false,
+  });
   context = { prisma, currentUser };
 });
 
 afterAll(async () => {
   await prisma.deleteManyCommunities({ id: community.id });
   await prisma.deleteManyUsers({ id: currentUser.id });
+  await prisma.deleteManyChannels({ id_in: [publicChannel.id, privateChannel.id] });
 });
 
 describe("Query community", () => {
   test("get community info", async () => {
+    const userChannel = await prisma.createUserChannel({
+      userId: currentUser.id,
+      channelId: privateChannel.id,
+      communityId: privateChannel.communityId,
+      role: "MEMBER",
+      status: "ACTIVE",
+    });
     const query = `
       query {
         community(id: "${community.id}") {
           id
           name
+          channels {
+            id
+            name
+          }
         }
       }
     `;
@@ -47,8 +75,18 @@ describe("Query community", () => {
       community: {
         id: community.id,
         name: "测试社区",
+        channels: [
+          {
+            id: privateChannel.id,
+            name: privateChannel.name,
+          }, {
+            id: publicChannel.id,
+            name: publicChannel.name,
+          },
+        ],
       },
     });
+    await prisma.deleteManyUserChannels({ id: userChannel.id });
   });
 });
 

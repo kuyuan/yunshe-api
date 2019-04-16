@@ -47,17 +47,19 @@ export const getCommunityChannels = async (community: Community, user: User) => 
   const publichChannels = await prisma.channels({ where: {
     communityId: community.id, isPrivate: false, deletedAt: null,
   } });
-  const userChannels = await prisma.userChannels({ where: { userId: user.id, communityId: community.id, status: "ACTIVE" } });
-  const privateChannelIds = userChannels.map((userChannel) => {
+  const userJoinedChannels = await prisma.userChannels({ where: { userId: user.id, communityId: community.id, status: "ACTIVE" } });
+  const joinedChannelIds = userJoinedChannels.map((userChannel) => {
     return userChannel.channelId;
   });
   const publichChannelIds = publichChannels.map((channel) => {
     return channel.id;
   });
+  const uniqChannelIds = Array.from(new Set(publichChannelIds.concat(joinedChannelIds)));
   channels = await prisma.channels({
-    where: { id_in: publichChannelIds.concat(privateChannelIds) },
+    where: { id_in: uniqChannelIds },
     orderBy: "name_ASC",
   });
+  console.log(channels);
   return channels;
 };
 
