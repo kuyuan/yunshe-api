@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 
 export default gql`
   type Community {
+    # Basic
     id: ID
     name: String
     description: String
@@ -11,6 +12,8 @@ export default gql`
     profilePhoto: String
     coverPhoto: String
     memberCount: Int
+    # Extended
+    channels: [Channel]
   }
 
   type Query {

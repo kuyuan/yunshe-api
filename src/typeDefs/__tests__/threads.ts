@@ -110,6 +110,7 @@ describe("Mutation createThread", () => {
     userChannel = await prisma.createUserChannel({
       userId: currentUser.id,
       channelId: channel.id,
+      communityId: channel.communityId,
       role: "MEMBER",
       status: "ACTIVE",
     });

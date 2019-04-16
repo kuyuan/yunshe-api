@@ -142,6 +142,7 @@ describe("Mutation Channel", () => {
     const userChannel = await prisma.createUserChannel({
       userId: currentUser.id,
       channelId: targetChannel.id,
+      communityId: targetChannel.communityId,
       role: "OWNER",
       status: "ACTIVE",
     });

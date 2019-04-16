@@ -99,6 +99,7 @@ enum UserChannelRole {
 type UserChannel {
   id: ID! @id
   channelId: ID!
+  communityId: ID!
   userId: ID!
   status: UserChannelStatus!
   role: UserChannelRole!

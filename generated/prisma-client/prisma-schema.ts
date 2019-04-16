@@ -867,6 +867,7 @@ type User {
 type UserChannel {
   id: ID!
   channelId: ID!
+  communityId: ID!
   userId: ID!
   status: UserChannelStatus!
   role: UserChannelRole!
@@ -882,6 +883,7 @@ type UserChannelConnection {
 
 input UserChannelCreateInput {
   channelId: ID!
+  communityId: ID!
   userId: ID!
   status: UserChannelStatus!
   role: UserChannelRole!
@@ -897,6 +899,8 @@ enum UserChannelOrderByInput {
   id_DESC
   channelId_ASC
   channelId_DESC
+  communityId_ASC
+  communityId_DESC
   userId_ASC
   userId_DESC
   status_ASC
@@ -912,6 +916,7 @@ enum UserChannelOrderByInput {
 type UserChannelPreviousValues {
   id: ID!
   channelId: ID!
+  communityId: ID!
   userId: ID!
   status: UserChannelStatus!
   role: UserChannelRole!
@@ -949,6 +954,7 @@ input UserChannelSubscriptionWhereInput {
 
 input UserChannelUpdateInput {
   channelId: ID
+  communityId: ID
   userId: ID
   status: UserChannelStatus
   role: UserChannelRole
@@ -956,6 +962,7 @@ input UserChannelUpdateInput {
 
 input UserChannelUpdateManyMutationInput {
   channelId: ID
+  communityId: ID
   userId: ID
   status: UserChannelStatus
   role: UserChannelRole
@@ -990,6 +997,20 @@ input UserChannelWhereInput {
   channelId_not_starts_with: ID
   channelId_ends_with: ID
   channelId_not_ends_with: ID
+  communityId: ID
+  communityId_not: ID
+  communityId_in: [ID!]
+  communityId_not_in: [ID!]
+  communityId_lt: ID
+  communityId_lte: ID
+  communityId_gt: ID
+  communityId_gte: ID
+  communityId_contains: ID
+  communityId_not_contains: ID
+  communityId_starts_with: ID
+  communityId_not_starts_with: ID
+  communityId_ends_with: ID
+  communityId_not_ends_with: ID
   userId: ID
   userId_not: ID
   userId_in: [ID!]
