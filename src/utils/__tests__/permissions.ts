@@ -160,6 +160,7 @@ describe("canViewChannel", () => {
       const userChannel = await prisma.createUserChannel({
         userId: user.id,
         channelId: privateChannel.id,
+        communityId: privateChannel.communityId,
         status: "ACTIVE",
         role: "MEMBER",
       });
@@ -181,6 +182,7 @@ describe("canUpdateChannel", () => {
     const userChannel = await prisma.createUserChannel({
       userId: user.id,
       channelId: publicChannel.id,
+      communityId: publicChannel.communityId,
       status: "ACTIVE",
       role: "OWNER",
     });
@@ -231,6 +233,7 @@ describe("canViewThread", () => {
     const userChannel = await prisma.createUserChannel({
       userId: threadUser.id,
       channelId: privateChannel.id,
+      communityId: privateChannel.communityId,
       status: "ACTIVE",
       role: "MEMBER",
     });

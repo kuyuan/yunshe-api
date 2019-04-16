@@ -453,6 +453,8 @@ export type UserChannelOrderByInput =
   | "id_DESC"
   | "channelId_ASC"
   | "channelId_DESC"
+  | "communityId_ASC"
+  | "communityId_DESC"
   | "userId_ASC"
   | "userId_DESC"
   | "status_ASC"
@@ -830,6 +832,20 @@ export interface UserChannelWhereInput {
   channelId_not_starts_with?: ID_Input;
   channelId_ends_with?: ID_Input;
   channelId_not_ends_with?: ID_Input;
+  communityId?: ID_Input;
+  communityId_not?: ID_Input;
+  communityId_in?: ID_Input[] | ID_Input;
+  communityId_not_in?: ID_Input[] | ID_Input;
+  communityId_lt?: ID_Input;
+  communityId_lte?: ID_Input;
+  communityId_gt?: ID_Input;
+  communityId_gte?: ID_Input;
+  communityId_contains?: ID_Input;
+  communityId_not_contains?: ID_Input;
+  communityId_starts_with?: ID_Input;
+  communityId_not_starts_with?: ID_Input;
+  communityId_ends_with?: ID_Input;
+  communityId_not_ends_with?: ID_Input;
   userId?: ID_Input;
   userId_not?: ID_Input;
   userId_in?: ID_Input[] | ID_Input;
@@ -1080,6 +1096,7 @@ export interface ThreadUpdateInput {
 
 export interface UserChannelUpdateManyMutationInput {
   channelId?: ID_Input;
+  communityId?: ID_Input;
   userId?: ID_Input;
   status?: UserChannelStatus;
   role?: UserChannelRole;
@@ -1099,6 +1116,7 @@ export interface ThreadCreateInput {
 
 export interface UserChannelCreateInput {
   channelId: ID_Input;
+  communityId: ID_Input;
   userId: ID_Input;
   status: UserChannelStatus;
   role: UserChannelRole;
@@ -1400,6 +1418,7 @@ export interface UserCommunitySubscriptionWhereInput {
 
 export interface UserChannelUpdateInput {
   channelId?: ID_Input;
+  communityId?: ID_Input;
   userId?: ID_Input;
   status?: UserChannelStatus;
   role?: UserChannelRole;
@@ -1967,6 +1986,7 @@ export interface ThreadConnectionSubscription
 export interface UserChannel {
   id: ID_Output;
   channelId: ID_Output;
+  communityId: ID_Output;
   userId: ID_Output;
   status: UserChannelStatus;
   role: UserChannelRole;
@@ -1977,6 +1997,7 @@ export interface UserChannel {
 export interface UserChannelPromise extends Promise<UserChannel>, Fragmentable {
   id: () => Promise<ID_Output>;
   channelId: () => Promise<ID_Output>;
+  communityId: () => Promise<ID_Output>;
   userId: () => Promise<ID_Output>;
   status: () => Promise<UserChannelStatus>;
   role: () => Promise<UserChannelRole>;
@@ -1989,6 +2010,7 @@ export interface UserChannelSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   channelId: () => Promise<AsyncIterator<ID_Output>>;
+  communityId: () => Promise<AsyncIterator<ID_Output>>;
   userId: () => Promise<AsyncIterator<ID_Output>>;
   status: () => Promise<AsyncIterator<UserChannelStatus>>;
   role: () => Promise<AsyncIterator<UserChannelRole>>;
@@ -2383,6 +2405,7 @@ export interface UserConnectionSubscription
 export interface UserChannelPreviousValues {
   id: ID_Output;
   channelId: ID_Output;
+  communityId: ID_Output;
   userId: ID_Output;
   status: UserChannelStatus;
   role: UserChannelRole;
@@ -2395,6 +2418,7 @@ export interface UserChannelPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   channelId: () => Promise<ID_Output>;
+  communityId: () => Promise<ID_Output>;
   userId: () => Promise<ID_Output>;
   status: () => Promise<UserChannelStatus>;
   role: () => Promise<UserChannelRole>;
@@ -2407,6 +2431,7 @@ export interface UserChannelPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   channelId: () => Promise<AsyncIterator<ID_Output>>;
+  communityId: () => Promise<AsyncIterator<ID_Output>>;
   userId: () => Promise<AsyncIterator<ID_Output>>;
   status: () => Promise<AsyncIterator<UserChannelStatus>>;
   role: () => Promise<AsyncIterator<UserChannelRole>>;

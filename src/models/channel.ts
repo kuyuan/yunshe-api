@@ -1,4 +1,12 @@
-import { Channel, ChannelUpdateInput } from "@prisma/index";
+import {
+  getUserCommunity,
+} from "@models/userCommunity";
+import {
+  Channel,
+  ChannelUpdateInput,
+  Community,
+  User,
+} from "@prisma/index";
 import {
   ArgumentError,
   NotAllowedError,
@@ -21,6 +29,38 @@ export const getChannelById = async (channlId: string, userId: string): Promise<
   } else {
     return null;
   }
+};
+
+export const getCommunityChannels = async (community: Community, user: User) => {
+  let channels: Channel[];
+  if (!user && !community.isPrivate) {
+    channels = await prisma.channels({ where: { communityId: community.id, isPrivate: false, deletedAt: null } });
+    return channels;
+  }
+  if (!user && community.isPrivate) {
+    return [];
+  }
+  const userCommunity = await getUserCommunity(user.id, community.id);
+  if (!userCommunity && community.isPrivate) {
+    return [];
+  }
+  const publichChannels = await prisma.channels({ where: {
+    communityId: community.id, isPrivate: false, deletedAt: null,
+  } });
+  const userJoinedChannels = await prisma.userChannels({ where: { userId: user.id, communityId: community.id, status: "ACTIVE" } });
+  const joinedChannelIds = userJoinedChannels.map((userChannel) => {
+    return userChannel.channelId;
+  });
+  const publichChannelIds = publichChannels.map((channel) => {
+    return channel.id;
+  });
+  const uniqChannelIds = Array.from(new Set(publichChannelIds.concat(joinedChannelIds)));
+  channels = await prisma.channels({
+    where: { id_in: uniqChannelIds },
+    orderBy: "name_ASC",
+  });
+  console.log(channels);
+  return channels;
 };
 
 export interface UserCreateChannelInput {
@@ -61,6 +101,7 @@ export const createChannel = async (userId: string, input: UserCreateChannelInpu
     });
     await prisma.createUserChannel({
       channelId: channel.id,
+      communityId: channel.communityId,
       userId,
       role: "OWNER",
       status: "ACTIVE",

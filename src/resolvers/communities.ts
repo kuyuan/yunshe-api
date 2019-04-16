@@ -1,4 +1,7 @@
 import {
+  getCommunityChannels,
+} from "@models/channel";
+import {
   createCommunity,
   getCommunityById,
   updateCommunity,
@@ -20,6 +23,12 @@ export default {
     updateCommunity: async (_, { input }, { currentUser }: Context) => {
       const community = await updateCommunity(currentUser.id, input);
       return community;
+    },
+  },
+  Community: {
+    channels: async (community, _, { currentUser }: Context) => {
+      const channels = await getCommunityChannels(community, currentUser);
+      return channels;
     },
   },
 };

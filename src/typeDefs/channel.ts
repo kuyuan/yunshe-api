@@ -2,15 +2,17 @@ import gql from "graphql-tag";
 
 export default gql`
   type Channel {
+    # Basic
     id: ID
     communityId: String
-    community: Community
     createdAt: Date
     name: String
     description: String
     isPrivate: Boolean
     isDefault: Boolean
     memberCount: Int
+    # Extended
+    community: Community
   }
 
   type Query {
