@@ -4,6 +4,7 @@ import {
   updateThread,
 } from "@models/thread";
 import { Context } from "@utils/interfaces";
+import { Thread } from "@prisma/index";
 
 export default {
   Query: {
@@ -22,4 +23,10 @@ export default {
       return thread;
     },
   },
+  Thread: {
+    author: async (thread: Thread, _, { prisma }: Context) => {
+      const author = await prisma.user({ id: thread.authorId});
+      return author;
+    },
+  }
 };

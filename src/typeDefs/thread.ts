@@ -6,6 +6,7 @@ export default gql`
   }
 
   type Thread {
+    # Basic
     id: ID
     channelId: ID
     communityId: ID
@@ -17,6 +18,8 @@ export default gql`
     createdAt: Date
     updatedAt: Date
     lastActive: Date
+    # Extended
+    author: User
   }
 
   type Query {
