@@ -13,6 +13,12 @@ export default gql`
     memberCount: Int
     # Extended
     community: Community
+    userChannelRelation: UserChannelRelation
+  }
+
+  type UserChannelRelation {
+    role: String
+    status: String
   }
 
   type Query {

@@ -77,6 +77,10 @@ describe("Query channel", () => {
           community {
             name
           }
+          userChannelRelation {
+            role
+            status
+          }
         }
       }
     `;
@@ -88,6 +92,10 @@ describe("Query channel", () => {
         community: {
           name: "测试社区",
         },
+        userChannelRelation: {
+          role: "MEMBER",
+          status: "ACTIVE"
+        }
       },
     });
   });

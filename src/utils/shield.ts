@@ -18,6 +18,9 @@ export default shield({
   Query: {
     currentUser: isValidUser,
   },
+  Channel: {
+    userChannelRelation: isValidUser,
+  },
   Mutation: {
     createCommunity: isValidUser,
     updateCommunity: isValidUser,

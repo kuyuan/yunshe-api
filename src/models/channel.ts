@@ -59,7 +59,6 @@ export const getCommunityChannels = async (community: Community, user: User) => 
     where: { id_in: uniqChannelIds },
     orderBy: "name_ASC",
   });
-  console.log(channels);
   return channels;
 };
 
