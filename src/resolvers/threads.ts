@@ -3,8 +3,8 @@ import {
   getThreadById,
   updateThread,
 } from "@models/thread";
-import { Context } from "@utils/interfaces";
 import { Thread } from "@prisma/index";
+import { Context } from "@utils/interfaces";
 
 export default {
   Query: {
@@ -28,5 +28,5 @@ export default {
       const author = await prisma.user({ id: thread.authorId});
       return author;
     },
-  }
+  },
 };

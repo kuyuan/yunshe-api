@@ -4,13 +4,13 @@ import {
   updateChannel,
 } from "@models/channel";
 import {
-  getUserChannel
+  getUserChannel,
 } from "@models/userChannel";
-import {
-  canViewChannel
-} from "@utils/permissions";
 import { Channel } from "@prisma/index";
 import { Context } from "@utils/interfaces";
+import {
+  canViewChannel,
+} from "@utils/permissions";
 import prisma from "@utils/prisma";
 
 export default {
@@ -38,16 +38,16 @@ export default {
     userChannelRelation: async (channel: Channel, _, { currentUser }: Context) => {
       const userChannel = await getUserChannel(currentUser.id, channel.id);
       if (userChannel) {
-        return userChannel
+        return userChannel;
       }
-      const allowed = await canViewChannel(currentUser.id, channel)
+      const allowed = await canViewChannel(currentUser.id, channel);
       if (allowed) {
         return {
           role: "MEMBER",
-          status: "ACTIVE"
-        }
+          status: "ACTIVE",
+        };
       } else {
-        return null
+        return null;
       }
     },
   },

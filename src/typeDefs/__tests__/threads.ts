@@ -102,8 +102,8 @@ describe("Query Thread", () => {
         title: "测试帖子",
         author: {
           id: currentUser.id,
-          name: currentUser.name
-        }
+          name: currentUser.name,
+        },
       },
     });
   });

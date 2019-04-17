@@ -94,8 +94,8 @@ describe("Query channel", () => {
         },
         userChannelRelation: {
           role: "MEMBER",
-          status: "ACTIVE"
-        }
+          status: "ACTIVE",
+        },
       },
     });
   });
