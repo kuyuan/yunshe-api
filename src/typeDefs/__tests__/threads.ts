@@ -79,6 +79,10 @@ describe("Query Thread", () => {
       query {
         thread(id: "${thread.id}") {
           title
+          author {
+            id
+            name
+          }
         }
       }
     `;
@@ -96,6 +100,10 @@ describe("Query Thread", () => {
     expect(data).toEqual({
       thread: {
         title: "测试帖子",
+        author: {
+          id: currentUser.id,
+          name: currentUser.name,
+        },
       },
     });
   });

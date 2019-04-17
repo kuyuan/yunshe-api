@@ -3,6 +3,7 @@ import {
   getThreadById,
   updateThread,
 } from "@models/thread";
+import { Thread } from "@prisma/index";
 import { Context } from "@utils/interfaces";
 
 export default {
@@ -20,6 +21,12 @@ export default {
     updateThread: async (_, { input }, { currentUser }: Context) => {
       const thread = await updateThread(currentUser.id, input);
       return thread;
+    },
+  },
+  Thread: {
+    author: async (thread: Thread, _, { prisma }: Context) => {
+      const author = await prisma.user({ id: thread.authorId});
+      return author;
     },
   },
 };
