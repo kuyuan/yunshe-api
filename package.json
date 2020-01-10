@@ -53,7 +53,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "backpack-core": "^0.8.3",
     "get-port": "^5.0.0",
-    "husky": "^2.0.0",
+    "husky": "^4.0.6",
     "jest": "^24.1.0",
     "node-mocks-http": "^1.7.3",
     "prisma": "^1.31.1",
