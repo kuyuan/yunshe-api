@@ -828,10 +828,10 @@
     "@types/bson" "*"
     "@types/node" "*"
 
-"@types/mongodb@^3.1.19":
-  version "3.1.19"
-  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.1.19.tgz#40c4310986888975771857810aa47fd3ea8e1acf"
-  integrity sha512-H54hQEovAhyLrIZOhPNfGyCCDoTqKsjb8GQBy8nptJqfxrYCp5WVcPJf9v0kfTPR72xOhaz9+WcYxOXWwEg1Vg==
+"@types/mongodb@^3.3.15":
+  version "3.3.15"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.3.15.tgz#f8b80a7a1f42fa90f58a1273df80f0e5764e3d25"
+  integrity sha512-q2dL0VEdFdE9iS0xrTP0NSgJJBFH4hBvt3beglCwU3qMWrz7dCuu/CrRjPB4+R8jLjCi/Gik2Mkd+lU0sYsZgQ==
   dependencies:
     "@types/bson" "*"
     "@types/node" "*"
