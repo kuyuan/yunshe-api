@@ -41,7 +41,7 @@
     "passport-weixin": "^0.2.0",
     "prisma-client-lib": "^1.34.0",
     "sanitize-filename": "^1.6.1",
-    "uuid": "^3.3.2"
+    "uuid": "^7.0.0"
   },
   "devDependencies": {
     "@types/cookie-session": "^2.0.36",
